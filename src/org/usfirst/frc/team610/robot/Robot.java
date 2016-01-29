@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team610.robot.commands.A_Turn;
 import org.usfirst.frc.team610.robot.commands.ExampleCommand;
 import org.usfirst.frc.team610.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -35,7 +34,7 @@ public class Robot extends IterativeRobot {
 
     	chooser = new SendableChooser();
         chooser.addDefault("Default Auto", new ExampleCommand());
-        chooser.addObject("Turn", new A_Turn());
+//        chooser.addObject("Turn", new A_Turn());
         SmartDashboard.putData("Auto mode", chooser);
     }
 	
