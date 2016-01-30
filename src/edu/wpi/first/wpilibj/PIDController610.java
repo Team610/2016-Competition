@@ -87,7 +87,7 @@ public class PIDController610 implements PIDInterface, LiveWindowSendable, Contr
 
     @Override
     public boolean onTarget() {
-      return isAvgErrorValid() && (Math.abs(getAvgError()) < percentage / 100 * (m_maximumInput - m_minimumInput));
+      return isAvgErrorValid() && (Math.abs(getMedianError()) < percentage / 100 * (m_maximumInput - m_minimumInput));
     }
   }
 
@@ -100,7 +100,7 @@ public class PIDController610 implements PIDInterface, LiveWindowSendable, Contr
 
     @Override
     public boolean onTarget() {
-      return isAvgErrorValid() && Math.abs(getAvgError()) < value;
+      return isAvgErrorValid() && Math.abs(getMedianError()) < value;
     }
   }
 
@@ -577,9 +577,10 @@ public class PIDController610 implements PIDInterface, LiveWindowSendable, Contr
   }
   public synchronized double getMedianError(){
 	  double medError = 0;
+	  ArrayList<Double> temp_buf = (ArrayList<Double>) m_buf.clone();
 	  if(m_buf.size()!=0){
-	  Collections.sort(m_buf);
-	  medError = m_buf.get(m_buf.size()/2);
+		  Collections.sort(temp_buf);
+		  medError = temp_buf.get(temp_buf.size()/2);
 	  }
 	  
 	  return medError;
