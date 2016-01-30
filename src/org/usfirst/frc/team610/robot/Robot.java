@@ -3,9 +3,9 @@ package org.usfirst.frc.team610.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
     Command autonomousCommand;
+    CommandGroup teleop;
     SendableChooser chooser;
 
     /**
@@ -28,6 +29,9 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 
     	chooser = new SendableChooser();
+    	teleop = new CommandGroup("T_teleop");
+    	
+    
         SmartDashboard.putData("Auto mode", chooser);
     }
 	
@@ -84,6 +88,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        teleop.start();
+        
     }
 
     /**
