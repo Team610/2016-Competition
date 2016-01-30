@@ -35,7 +35,6 @@ public class T_KajDrive extends Command {
     	
     	leftSpeed = y - x;
     	rightSpeed = y + x;
-    	
     	driveTrain.setRight(rightSpeed);
     	driveTrain.setLeft(leftSpeed);
     	
