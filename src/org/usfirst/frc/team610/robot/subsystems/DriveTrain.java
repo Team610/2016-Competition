@@ -6,7 +6,7 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -18,16 +18,16 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 
 	SerialPort serial_port;
-	DriveTrain instance;
-	Talon leftFront;
-	Talon leftBack;
-	Talon rightFront;
-	Talon rightBack;
+	static DriveTrain instance;
+	Victor leftFront;
+	Victor leftBack;
+	Victor rightFront;
+	Victor rightBack;
 	Encoder leftEnc;
 	Encoder rightEnc;
 	IMUAdvanced imu;
 	
-	public DriveTrain getInstance(){
+	public static DriveTrain getInstance(){
 		if(instance == null){
 			instance = new DriveTrain();
 		}
@@ -35,10 +35,10 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private DriveTrain(){
-		leftFront = new Talon(ElectricalConstants.TALON_LEFT_FRONT);
-		leftBack = new Talon(ElectricalConstants.TALON_LEFT_BACK);
-		rightFront = new Talon(ElectricalConstants.TALON_RIGHT_FRONT);
-		rightBack = new Talon(ElectricalConstants.TALON_RIGHT_BACK);
+		leftFront = new Victor(ElectricalConstants.TALON_LEFT_FRONT);
+		leftBack = new Victor(ElectricalConstants.TALON_LEFT_BACK);
+		rightFront = new Victor(ElectricalConstants.TALON_RIGHT_FRONT);
+		rightBack = new Victor(ElectricalConstants.TALON_RIGHT_BACK);
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
 		try {
@@ -55,11 +55,13 @@ public class DriveTrain extends Subsystem {
     }
     
     public void setRight(double speed){
+    	System.out.println("in right loop");
     	rightFront.set(speed);
     	rightBack.set(speed);
     }
     
     public void setLeft(double speed){
+    	System.out.println("in left loop");
     	leftFront.set(speed);
     	leftBack.set(speed);
     }

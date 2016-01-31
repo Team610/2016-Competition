@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class OI {
 	
-	private OI instance;
+	private static OI instance;
 	private Joystick driver;
 	private Joystick operator;
 	
@@ -17,7 +17,7 @@ public class OI {
 		operator = new Joystick(1);
 	}
 	
-	public OI getInstance(){
+	public static OI getInstance(){
 		if(instance == null){
 			instance = new OI();
 		}
