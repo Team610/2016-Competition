@@ -2,12 +2,12 @@ package org.usfirst.frc.team610.robot.constants;
 
 public class ElectricalConstants {
 	
-	public static final int TALON_LEFT_FRONT = 6; //And mid
+	public static final int VICTOR_LEFT_FRONT = 6; //And mid
 //	public static final int TALON_LEFT_MID = 5;
-	public static final int TALON_LEFT_BACK = 5;
-	public static final int TALON_RIGHT_FRONT = 1; //And mid
+	public static final int VICTOR_LEFT_BACK = 5;
+	public static final int VICTOR_RIGHT_FRONT = 1; //And mid
 //	public static final int TALON_RIGHT_MID = 0;
-	public static final int TALON_RIGHT_BACK = 0;
+	public static final int VICTOR_RIGHT_BACK = 0;
 
 	public static final int ENCODER_DRIVE_RIGHTA = 3;
 	public static final int ENCODER_DRIVE_RIGHTB = 2;

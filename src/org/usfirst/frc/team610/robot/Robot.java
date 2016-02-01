@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends IterativeRobot {
 //PIDController
-    Command autonomousCommand;
     CommandGroup teleop;
 
     /**
@@ -63,8 +62,6 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
 		
-        System.out.println("teleop start");
-//        kaj.start();
         teleop.start();
         
     }

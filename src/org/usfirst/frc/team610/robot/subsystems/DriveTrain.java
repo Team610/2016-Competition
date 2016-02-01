@@ -35,10 +35,10 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private DriveTrain(){
-		leftFront = new Victor(ElectricalConstants.TALON_LEFT_FRONT);
-		leftBack = new Victor(ElectricalConstants.TALON_LEFT_BACK);
-		rightFront = new Victor(ElectricalConstants.TALON_RIGHT_FRONT);
-		rightBack = new Victor(ElectricalConstants.TALON_RIGHT_BACK);
+		leftFront = new Victor(ElectricalConstants.VICTOR_LEFT_FRONT);
+		leftBack = new Victor(ElectricalConstants.VICTOR_LEFT_BACK);
+		rightFront = new Victor(ElectricalConstants.VICTOR_RIGHT_FRONT);
+		rightBack = new Victor(ElectricalConstants.VICTOR_RIGHT_BACK);
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
 		try {
