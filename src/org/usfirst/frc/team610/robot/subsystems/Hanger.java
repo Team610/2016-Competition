@@ -3,6 +3,7 @@ package org.usfirst.frc.team610.robot.subsystems;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -12,8 +13,8 @@ public class Hanger extends Subsystem {
 
 	static NavX navx;
 	static Hanger inst;
-	Servo winch1, winch2;
-	
+	Victor winch1, winch2;
+	Servo ratchet;
 
 	public static Hanger getInstance() {
 		if (inst == null) {
@@ -24,14 +25,18 @@ public class Hanger extends Subsystem {
 
 	private Hanger() {
 		navx = NavX.getInstance();
-		winch1 = new Servo(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHA_NAVX));
-		winch2 = new Servo(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHB_NAVX));
-
+		winch1 = new Victor(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHA_NAVX));
+		winch2 = new Victor(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHB_NAVX));
+		ratchet = new Servo(ElectricalConstants.LIFT_RATCHET);
 	}
 	
-	public void setWinches(double value) {
-		winch1.set(value);
-		winch2.set(value);
+	public void setWinches(double speed) {
+		winch1.set(speed);
+		winch2.set(speed);
+	}
+	
+	public void setRatchet(double value) {
+		ratchet.set(value);
 	}
 
 	public void initDefaultCommand() {
