@@ -22,8 +22,9 @@ public class ElectricalConstants {
 	public static final int INTAKE_FEEDER_RIGHT = 9;
 	
 	public static final int LIFT_RATCHET = 7;
-	public static final int LEFT_WINCHA = 10;
-	public static final int LEFT_WINCHB = 11;
+	public static final int LIFT_WINCHA_NAVX = 0;
+	public static final int LIFT_WINCHB_NAVX = 1;
+
 	
 	
 }
