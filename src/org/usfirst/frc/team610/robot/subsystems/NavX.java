@@ -12,9 +12,6 @@ public class NavX extends Subsystem {
 	static NavX inst;
 	static IMUAdvanced navx;
 	static SerialPort serial_port;
-	public final double MXP_IO_VOLTAGE = 3.3; //CHECK
-	public final double MIN_AN_TRIGGER_VOLTAGE = 0.76;
-	public final double MAX_AN_TRIGGER_VOLTAGE = MXP_IO_VOLTAGE - 2.0;
 	public final int MAX_NAVX_MXP_DIGIO_PIN_NUMBER = 9;
 	public final int NUM_ROBORIO_ONBOARD_DIGIO_PINS = 10;
 	public final int NUM_ROBORIO_ONBOARD_PWM_PINS = 10;
