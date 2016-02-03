@@ -3,6 +3,7 @@ package org.usfirst.frc.team610.robot.subsystems;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -11,7 +12,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Hanger extends Subsystem {
 
-	static NavX navx;
 	static Hanger inst;
 	Victor winch1, winch2;
 	Servo ratchet;
@@ -23,12 +23,10 @@ public class Hanger extends Subsystem {
 		return inst;
 	}
 
-	private Hanger() {
-		navx = NavX.getInstance();
-		winch1 = new Victor(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHA_NAVX));
-		winch2 = new Victor(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.LIFT_WINCHB_NAVX));
+	private Hanger() {		
 		ratchet = new Servo(ElectricalConstants.LIFT_RATCHET);
 	}
+	
 	
 	public void setWinches(double speed) {
 		winch1.set(speed);

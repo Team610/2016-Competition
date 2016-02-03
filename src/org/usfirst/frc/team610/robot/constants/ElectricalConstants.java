@@ -2,6 +2,8 @@ package org.usfirst.frc.team610.robot.constants;
 
 public class ElectricalConstants {
 	
+	
+	public static final int TALON_PWM_TEST = 0;
 	public static final int VICTOR_LEFT_FRONT = 6; //And mid
 	public static final int VICTOR_LEFT_BACK = 5;
 	public static final int VICTOR_RIGHT_FRONT = 1; //And mid

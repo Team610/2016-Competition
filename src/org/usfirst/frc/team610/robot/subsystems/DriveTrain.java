@@ -2,10 +2,8 @@ package org.usfirst.frc.team610.robot.subsystems;
 
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
-import com.kauailabs.nav6.frc.IMUAdvanced;
-
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -19,12 +17,15 @@ public class DriveTrain extends Subsystem {
 
 	static DriveTrain instance;
 	
+	
 	Victor leftFront;
 	Victor leftBack;
 	Victor rightFront;
 	Victor rightBack;
 	Encoder leftEnc;
 	Encoder rightEnc;
+	NavX navx;
+	Talon testTalon;
 	
 	public static DriveTrain getInstance(){
 		if(instance == null){
@@ -34,10 +35,12 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private DriveTrain(){
+		navx = NavX.getInstance();
 		leftFront = new Victor(ElectricalConstants.VICTOR_LEFT_FRONT);
 		leftBack = new Victor(ElectricalConstants.VICTOR_LEFT_BACK);
 		rightFront = new Victor(ElectricalConstants.VICTOR_RIGHT_FRONT);
 		rightBack = new Victor(ElectricalConstants.VICTOR_RIGHT_BACK);
+		testTalon = new Talon(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.TALON_PWM_TEST));
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
 	}
@@ -47,14 +50,17 @@ public class DriveTrain extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
+    
+    public void test(double speed){
+    	testTalon.set(speed);
+    }
+    
     public void setRight(double speed){
-    	System.out.println("in right loop");
     	rightFront.set(speed);
     	rightBack.set(speed);
     }
     
     public void setLeft(double speed){
-    	System.out.println("in left loop");
     	leftFront.set(speed);
     	leftBack.set(speed);
     }

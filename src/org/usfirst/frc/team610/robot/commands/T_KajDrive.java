@@ -1,8 +1,11 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import javax.print.DocFlavor.INPUT_STREAM;
+
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -13,10 +16,13 @@ public class T_KajDrive extends Command {
 
 	private DriveTrain drivetrain;
 	private OI oi;
+	private NavX navx;
+//	Talon leftTalon;
 
 	public T_KajDrive() {
 
 		drivetrain = DriveTrain.getInstance();
+		navx = NavX.getInstance();
 		oi = OI.getInstance();
 
 	}
@@ -27,15 +33,19 @@ public class T_KajDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		double x, y, leftSpeed, rightSpeed;
-		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
-		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
-
-		leftSpeed = y - x;
-		rightSpeed = y + x;
-		drivetrain.setRight(rightSpeed);
-		drivetrain.setLeft(leftSpeed);
-	}
+//		double x, y, leftSpeed, rightSpeed;
+//		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
+//		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
+//
+//		leftSpeed = y - x;
+//		rightSpeed = y + x;
+//		drivetrain.setRight(rightSpeed);
+//		drivetrain.setLeft(leftSpeed);
+		System.out.println(navx.getAngle());
+	//	drivetrain.test(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
+		
+		System.out.println("runnig kaj/test");
+	}	
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
