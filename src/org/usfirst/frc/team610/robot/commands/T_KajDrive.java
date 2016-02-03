@@ -13,10 +13,6 @@ public class T_KajDrive extends Command {
 
 	private DriveTrain drivetrain;
 	private OI oi;
-	private double leftSpeed;
-	private double rightSpeed;
-	private double x;
-	private double y;
 
 	public T_KajDrive() {
 
@@ -31,6 +27,7 @@ public class T_KajDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		double x, y, leftSpeed, rightSpeed;
 		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
 		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
 
@@ -38,8 +35,6 @@ public class T_KajDrive extends Command {
 		rightSpeed = y + x;
 		drivetrain.setRight(rightSpeed);
 		drivetrain.setLeft(leftSpeed);
-		System.out.println("in kaj loop");
-
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -20,3 +20,7 @@
 /bin/
 /bin/
 /bin/
+
+*.xml
+
+.metadata/.log
