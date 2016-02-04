@@ -2,6 +2,7 @@ package org.usfirst.frc.team610.robot.subsystems;
 
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
@@ -40,9 +41,9 @@ public class DriveTrain extends Subsystem {
 		leftBack = new Victor(ElectricalConstants.VICTOR_LEFT_BACK);
 		rightFront = new Victor(ElectricalConstants.VICTOR_RIGHT_FRONT);
 		rightBack = new Victor(ElectricalConstants.VICTOR_RIGHT_BACK);
-		testTalon = new Talon(navx.getChannelFromPin(NavX.PinType.PWM, ElectricalConstants.TALON_PWM_TEST));
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
+
 	}
 	
     public void initDefaultCommand() {
@@ -66,14 +67,16 @@ public class DriveTrain extends Subsystem {
     }
     
     
-    public int getRightDistance(){
-    	return rightEnc.get();
+    public double getRightDistance(){
+    	return rightEnc.getDistance();
     }
-    
-    public int getLeftDistance(){
-    	return leftEnc.get();
+  
+    public double getLeftDistance(){
+    	return leftEnc.getDistance();
     }
-    
+    public double getYaw(){
+    	return navx.getAngle();
+    }
 
 }
 

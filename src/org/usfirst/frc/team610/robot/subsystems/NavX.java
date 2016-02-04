@@ -2,6 +2,7 @@ package org.usfirst.frc.team610.robot.subsystems;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -30,6 +31,7 @@ public class NavX extends Subsystem {
 			byte update_rate_hz = 50;
 			navx = new IMUAdvanced(serial_port, update_rate_hz);
 		} catch (Exception ex) {
+			DriverStation.reportError("NavX Failed to Initilaized", true);
 		}
 	}
 
