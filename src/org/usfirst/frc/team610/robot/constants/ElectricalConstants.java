@@ -9,10 +9,10 @@ public class ElectricalConstants {
 	public static final int VICTOR_RIGHT_FRONT = 1; //And mid
 	public static final int VICTOR_RIGHT_BACK = 0;
 
-	public static final int ENCODER_DRIVE_RIGHTA = 3;
-	public static final int ENCODER_DRIVE_RIGHTB = 2;
-	public static final int ENCODER_DRIVE_LEFTA = 1;
-	public static final int ENCODER_DRIVE_LEFTB = 0;
+	public static final int ENCODER_DRIVE_RIGHTA = 1;
+	public static final int ENCODER_DRIVE_RIGHTB = 0;
+	public static final int ENCODER_DRIVE_LEFTA = 3;
+	public static final int ENCODER_DRIVE_LEFTB = 2;
 	
 	
 	public static final int INTAKE_PIVOT = 2; //Left and Right

@@ -1,9 +1,10 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController610;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,20 +20,20 @@ public class DriveTrain extends Subsystem {
 	static DriveTrain instance;
 	
 	
-	Victor leftFront;
-	Victor leftBack;
-	Victor rightFront;
-	Victor rightBack;
-	Encoder leftEnc;
-	Encoder rightEnc;
-	NavX navx;
-	Talon testTalon;
-	
+	private Victor leftFront;
+	private Victor leftBack;
+	private Victor rightFront;
+	private Victor rightBack;
+	private Encoder leftEnc;
+	private Encoder rightEnc;
+	private NavX navx;
+	private Talon testTalon;
 	public static DriveTrain getInstance(){
 		if(instance == null){
 			instance = new DriveTrain();
 		}
 		return instance;
+		
 	}
 	
 	private DriveTrain(){
@@ -68,7 +69,7 @@ public class DriveTrain extends Subsystem {
     
     
     public double getRightDistance(){
-    	return rightEnc.getDistance();
+    	return -rightEnc.getDistance();
     }
   
     public double getLeftDistance(){
@@ -76,6 +77,11 @@ public class DriveTrain extends Subsystem {
     }
     public double getYaw(){
     	return navx.getAngle();
+    }
+    public void resetSensors(){
+    	navx.resetAngle();
+    	leftEnc.reset();
+    	rightEnc.reset();
     }
 
 }

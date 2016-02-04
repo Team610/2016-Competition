@@ -1,38 +1,45 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class D_SensorReadings extends Command {
+public class A_SittingDuck extends Command {
 
+	private double leftSpeed;
+	private double rightSpeed;
+	private double error;
+	private double tAngle;
+	private DriveTrain driveTrain;
 	
-	DriveTrain driveTrain;
 	
-    public D_SensorReadings() {
+	
+    public A_SittingDuck() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	driveTrain = DriveTrain.getInstance();
-    	
+
+    	driveTrain = driveTrain.getInstance();
+    	requires(driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	driveTrain.resetSensors();
+    	tAngle = driveTrain.getYaw();
     }
 
     // Called repeatedly when this Command is scheduled to run
-    @SuppressWarnings("deprecation")
-	protected void execute() {
-    	SmartDashboard.putDouble("Left Encoder: ", driveTrain.getLeftDistance());
-    	SmartDashboard.putDouble("Right Encoder: ", driveTrain.getRightDistance());
-    	SmartDashboard.putDouble("Gyro: ", driveTrain.getYaw());
-    	System.out.println("Testing");
+    protected void execute() {
+    	error = 0 - tAngle;
+    	leftSpeed = error * PIDConstants.Kp;
+    	rightSpeed = error * PIDConstants.Kp;
     	
+    	driveTrain.setLeft(-leftSpeed);
+    	driveTrain.setRight(rightSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
