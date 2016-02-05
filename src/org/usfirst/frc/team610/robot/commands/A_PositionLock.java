@@ -45,8 +45,8 @@ public class A_PositionLock extends Command {
     	tAngle = driveTrain.getYaw();
     	error = 0 - tAngle;
     	differenceError = error - lastError;
-    	leftSpeed = error * PIDConstants.Kp + differenceError * PIDConstants.Kd;
-    	rightSpeed = error * PIDConstants.Kp + differenceError * PIDConstants.Kd;
+    	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+    	rightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
     	
     	driveTrain.setLeft(-leftSpeed);
     	driveTrain.setRight(rightSpeed);

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class D_SensorReadings extends Command {
 
 	
-	DriveTrain driveTrain;
+	private DriveTrain driveTrain;
 	
     public D_SensorReadings() {
         // Use requires() here to declare subsystem dependencies
