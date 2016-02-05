@@ -26,12 +26,10 @@ public class D_SensorReadings extends Command {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    @SuppressWarnings("deprecation")
 	protected void execute() {
-    	SmartDashboard.putDouble("Left Encoder: ", driveTrain.getLeftDistance());
-    	SmartDashboard.putDouble("Right Encoder: ", driveTrain.getRightDistance());
-    	SmartDashboard.putDouble("Gyro: ", driveTrain.getYaw());
-    	System.out.println("Testing");
+    	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftDistance());
+    	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightDistance());
+    	SmartDashboard.putNumber("Gyro: ", driveTrain.getYaw());
     	
     }
 

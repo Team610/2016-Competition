@@ -3,13 +3,14 @@ package org.usfirst.frc.team610.robot.commands;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.PIDController610;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class A_SittingDuck extends Command {
+public class A_PositionLock extends Command {
 
 	private double leftSpeed;
 	private double rightSpeed;
@@ -18,16 +19,20 @@ public class A_SittingDuck extends Command {
 	private double differenceError;
 	private double tAngle;
 	private DriveTrain driveTrain;
+	private PIDController610 pidController;
 	
 	
 	
-    public A_SittingDuck() {
+    public A_PositionLock() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
-    	driveTrain = driveTrain.getInstance();
-    	requires(driveTrain);
+    	driveTrain = DriveTrain.getInstance();
     }
+    public A_PositionLock(int time){
+    	driveTrain = DriveTrain.getInstance();
+    	setTimeout(time);
+    	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -51,13 +56,18 @@ public class A_SittingDuck extends Command {
     	SmartDashboard.putNumber("Left Speed: ", leftSpeed);
     	SmartDashboard.putNumber("Right Speed: ", rightSpeed);
     	SmartDashboard.putNumber("Error: ", error);
-    	
+    
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        if(isTimedOut()){
+        	driveTrain.setLeft(0);
+        	driveTrain.setRight(0);
+
+        }
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
