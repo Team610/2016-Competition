@@ -14,6 +14,8 @@ public class A_SittingDuck extends Command {
 	private double leftSpeed;
 	private double rightSpeed;
 	private double error;
+	private double lastError;
+	private double differenceError;
 	private double tAngle;
 	private DriveTrain driveTrain;
 	
@@ -37,15 +39,20 @@ public class A_SittingDuck extends Command {
     protected void execute() {
     	tAngle = driveTrain.getYaw();
     	error = 0 - tAngle;
-    	leftSpeed = error * PIDConstants.Kp;
-    	rightSpeed = error * PIDConstants.Kp;
+    	differenceError = error - lastError;
+    	leftSpeed = error * PIDConstants.Kp + differenceError * PIDConstants.Kd;
+    	rightSpeed = error * PIDConstants.Kp + differenceError * PIDConstants.Kd;
     	
     	driveTrain.setLeft(-leftSpeed);
     	driveTrain.setRight(rightSpeed);
     	
+    	lastError = error;
+    	
     	SmartDashboard.putNumber("Left Speed: ", leftSpeed);
     	SmartDashboard.putNumber("Right Speed: ", rightSpeed);
     	SmartDashboard.putNumber("Error: ", error);
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
