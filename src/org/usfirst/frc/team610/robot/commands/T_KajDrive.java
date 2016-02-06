@@ -44,6 +44,10 @@ public class T_KajDrive extends Command {
 //		System.out.println(navx.getAngle());
 //		drivetrain.test(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
 		
+		if(oi.getDriver().getRawButton(InputConstants.BTN_A)){
+			driveTrain.resetEncoders();
+		}
+		
 		System.out.println("runnig kaj/test");
 	}	
 

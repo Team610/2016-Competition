@@ -32,7 +32,7 @@ public class A_PositionLock extends Command {
     public A_PositionLock(int time){
     	driveTrain = DriveTrain.getInstance();
     	setTimeout(time);
-    	}
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {

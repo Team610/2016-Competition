@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class T_Teleop extends CommandGroup {
 	
     public  T_Teleop() {
-        addParallel(new T_KajDrive());
+//        addParallel(new T_KajDrive());
 //    	addParallel(new A_PositionLock());
-//        addParallel(new A_PositionMove(0));
+        addParallel(new A_PositionMove(0));
     }
 }

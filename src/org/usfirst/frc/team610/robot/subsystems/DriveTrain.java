@@ -69,11 +69,11 @@ public class DriveTrain extends Subsystem {
     
     
     public double getRightDistance(){
-    	return -rightEnc.getDistance() / 98;
+    	return rightEnc.getDistance() / 97.1830985915493;
     }
   
     public double getLeftDistance(){
-    	return leftEnc.getDistance() / 98;
+    	return -leftEnc.getDistance() / 97.1830985915493;
     }
     public double getYaw(){
     	return navx.getAngle();

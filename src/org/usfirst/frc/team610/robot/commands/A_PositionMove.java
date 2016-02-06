@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class A_PositionMove extends Command {
 
+	//Distance
 	DriveTrain driveTrain;
 	double tDistance;
 	double curLeftDistance;
@@ -23,6 +24,14 @@ public class A_PositionMove extends Command {
 	double lastEncRightError;
 	double leftErrorDistance;
 	double rightErrorDistance;
+	double gyroRightSpeed;
+	double gyroLeftSpeed;
+	
+	//Angles
+	private double error;
+	private double lastError;
+	private double differenceError;
+	private double tAngle;
 
 	public A_PositionMove(double distance) {
 		
@@ -31,6 +40,7 @@ public class A_PositionMove extends Command {
 		driveTrain.resetSensors();
 		curRightDistance = 0;
 		curLeftDistance = 0;
+		
 		
 		
 		// Use requires() here to declare subsystem dependencies
@@ -44,6 +54,8 @@ public class A_PositionMove extends Command {
 		curLeftDistance = driveTrain.getLeftDistance();
 		curRightDistance = driveTrain.getRightDistance();
 
+    	tAngle = driveTrain.getYaw();
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -51,6 +63,12 @@ public class A_PositionMove extends Command {
 
 		curLeftDistance = driveTrain.getLeftDistance();
 		curRightDistance = driveTrain.getRightDistance();
+		tAngle = driveTrain.getYaw();
+    	error = 0 - tAngle;
+    	differenceError = error - lastError;
+    	
+    	gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+    	gyroRightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
 
 		encLeftError = tDistance - curLeftDistance;
 		encRightError = tDistance - curRightDistance;
@@ -58,14 +76,18 @@ public class A_PositionMove extends Command {
 //		leftErrorDistance = lastEncLeftError - encLeftError;
 //		rightErrorDistance = encRightError - lastEncRightError;
 
-		rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
-		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
+//		rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
+//		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
 
+//		
+//		rightSpeed += gyroRightSpeed;
+//		leftSpeed -= gyroLeftSpeed;
+		
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
 		
-		SmartDashboard.putNumber("RightSpeed: ", rightSpeed);
-		SmartDashboard.putNumber("LeftSpeed: ", leftSpeed);
+		SmartDashboard.putNumber("Right error: ", encRightError);
+		SmartDashboard.putNumber("LeftSpeed: ", encLeftError);
 		
 //		lastEncRightError = encRightError;
 //		lastEncLeftError = encLeftError;
