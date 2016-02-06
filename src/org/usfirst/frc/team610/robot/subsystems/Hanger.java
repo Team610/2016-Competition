@@ -19,6 +19,7 @@ public class Hanger extends Subsystem {
 	NavX navx;
 	Encoder liftEnc;
 	Servo ratchet;
+	public servoPosition servoPos;
 
 	public static Hanger getInstance() {
 		if (inst == null) {
@@ -64,11 +65,9 @@ public class Hanger extends Subsystem {
 		}else if(pos == servoPosition.UNLOCKED){
 			ratchet.set(Constants.HANGER_RATCHET_OPEN);
 		}
+		servoPos = pos;
 	}
 
-	public Servo getRatchet(){
-		return this.ratchet;
-	}
 	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.

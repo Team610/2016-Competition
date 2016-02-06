@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
+
 public class Intake extends Subsystem {
 
-	private Intake instance;
+	private static Intake instance;
 	Victor topRoller, botRoller, intakePivot;
 	Servo leftFeeder, rightFeeder;
 	servoPosition curServoPos;
@@ -20,7 +21,7 @@ public class Intake extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	public Intake getInstance() {
+	public static Intake getInstance() {
 		if (instance == null) {
 			instance = new Intake();
 		}
@@ -39,12 +40,6 @@ public class Intake extends Subsystem {
 	enum servoPosition {
 		UP, DOWN
 	}
-	//How many modes 
-//	enum intakeMode{
-//		INTAKING,SHOOTING
-//	}
-	
-
 	public void setIntakePos(servoPosition s) {
 		if (s == servoPosition.DOWN) {
 			setIntakeServos(Constants.INTAKE_SERVO_DOWN);
@@ -55,10 +50,14 @@ public class Intake extends Subsystem {
 		curServoPos = s;
 
 	}
+	public void setIntakePivot(double v){
+		intakePivot.set(v);
+	}
 	private void setIntakeServos(double value) {
 		leftFeeder.set(value);
 		rightFeeder.set(value);
 	}
+	//Flip in Code or Electrically?
 	public void setBothRollers(double v){
 		setTopRoller(v);
 		setBotRoller(v);

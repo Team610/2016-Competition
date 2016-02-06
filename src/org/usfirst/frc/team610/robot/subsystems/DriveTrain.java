@@ -27,7 +27,6 @@ public class DriveTrain extends Subsystem {
 	private Encoder leftEnc;
 	private Encoder rightEnc;
 	private NavX navx;
-	private Talon testTalon;
 	public static DriveTrain getInstance(){
 		if(instance == null){
 			instance = new DriveTrain();
@@ -52,11 +51,7 @@ public class DriveTrain extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    
-    public void test(double speed){
-    	testTalon.set(speed);
-    }
-    
+  
     public void setRight(double speed){
     	rightFront.set(speed);
     	rightBack.set(speed);
