@@ -20,7 +20,6 @@ public class Robot extends IterativeRobot {
 
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();
-//		navx = NavX.getInstance();
 
 	}
 

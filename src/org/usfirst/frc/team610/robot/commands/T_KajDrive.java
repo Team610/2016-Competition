@@ -40,10 +40,7 @@ public class T_KajDrive extends Command {
 		leftSpeed = y - x;
 		rightSpeed = y + x;
 		driveTrain.setRight(rightSpeed);
-		driveTrain.setLeft(leftSpeed);
-//		System.out.println(navx.getAngle());
-//		drivetrain.test(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
-		
+		driveTrain.setLeft(leftSpeed);		
 		if(oi.getDriver().getRawButton(InputConstants.BTN_A)){
 			driveTrain.resetEncoders();
 		}
