@@ -25,8 +25,8 @@ public class ElectricalConstants {
 	public static final int ENCODER_DRIVE_LEFTB = 0;//CHECK
 	public static final int ENCODER_DRIVE_RIGHTA = 3;
 	public static final int ENCODER_DRIVE_RIGHTB = 2;
-	public static final int ENCODER_LIFT_A = 5;//CHANGE
-	public static final int ENCODER_LIFT_B = 4;//CHANGE
+	public static final int ENCODER_LIFT_A = 4;//CHANGE
+	public static final int ENCODER_LIFT_B = 5;//CHANGE
 
 	
 	

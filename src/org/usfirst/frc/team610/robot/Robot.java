@@ -44,12 +44,17 @@ public class Robot extends IterativeRobot {
 		teleop.start();
 	
 		sensor.start();
+//		LiveWindow.run();
 	}
 
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
+	public void testInit(){
+//		teleop.start();
+	}
+	
 	public void testPeriodic() {
 		LiveWindow.run();
 	}

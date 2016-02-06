@@ -55,6 +55,10 @@ public class Hanger extends Subsystem {
 		ratchet.set(value);
 	}
 
+	public Servo getRatchet(){
+		return this.ratchet;
+	}
+	
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());

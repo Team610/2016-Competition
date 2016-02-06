@@ -36,7 +36,6 @@ public class D_SensorReadings extends Command {
     	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightInches());
     	SmartDashboard.putNumber("Gyro from NavX: ", navx.getAngle());
     	
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
