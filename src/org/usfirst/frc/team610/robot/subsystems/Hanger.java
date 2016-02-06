@@ -1,5 +1,6 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 import org.usfirst.frc.team610.robot.subsystems.NavX.PinType;
 
@@ -36,6 +37,8 @@ public class Hanger extends Subsystem {
 		winch2 = new Victor(NavX.getInstance().getChannelFromPin(PinType.PWM, ElectricalConstants.LIFT_WINCHB_NAVX));
 		ratchet = new Servo(ElectricalConstants.LIFT_RATCHET);
 	}
+	
+	
 	public void resetEncoder(){
 		liftEnc.reset();
 	}
@@ -51,8 +54,16 @@ public class Hanger extends Subsystem {
 	/* @param 0-1
 	 * 
 	 */
-	public void setRatchet(double value) {
-		ratchet.set(value);
+	
+	public enum servoPosition{
+		LOCKED,UNLOCKED
+	}
+	public void setRatchet(servoPosition pos) {
+		if(pos == servoPosition.LOCKED){
+			ratchet.set(Constants.HANGER_RATCHET_CLOSED);
+		}else if(pos == servoPosition.UNLOCKED){
+			ratchet.set(Constants.HANGER_RATCHET_OPEN);
+		}
 	}
 
 	public Servo getRatchet(){

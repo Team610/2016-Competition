@@ -55,18 +55,20 @@ public class Intake extends Subsystem {
 		curServoPos = s;
 
 	}
-
-
 	private void setIntakeServos(double value) {
 		leftFeeder.set(value);
 		rightFeeder.set(value);
 	}
-	
-	public void setUpRoller(double v) {
-		
+	public void setBothRollers(double v){
+		setTopRoller(v);
+		setBotRoller(v);
 	}
-	public void setDownRoller(double v){
-		
+	
+	public void setTopRoller(double v) {
+		topRoller.set(v);
+	}
+	public void setBotRoller(double v){
+		botRoller.set(v);
 	}
 
 	public void initDefaultCommand() {
