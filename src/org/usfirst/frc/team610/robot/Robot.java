@@ -20,7 +20,6 @@ public class Robot extends IterativeRobot {
 
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();
-		System.out.println("starting the bloody robot");
 //		navx = NavX.getInstance();
 
 	}
@@ -43,6 +42,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		teleop.start();
+	
 		sensor.start();
 	}
 

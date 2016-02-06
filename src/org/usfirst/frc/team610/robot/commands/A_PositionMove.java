@@ -51,8 +51,8 @@ public class A_PositionMove extends Command {
 	protected void initialize() {
 		driveTrain.resetEncoders();
 
-		curLeftDistance = driveTrain.getLeftDistance();
-		curRightDistance = driveTrain.getRightDistance();
+		curLeftDistance = driveTrain.getLeftInches();
+		curRightDistance = driveTrain.getRightInches();
 
     	tAngle = driveTrain.getYaw();
 
@@ -61,8 +61,8 @@ public class A_PositionMove extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 
-		curLeftDistance = driveTrain.getLeftDistance();
-		curRightDistance = driveTrain.getRightDistance();
+		curLeftDistance = driveTrain.getLeftInches();
+		curRightDistance = driveTrain.getRightInches();
 		tAngle = driveTrain.getYaw();
     	error = 0 - tAngle;
     	differenceError = error - lastError;

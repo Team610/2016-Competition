@@ -1,6 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,11 +13,15 @@ public class D_SensorReadings extends Command {
 
 	
 	private DriveTrain driveTrain;
+	private NavX navx;
+
+	 
 	
     public D_SensorReadings() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	driveTrain = DriveTrain.getInstance();
+    	navx = NavX.getInstance();
     	
     }
 
@@ -27,9 +32,10 @@ public class D_SensorReadings extends Command {
 
     // Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-    	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftDistance());
-    	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightDistance());
-    	SmartDashboard.putNumber("Gyro: ", driveTrain.getYaw());
+    	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftInches());
+    	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightInches());
+    	SmartDashboard.putNumber("Gyro from NavX: ", navx.getAngle());
+    	
     	
     }
 
