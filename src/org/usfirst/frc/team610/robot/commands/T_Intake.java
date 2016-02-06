@@ -5,6 +5,7 @@ import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class T_Intake extends Command {
 	Intake intake;
 	OI oi;
+	double n = 0;
     public T_Intake() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -29,9 +31,18 @@ public class T_Intake extends Command {
     	
     	//Outtake
     	
+    	
     	intake.setBothRollers(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
     	intake.setIntakePivot(oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_Y));
-    	
+    	if(oi.getDriver().getRawButton(InputConstants.BTN_L2)){
+    		n+=0.05;
+    	}
+    	if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
+    		
+    		n-=0.05;
+    	}
+    	SmartDashboard.putNumber("n value of intake servo", n);
+    	intake.setIntakeServos(n);
     	
     }
 

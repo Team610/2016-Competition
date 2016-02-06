@@ -53,10 +53,11 @@ public class Intake extends Subsystem {
 	public void setIntakePivot(double v){
 		intakePivot.set(v);
 	}
-	private void setIntakeServos(double value) {
+	public void setIntakeServos(double value) {
 		leftFeeder.set(value);
 		rightFeeder.set(value);
 	}
+	
 	//Flip in Code or Electrically?
 	public void setBothRollers(double v){
 		setTopRoller(v);
