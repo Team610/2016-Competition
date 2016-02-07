@@ -3,6 +3,7 @@ package org.usfirst.frc.team610.robot.subsystems;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -16,7 +17,9 @@ public class Intake extends Subsystem {
 	private static Intake instance;
 	Victor topRoller, botRoller, intakePivot;
 	Servo leftFeeder, rightFeeder;
-	servoPosition curServoPos;
+	public servoPosition flipperServoPos;
+	public intakeState curIntakeState;
+	AnalogPotentiometer intakePot;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -34,29 +37,46 @@ public class Intake extends Subsystem {
 		leftFeeder = new Servo(ElectricalConstants.INTAKE_FEEDER_LEFTSERVO);
 		rightFeeder = new Servo(ElectricalConstants.INTAKE_FEEDER_RIGHTSERVO);
 		intakePivot = new Victor(ElectricalConstants.INTAKE_PIVOT);
+		intakePot = new AnalogPotentiometer(ElectricalConstants.INTAKE_POT);
 
 	}
-
-	enum servoPosition {
-		UP, DOWN
+	
+	public double getPot(){
+		return intakePot.get();
 	}
-	public void setIntakePos(servoPosition s) {
-		if (s == servoPosition.DOWN) {
-			setIntakeServos(Constants.INTAKE_SERVO_DOWN);
-		} else if (s == servoPosition.UP) {
-			setIntakeServos(Constants.INTAKE_SERVO_UP);
+	
+	public enum intakeState{
+		INTAKING, SHOOTING
+	}
+
+	public enum servoPosition {
+		OUT, IN
+	}
+	public void setPinballFlippers(servoPosition s) {
+		if (s == servoPosition.OUT) {
+			setIntakeServos(Constants.FLIPPER_SERVO_OUT);
+		} else if (s == servoPosition.IN) {
+			setIntakeServos(Constants.FLIPPER_SERVO_IN);
 			
 		}
-		curServoPos = s;
+		flipperServoPos = s;
 
 	}
 	public void setIntakePivot(double v){
 		intakePivot.set(v);
 	}
+	
+	
 	public void setIntakeServos(double value) {
 		leftFeeder.set(value);
 		rightFeeder.set(value);
 	}
+	
+	
+	
+	
+	
+	
 	
 	//Flip in Code or Electrically?
 	public void setBothRollers(double v){

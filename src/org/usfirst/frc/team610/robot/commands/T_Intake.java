@@ -1,11 +1,13 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
+import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
+import org.usfirst.frc.team610.robot.subsystems.Intake.servoPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -14,49 +16,91 @@ public class T_Intake extends Command {
 	Intake intake;
 	OI oi;
 	double n = 0;
-    public T_Intake() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	intake = Intake.getInstance();
-    	oi = OI.getInstance();
-    	 
-    }
+	boolean isShooting;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+	public T_Intake() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		intake = Intake.getInstance();
+		oi = OI.getInstance();
+		isShooting = false;
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	
-    	//Outtake
-    	
-    	
-    	intake.setBothRollers(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
-    	intake.setIntakePivot(oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_Y));
-    	if(oi.getDriver().getRawButton(InputConstants.BTN_L2)){
-    		n+=0.05;
-    	}
-    	if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
-    		
-    		n-=0.05;
-    	}
-    	SmartDashboard.putNumber("n value of intake servo", n);
-    	intake.setIntakeServos(n);
-    	
-    }
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		if (oi.getDriver().getRawButton(InputConstants.BTN_A)) {
+			intake.curIntakeState = intakeState.INTAKING;
+		}
+		if (oi.getDriver().getRawButton(InputConstants.BTN_B)) {
+			intake.curIntakeState = intakeState.SHOOTING;
+		}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+		// Intake in & Out
+
+		switch (intake.curIntakeState) {
+		case INTAKING:
+			if (Math.abs(intake.getPot() - Constants.INTAKE_POT_DOWN) < 0.5) {
+				if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
+					intake.setBothRollers(-0.2);
+				} else if (oi.getDriver().getRawButton(InputConstants.BTN_R2)) {
+					intake.setBothRollers(0.2);
+
+				} else {
+					intake.setBothRollers(0);
+				}
+			} else {
+				intake.setIntakePivot(-0.5);
+			}
+			break;
+		case SHOOTING:
+			if (Math.abs(intake.getPot() - Constants.INTAKE_POT_UP) < 0.5) {
+				intake.setBothRollers(0.8);
+				if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
+					intake.setPinballFlippers(servoPosition.OUT);
+				}
+				
+				
+					
+					
+					
+			} else {
+				intake.setIntakePivot(0.5);
+			}
+
+			// if()
+
+		}
+
+		// intake.setBothRollers(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
+		// intake.setIntakePivot(oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_Y));
+		// if(oi.getDriver().getRawButton(InputConstants.BTN_L2)){
+		// n+=0.05;
+		// }
+		// if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
+		//
+		// n-=0.05;
+		// }
+		// SmartDashboard.putNumber("n value of intake servo", n);
+		// intake.setIntakeServos(n);
+
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return false;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }
