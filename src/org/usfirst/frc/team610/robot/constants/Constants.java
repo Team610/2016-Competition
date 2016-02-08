@@ -10,5 +10,6 @@ public class Constants {
 	public static final double INTAKE_POT_DOWN = 0.0;
 	public static final double WINCH_SPEED_UP = 0.5;
 	public static final double ENC_TOP_HANG = 1868;
+	public static final double ENC_TOP_FINAL = 300;
 	
 }
