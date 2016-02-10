@@ -3,6 +3,7 @@ package org.usfirst.frc.team610.robot.commands;
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
 import org.usfirst.frc.team610.robot.subsystems.Intake.servoPosition;
@@ -16,6 +17,8 @@ public class T_Intake extends Command {
 	Intake intake;
 	OI oi;
 	double n = 0;
+	double intakePosError;
+	double intakePosKp = 0.01;
 	boolean isShooting;
 
 	public T_Intake() {
@@ -40,41 +43,18 @@ public class T_Intake extends Command {
 			intake.curIntakeState = intakeState.SHOOTING;
 		}
 
-		// Intake in & Out
-
 		switch (intake.curIntakeState) {
 		case INTAKING:
-			if (Math.abs(intake.getPot() - Constants.INTAKE_POT_DOWN) < 0.5) {
-				if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
-					intake.setBothRollers(-0.2);
-				} else if (oi.getDriver().getRawButton(InputConstants.BTN_R2)) {
-					intake.setBothRollers(0.2);
-
-				} else {
-					intake.setBothRollers(0);
-				}
-			} else {
-				intake.setIntakePivot(-0.5);
+			if(Math.abs(intake.getPot() - Constants.INTAKE_POT_DOWN) != 0)
+			{
+				intakePosError = intake.getPot() - Constants.INTAKE_POT_DOWN;
+				intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
 			}
 			break;
 		case SHOOTING:
-			if (Math.abs(intake.getPot() - Constants.INTAKE_POT_UP) < 0.5) {
-				intake.setBothRollers(0.8);
-				if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
-					intake.setPinballFlippers(servoPosition.OUT);
-				}
-				
-				
-					
-					
-					
-			} else {
-				intake.setIntakePivot(0.5);
-			}
-
-			// if()
-
+			//shoot
 		}
+			
 
 		// intake.setBothRollers(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
 		// intake.setIntakePivot(oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_Y));
