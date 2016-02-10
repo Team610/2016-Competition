@@ -45,13 +45,22 @@ public class T_Intake extends Command {
 
 		switch (intake.curIntakeState) {
 		case INTAKING:
-			if(Math.abs(intake.getPot() - Constants.INTAKE_POT_DOWN) != 0)
-			{
-				intakePosError = intake.getPot() - Constants.INTAKE_POT_DOWN;
-				intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
-			}
+			//Set intake down 
+			intakePosError = intake.getPot() - Constants.INTAKE_POT_DOWN;
+			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
+			
+			
 			break;
 		case SHOOTING:
+			//Set intake up
+			intakePosError = intake.getPot() - Constants.INTAKE_POT_UP;
+			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
+			
+			if(Math.abs(intakePosError) < 0.01){
+				isShooting = true;
+			} else {
+				isShooting = false;
+			}
 			//shoot
 		}
 			
@@ -66,7 +75,7 @@ public class T_Intake extends Command {
 		// n-=0.05;
 		// }
 		// SmartDashboard.putNumber("n value of intake servo", n);
-		// intake.setIntakeServos(n);test
+		// intake.setIntakeServos(n);
 
 	}
 

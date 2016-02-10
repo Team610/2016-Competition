@@ -4,6 +4,7 @@ import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,11 +16,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
 
 	private static Intake instance;
-	Victor topRoller, botRoller, intakePivot;
-	Servo leftFeeder, rightFeeder;
+	private Victor topRoller, botRoller, intakePivot;
+	private Servo leftFeeder, rightFeeder;
 	public servoPosition flipperServoPos;
 	public intakeState curIntakeState;
 	AnalogPotentiometer intakePot;
+	static Counter optCounter;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -38,6 +40,10 @@ public class Intake extends Subsystem {
 		rightFeeder = new Servo(ElectricalConstants.INTAKE_FEEDER_RIGHTSERVO);
 		intakePivot = new Victor(ElectricalConstants.INTAKE_PIVOT);
 		intakePot = new AnalogPotentiometer(ElectricalConstants.INTAKE_POT);
+		optCounter = new Counter(ElectricalConstants.OPTICAL);
+		optCounter.setMaxPeriod(5);
+		optCounter.setSemiPeriodMode(true);
+		optCounter.reset();
 
 	}
 	
@@ -73,11 +79,6 @@ public class Intake extends Subsystem {
 	}
 	
 	
-	
-	
-	
-	
-	
 	//Flip in Code or Electrically?
 	public void setBothRollers(double v){
 		setTopRoller(v);
@@ -89,6 +90,11 @@ public class Intake extends Subsystem {
 	}
 	public void setBotRoller(double v){
 		botRoller.set(v);
+	}
+	
+	public double getRPM(){
+//		Need to find diameter of wheel
+		return (2.5/optCounter.getPeriod());
 	}
 
 	public void initDefaultCommand() {
