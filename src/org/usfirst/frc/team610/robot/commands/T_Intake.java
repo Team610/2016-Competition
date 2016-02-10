@@ -66,7 +66,7 @@ public class T_Intake extends Command {
 		// n-=0.05;
 		// }
 		// SmartDashboard.putNumber("n value of intake servo", n);
-		// intake.setIntakeServos(n);
+		// intake.setIntakeServos(n);test
 
 	}
 
