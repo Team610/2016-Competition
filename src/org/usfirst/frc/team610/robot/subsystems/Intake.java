@@ -60,10 +60,11 @@ public class Intake extends Subsystem {
 	}
 	public void setPinballFlippers(servoPosition s) {
 		if (s == servoPosition.OUT) {
-			setIntakeServos(Constants.FLIPPER_SERVO_OUT);
+			setRightServo(Constants.FLIPPER_SERVO_OUTA);
+			setLeftServo(Constants.FLIPPER_SERVO_OUTB);
 		} else if (s == servoPosition.IN) {
-			setIntakeServos(Constants.FLIPPER_SERVO_IN);
-			
+			setRightServo(Constants.FLIPPER_SERVO_INA);
+			setLeftServo(Constants.FLIPPER_SERVO_INB);
 		}
 		flipperServoPos = s;
 
@@ -73,9 +74,17 @@ public class Intake extends Subsystem {
 	}
 	
 	
-	public void setIntakeServos(double value) {
+	public void setServos(double value) {
 		leftFeeder.set(value);
 		rightFeeder.set(value);
+	}
+	
+	public void setRightServo(double value){
+		rightFeeder.set(value);
+	}
+	
+	public void setLeftServo(double value){
+		leftFeeder.set(value);
 	}
 	
 	
@@ -94,9 +103,14 @@ public class Intake extends Subsystem {
 	
 	public double getRPM(){
 //		Need to find diameter of wheel
-		return (2.5/optCounter.getPeriod());
+		return (6.28/optCounter.getPeriod());
 	}
-
+	
+	public double getPower(){
+		//Temp, need to find RPM to power
+		return getRPM() * 20;
+	}
+	
 	public void initDefaultCommand() {
 
 	}

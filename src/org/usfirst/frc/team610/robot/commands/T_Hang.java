@@ -39,13 +39,13 @@ public class T_Hang extends Command {
 	protected void execute() {
 		 hanger.setWinches(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
 		 //
-		 if(oi.getDriver().getRawButton(InputConstants.BTN_A)){
+		 if(oi.getOperator().getRawButton(InputConstants.BTN_A)){
 		 hanger.setRatchet(servoPosition.LOCKED);
 		 }
-		 if(oi.getDriver().getRawButton(InputConstants.BTN_B)){
+		 if(oi.getOperator().getRawButton(InputConstants.BTN_B)){
 		 hanger.setRatchet(servoPosition.UNLOCKED);
 		 }
-		if (oi.getDriver().getRawButton(InputConstants.BTN_Y)) {
+		if (oi.getOperator().getRawButton(InputConstants.BTN_Y) && oi.getOperator().getRawButton(InputConstants.BTN_R1)) {
 			isHanging = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
@@ -66,7 +66,7 @@ public class T_Hang extends Command {
 				 if (Math.abs(hanger.getEnc() - Constants.ENC_TOP_HANG) > 50)
 				 {
 				 System.out.println("Winching Up");
-				 hanger.setWinches(-0.70);
+				 hanger.setWinches(-0.75);
 				 } else {
 				 hanger.setWinches(0);
 				 System.out.println("DONE");
@@ -74,7 +74,7 @@ public class T_Hang extends Command {
 				
 				 }
 			}
-			if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
+			if(oi.getOperator().getRawButton(InputConstants.BTN_X)){
 				isXPressed = true;
 			}
 			

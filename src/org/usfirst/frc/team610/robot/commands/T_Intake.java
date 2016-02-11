@@ -20,6 +20,14 @@ public class T_Intake extends Command {
 	double intakePosError;
 	double intakePosKp = 0.01;
 	boolean isShooting;
+	double rpmError = 0;
+	boolean isR1Pressed = false;
+	boolean isR2Pressed = false;
+	boolean isL1Pressed = false;
+	boolean isL2Pressed = false;
+	boolean isDUpPressed = false;
+	boolean isDDownPressed = false;
+	int pov;
 
 	public T_Intake() {
 		// Use requires() here to declare subsystem dependencies
@@ -36,11 +44,20 @@ public class T_Intake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (oi.getDriver().getRawButton(InputConstants.BTN_A)) {
+		
+		pov = oi.getOperator().getPOV();
+		
+		if ((pov == 0 || pov == 325 || pov == 45) && !isDUpPressed) {
 			intake.curIntakeState = intakeState.INTAKING;
-		}
-		if (oi.getDriver().getRawButton(InputConstants.BTN_B)) {
+			isDUpPressed = true;
+		} else if ((pov == 180 || pov == 135 || pov == 225) && !isDDownPressed) {
 			intake.curIntakeState = intakeState.SHOOTING;
+			isDDownPressed = true;
+		}
+		
+		if(pov == -1){
+			isDDownPressed = false;
+			isDUpPressed = false;
 		}
 
 		switch (intake.curIntakeState) {
@@ -49,6 +66,16 @@ public class T_Intake extends Command {
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_DOWN;
 			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
 			
+			//Hold R2 to intake
+			if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
+				intake.setBothRollers(0.75);
+			} 
+			//Hold L2 to outtake									
+			else if (oi.getDriver().getRawButton(InputConstants.BTN_L2)){
+				intake.setBothRollers(-0.75);
+			} else {
+				intake.setBothRollers(0);
+			}
 			
 			break;
 		case SHOOTING:
@@ -61,7 +88,37 @@ public class T_Intake extends Command {
 			} else {
 				isShooting = false;
 			}
-			//shoot
+			
+			//PID for 
+			rpmError = Constants.INTAKE_SHOOT_SPEED - intake.getRPM();
+			
+			if(oi.getDriver().getRawButton(InputConstants.BTN_L1)){
+				isL1Pressed = true;
+				isR1Pressed = false;
+			}
+			if(oi.getDriver().getRawButton(InputConstants.BTN_R1)){
+				isL1Pressed = false;
+				isR1Pressed = true;
+			}
+			
+			//Press L1 for shooting
+			if(isL1Pressed){
+				intake.setTopRoller(intake.getPower() + rpmError * PIDConstants.INTAKE_SHOOT_Kp);
+			} 
+			//Press R1 for outtake
+			else if (isR1Pressed){
+				intake.setTopRoller(0.75);
+			}
+			
+			//Press X to shoot
+			if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
+				intake.setLeftServo(Constants.FLIPPER_SERVO_OUTA);
+				intake.setRightServo(Constants.FLIPPER_SERVO_OUTB);
+			} else {
+				intake.setLeftServo(Constants.FLIPPER_SERVO_INA);
+				intake.setRightServo(Constants.FLIPPER_SERVO_INB);
+			}
+			
 		}
 			
 
