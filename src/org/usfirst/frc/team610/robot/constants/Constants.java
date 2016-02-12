@@ -15,6 +15,8 @@ public class Constants {
 	public static final double ENC_TOP_HANG = 1868;
 	public static final double ENC_TOP_FINAL = 300;
 	public static final double INTAKE_SHOOT_SPEED = 2000;
+	public static final double SHOOTER_TOP = 2000; //change please
+	public static final double SHOOTER_BOT = 2000; //change please
 //	public static final double INTAKE_SHOOT_OUTA = 0.5;
 //	public static final double INTAKE_SHOOT_INA = 0.2;
 //	public static final double INTAKE_SHOOT_OUTB = 0.5;
