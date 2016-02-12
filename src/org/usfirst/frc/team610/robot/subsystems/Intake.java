@@ -41,6 +41,7 @@ public class Intake extends Subsystem {
 		intakePivot = new Victor(ElectricalConstants.INTAKE_PIVOT);
 		intakePot = new AnalogPotentiometer(ElectricalConstants.INTAKE_POT);
 		optCounter = new Counter(ElectricalConstants.OPTICAL);
+		curIntakeState = intakeState.INTAKING;
 		optCounter.setMaxPeriod(5);
 		optCounter.setSemiPeriodMode(true);
 		optCounter.reset();

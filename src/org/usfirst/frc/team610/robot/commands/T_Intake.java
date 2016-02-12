@@ -9,6 +9,7 @@ import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
 import org.usfirst.frc.team610.robot.subsystems.Intake.servoPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -60,66 +61,103 @@ public class T_Intake extends Command {
 			isDUpPressed = false;
 		}
 
+		//Hold R2 to intake
+		
+		
+		SmartDashboard.putNumber("Pot Value: ", intake.getPot());
+		
 		switch (intake.curIntakeState) {
 		case INTAKING:
 			//Set intake down 
-			intakePosError = intake.getPot() - Constants.INTAKE_POT_DOWN;
-			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
-			
-			//Hold R2 to intake
+			intakePosError = intake.getPot() - Constants.INTAKE_POT_INTAKE;
+			if(intake.getPot() > Constants.INTAKE_POT_DOWN)
+			{
+				intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
+			}
+			else
+			{
+				intake.setIntakePivot(0);
+			}
 			if(oi.getDriver().getRawButton(InputConstants.BTN_R2)){
-				intake.setBothRollers(0.75);
+				intake.setBothRollers(0.65);
 			} 
 			//Hold L2 to outtake									
 			else if (oi.getDriver().getRawButton(InputConstants.BTN_L2)){
-				intake.setBothRollers(-0.75);
+				intake.setBothRollers(-0.65);
 			} else {
 				intake.setBothRollers(0);
 			}
 			
+			SmartDashboard.putNumber("Error", intakePosError);
+			SmartDashboard.putNumber("MotorSpeed", intakePosError*PIDConstants.INTAKE_POS_Kp);
+			SmartDashboard.putString("Position", "INtaking/ INTAKE DOWN");
+
 			break;
 		case SHOOTING:
-			//Set intake up
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_UP;
-			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
-			
-			if(Math.abs(intakePosError) < 0.01){
-				isShooting = true;
+			if(intake.getPot() < Constants.INTAKE_POT_UP)
+			{
+				intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
+				SmartDashboard.putString("Position", "Shooting Pos/ INTAKE UP");
+			}
+			else
+			{
+				intake.setIntakePivot(0);
+			}
+			 
+			//Hold L2 to outtake									
+			if (oi.getDriver().getRawButton(InputConstants.BTN_L2)){
+				intake.setBothRollers(-0.75);
 			} else {
-				isShooting = false;
+				intake.setBothRollers(0);
 			}
+			SmartDashboard.putNumber("Error", intakePosError);
+			SmartDashboard.putNumber("MotorSpeed", intakePosError*PIDConstants.INTAKE_POS_Kp);
 			
-			//PID for 
-			rpmError = Constants.INTAKE_SHOOT_SPEED - intake.getRPM();
+			break;
 			
-			if(oi.getDriver().getRawButton(InputConstants.BTN_L1)){
-				isL1Pressed = true;
-				isR1Pressed = false;
-			}
-			if(oi.getDriver().getRawButton(InputConstants.BTN_R1)){
-				isL1Pressed = false;
-				isR1Pressed = true;
-			}
 			
-			//Press L1 for shooting
-			if(isL1Pressed){
-				intake.setTopRoller(intake.getPower() + rpmError * PIDConstants.INTAKE_SHOOT_Kp);
-			} 
-			//Press R1 for outtake
-			else if (isR1Pressed){
-				intake.setTopRoller(0.75);
-			}
-			
-			//Press X to shoot
-			if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
-				intake.setLeftServo(Constants.FLIPPER_SERVO_OUTA);
-				intake.setRightServo(Constants.FLIPPER_SERVO_OUTB);
-			} else {
-				intake.setLeftServo(Constants.FLIPPER_SERVO_INA);
-				intake.setRightServo(Constants.FLIPPER_SERVO_INB);
-			}
-			
+//			//Set intake up
+//			intakePosError = intake.getPot() - Constants.INTAKE_POT_UP;
+//			intake.setIntakePivot(intakePosError*PIDConstants.INTAKE_POS_Kp);
+//			
+//			if(Math.abs(intakePosError) < 0.01){
+//				isShooting = true;
+//			} else {
+//				isShooting = false;
+//			}
+//			
+//			//PID for 
+//			rpmError = Constants.INTAKE_SHOOT_SPEED - intake.getRPM();
+//			
+//			if(oi.getDriver().getRawButton(InputConstants.BTN_L1)){
+//				isL1Pressed = true;
+//				isR1Pressed = false;
+//			}
+//			if(oi.getDriver().getRawButton(InputConstants.BTN_R1)){
+//				isL1Pressed = false;
+//				isR1Pressed = true;
+//			}
+//			
+//			//Press L1 for shooting
+//			if(isL1Pressed){
+//				intake.setTopRoller(intake.getPower() + rpmError * PIDConstants.INTAKE_SHOOT_Kp);
+//			} 
+//			//Press R1 for outtake
+//			else if (isR1Pressed){
+//				intake.setTopRoller(0.75);
+//			}
+//			
+			//Press X to shoot	
 		}
+		if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
+			intake.setLeftServo(0);
+			intake.setRightServo(1);
+		} else {
+			intake.setLeftServo(0.5);
+			intake.setRightServo(0.5);
+		}
+		
 			
 
 		// intake.setBothRollers(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));

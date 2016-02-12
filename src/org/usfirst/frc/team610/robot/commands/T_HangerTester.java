@@ -1,7 +1,10 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
+import org.usfirst.frc.team610.robot.constants.Constants;
+import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.subsystems.Hanger;
+import org.usfirst.frc.team610.robot.subsystems.Hanger.servoPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,13 +46,16 @@ public class T_HangerTester extends Command {
 	//	speed = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_Y);
 		
 //		
-//		if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
-//			hanger.setRatchet(0.3);
-//		}
-//		
-//		if(oi.getDriver().getRawButton(InputConstants.BTN_Y)){
-//			hanger.setRatchet(0.368);
-//		}
+		
+		hanger.setWinches(oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y));
+		
+		if(oi.getDriver().getRawButton(InputConstants.BTN_X)){
+			hanger.setRatchet(servoPosition.UNLOCKED);
+		}
+		
+		else if(oi.getDriver().getRawButton(InputConstants.BTN_Y)){
+			hanger.setRatchet(servoPosition.LOCKED);
+		}
 //		if(oi.getDriver().getRawButton(InputConstants.BTN_B)){
 //			hanger.resetEncoder();
 //		}
@@ -63,7 +69,7 @@ public class T_HangerTester extends Command {
 //		hanger.setRatchet(ratchetValue);
 	
 		
-		hanger.setWinches(speed);
+//		hanger.setWinches(speed);
 
 	}
 
