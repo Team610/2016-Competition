@@ -47,7 +47,7 @@ public class Intake extends Subsystem {
 		optTopCounter = new Counter(ElectricalConstants.OPTICAL_TOP);
 		optBotCounter = new Counter(ElectricalConstants.OPTICAL_BOTTOM);
 
-		curIntakeState = intakeState.SHOOTING;
+		curIntakeState = intakeState.INTAKING;
 		optTopCounter.setMaxPeriod(5);
 		optTopCounter.setSemiPeriodMode(true);
 		optTopCounter.reset();
@@ -73,7 +73,7 @@ public class Intake extends Subsystem {
 	}
 	
 	public enum intakeState{
-		INTAKING, SHOOTING
+		INTAKING, SHOOTING, DEAD
 	}
 
 	public enum servoPosition {

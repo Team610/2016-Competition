@@ -8,6 +8,7 @@ import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -17,13 +18,16 @@ public class T_KajDrive extends Command {
 	private DriveTrain driveTrain;
 	private OI oi;
 	private NavX navx;
+	double counter;
 //	Talon leftTalon;
 
 	public T_KajDrive() {
 
 		driveTrain = DriveTrain.getInstance();
 //		navx = NavX.getInstance();
+		counter =0;
 		oi = OI.getInstance();
+		
 
 	}
 
@@ -36,6 +40,9 @@ public class T_KajDrive extends Command {
 		double x, y, leftSpeed, rightSpeed;
 		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
 		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
+ 
+		SmartDashboard.putNumber("drivetrain x", x);
+		SmartDashboard.putNumber("drivetrain y", y);
 
 		leftSpeed = y - x;
 		rightSpeed = y + x;

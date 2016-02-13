@@ -1,6 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,6 +15,7 @@ public class D_SensorReadings extends Command {
 	
 	private DriveTrain driveTrain;
 	private NavX navx;
+	private Intake intake;
 
 	 
 	
@@ -22,6 +24,7 @@ public class D_SensorReadings extends Command {
         // eg. requires(chassis);
     	driveTrain = DriveTrain.getInstance();
     	navx = NavX.getInstance();
+    	intake = Intake.getInstance();
     	
     }
 
@@ -35,6 +38,7 @@ public class D_SensorReadings extends Command {
     	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftInches());
     	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightInches());
     	SmartDashboard.putNumber("Gyro from NavX: ", navx.getAngle());
+    	SmartDashboard.putNumber("Window Pot", intake.getPot());
     	
     }
 

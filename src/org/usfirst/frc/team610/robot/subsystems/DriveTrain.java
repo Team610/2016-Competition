@@ -38,9 +38,13 @@ public class DriveTrain extends Subsystem {
 	private DriveTrain(){
 		navx = NavX.getInstance();
 		leftFront = new Victor(ElectricalConstants.VICTOR_LEFT_FRONT);
+		leftFront.enableDeadbandElimination(true);
 		leftBack = new Victor(ElectricalConstants.VICTOR_LEFT_BACK);
+		leftBack.enableDeadbandElimination(true);
 		rightFront = new Victor(ElectricalConstants.VICTOR_RIGHT_FRONT);
+		rightFront.enableDeadbandElimination(true);
 		rightBack = new Victor(ElectricalConstants.VICTOR_RIGHT_BACK);
+		rightBack.enableDeadbandElimination(true);
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
 

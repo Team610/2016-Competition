@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();
-		hangerTest = new T_HangerTester();
+	//	hangerTest = new T_HangerTester();
 	}
 
 	public void disabledInit() {
@@ -42,8 +42,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-//		teleop.start();
-		hangerTest.start();
+		teleop.start();
+	//	hangerTest.start();
 		sensor.start();
 //		LiveWindow.run();
 	}
