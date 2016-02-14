@@ -28,7 +28,7 @@ public class ElectricalConstants {
 	public static final int ENCODER_LIFT_A = 4;//CHANGE
 	public static final int ENCODER_LIFT_B = 5;//CHANGE
 
-	public static final int OPTICAL_BOTTOM = 6; //1 OR 2
-	public static final int OPTICAL_TOP = 7;
+	public static final int OPTICAL_BOTTOM = 7; //1 OR 2
+	public static final int OPTICAL_TOP = 6;
 	
 }

@@ -10,9 +10,10 @@ public class PIDConstants {
 	public static final double ENCODER_Kd = 0.00;
 //	public static final double ENCODER_Ki = 0.01;
 
-	public static final double INTAKE_POS_Kp = 2;
-	public static final double INTAKE_SHOOT_Kp = 0.1;
+	public static final double INTAKE_POS_Kp = 10;
+	public static final double INTAKE_SHOOT_Kp = 0.00025;
 	public static final double INTAKE_SHOOT_Kd = 0.1;
+	
 	
 	
 }

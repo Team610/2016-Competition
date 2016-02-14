@@ -40,9 +40,7 @@ public class T_KajDrive extends Command {
 		double x, y, leftSpeed, rightSpeed;
 		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
 		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
- 
-		SmartDashboard.putNumber("drivetrain x", x);
-		SmartDashboard.putNumber("drivetrain y", y);
+
 
 		leftSpeed = y - x;
 		rightSpeed = y + x;

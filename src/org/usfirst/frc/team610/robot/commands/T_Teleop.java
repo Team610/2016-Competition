@@ -9,13 +9,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class T_Teleop extends CommandGroup {
 	
     public  T_Teleop() {
-    	SmartDashboard.putString("hi", "teleop working");
     	addParallel(new T_KajDrive());
-    	//addParallel(new T_Hang());
-    	SmartDashboard.putString("test", "at kaj");
-    	addParallel(new T_Intake());
-    	SmartDashboard.putString("test2", "at intake");
-    	
+    	addParallel(new T_Hang());
+//    	addParallel(new T_Intake());
+    	addParallel(new D_SensorReadings());
+    	addParallel(new T_ShooterTest());
         
     }
 }

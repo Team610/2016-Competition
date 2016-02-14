@@ -1,47 +1,50 @@
 package org.usfirst.frc.team610.robot.commands;
 
-import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
-import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class D_SensorReadings extends Command {
-
+public class T_ShooterTest extends Command {
 	
-	private DriveTrain driveTrain;
-	private NavX navx;
 	private Intake intake;
-
-	 
+	double botMotorSpeed;
+	double topMotorSpeed;
+	double tSpeed;
+	double topSpeedError;
+	double botSpeedError;
 	
-    public D_SensorReadings() {
+    public T_ShooterTest() {
+    	intake = Intake.getInstance();
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	driveTrain = DriveTrain.getInstance();
-    	navx = NavX.getInstance();
-    	intake = Intake.getInstance();
-    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	driveTrain.resetSensors();
+    	tSpeed = 3500;
     }
 
     // Called repeatedly when this Command is scheduled to run
-	protected void execute() {
-//    	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftInches());
-//    	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightInches());
-//    	SmartDashboard.putNumber("Gyro from NavX: ", navx.getAngle());
-//    	SmartDashboard.putNumber("Window Pot", intake.getPot());
-//    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
-		
-//    	
+    protected void execute() {
+    	botMotorSpeed = 0.00016 * tSpeed;
+    	topMotorSpeed = 0.00016 * tSpeed;
+    	
+    	topSpeedError = tSpeed - intake.getTopSpeed();
+    	botSpeedError = tSpeed - intake.getBotSpeed();
+    	
+    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
+    	SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
+    	
+    	intake.setTopRoller(topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+    	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
