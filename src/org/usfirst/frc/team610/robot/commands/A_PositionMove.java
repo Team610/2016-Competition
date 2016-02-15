@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class A_PositionMove extends Command {
 
-	//Distance
+	// Distance
 	DriveTrain driveTrain;
 	double tDistance;
 	int count = 0;
@@ -28,32 +28,33 @@ public class A_PositionMove extends Command {
 	double gyroRightSpeed;
 	double gyroLeftSpeed;
 	boolean isFinished = false;
-	
-	//Angles
+
+	// Angles
 	private double error;
 	private double lastError;
 	private double differenceError;
 	private double tAngle;
- double angle;
+	double angle;
+
 	public A_PositionMove(double distance) {
-		
+
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
 		curRightDistance = 0;
 		curLeftDistance = 0;
-		
-		angle = -1;
-		
+
+		angle = (Double) null;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 	}
-	public A_PositionMove(double distance, double angle){
+
+	public A_PositionMove(double distance, double angle) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
 		curRightDistance = 0;
-		curLeftDistance = 0; 
+		curLeftDistance = 0;
 		this.angle = angle;
 	}
 
@@ -64,7 +65,7 @@ public class A_PositionMove extends Command {
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
 
-    	tAngle = driveTrain.getYaw();
+		tAngle = driveTrain.getYaw();
 
 	}
 
@@ -73,21 +74,21 @@ public class A_PositionMove extends Command {
 		SmartDashboard.putNumber("GyroNew", driveTrain.getYaw());
 		SmartDashboard.putNumber("LeftEncoderNew", driveTrain.getLeftInches());
 		SmartDashboard.putNumber("RightEncoderNew", driveTrain.getRightInches());
-		
-		if(angle != -1){
-			tAngle = angle;
-		}else{
-			tAngle = driveTrain.getYaw();
 
+		if (angle == (Double) null) {
+			tAngle = 0;
+		} else {
+			tAngle = angle;
 		}
 
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
-    	error =0-tAngle;
-    	differenceError = error - lastError;
-    	
-    	gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
-    	gyroRightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+		
+		error = tAngle - driveTrain.getYaw();
+		differenceError = error - lastError;
+
+		gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+		gyroRightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
 
 		encLeftError = tDistance - curLeftDistance;
 		encRightError = tDistance - curRightDistance;
@@ -98,30 +99,28 @@ public class A_PositionMove extends Command {
 		rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
 		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
 
-		
 		rightSpeed += gyroRightSpeed;
 		leftSpeed -= gyroLeftSpeed;
-		
+
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
-		
-		if(Math.abs(encLeftError) < 2 && Math.abs(encRightError) < 1){
-			count++;
-		
-		if(count > 25){
-			driveTrain.setLeft(0);
 
-			driveTrain.setRight(0);
-			isFinished = true;
+		if (Math.abs(encLeftError) < 2 && Math.abs(encRightError) < 1) {
+			count++;
+
+			if (count > 25) {
+				driveTrain.setLeft(0);
+
+				driveTrain.setRight(0);
+				isFinished = true;
+			}
 		}
-		}
-		
-		
-		
-//		
-//		
-//		lastEncRightError = encRightError;
-//		lastEncLeftError = encLeftError;
+		lastError = error;
+
+		//
+		//
+		// lastEncRightError = encRightError;
+		// lastEncLeftError = encLeftError;
 
 	}
 
