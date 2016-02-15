@@ -73,15 +73,15 @@ public class A_PositionMove extends Command {
 		encLeftError = tDistance - curLeftDistance;
 		encRightError = tDistance - curRightDistance;
 
-//		leftErrorDistance = lastEncLeftError - encLeftError;
-//		rightErrorDistance = encRightError - lastEncRightError;
+		leftErrorDistance = lastEncLeftError - encLeftError;
+		rightErrorDistance = encRightError - lastEncRightError;
 
-//		rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
-//		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
+		rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
+		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
 
-//		
-//		rightSpeed += gyroRightSpeed;
-//		leftSpeed -= gyroLeftSpeed;
+		
+		rightSpeed += gyroRightSpeed;
+		leftSpeed -= gyroLeftSpeed;
 		
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);

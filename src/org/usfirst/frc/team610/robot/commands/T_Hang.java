@@ -53,7 +53,7 @@ public class T_Hang extends Command {
 		// Press A to lock ratchet
 		if (oi.getOperator().getRawButton(InputConstants.BTN_A)) {
 			hanger.setRatchet(servoPosition.LOCKED);
-			intake.curIntakeState = intakeState.SHOOTING;
+			intake.curIntakeState = intakeState.POP;
 		}
 		// Press B to lock ratchet
 		if (oi.getOperator().getRawButton(InputConstants.BTN_B)) {

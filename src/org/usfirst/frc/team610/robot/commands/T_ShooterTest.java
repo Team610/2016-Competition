@@ -32,6 +32,9 @@ public class T_ShooterTest extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    
+    	
+    	
     	botMotorSpeed = 0.00016 * tSpeed;
     	topMotorSpeed = 0.00016 * tSpeed;
     	

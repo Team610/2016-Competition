@@ -1,5 +1,6 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import org.omg.CORBA.ShortHolder;
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
@@ -37,9 +38,10 @@ public class T_Intake extends Command {
 	double outtakeSpeed = -0.65;
 	double outtakeBotSpeed = -.1;
 	int pov;
-	int deadCounter;
+	int deadCounter,shootCounter;
 	double botMotorSpeed;
 	double topMotorSpeed;
+	
 	double tSpeedBot;
 	double tSpeedTop;
 	double topSpeedError;
@@ -55,23 +57,24 @@ public class T_Intake extends Command {
 		readyToShoot = false;
 		speed = 0;
 		deadCounter = 0;
-		
+		tSpeedTop = -3500;
+		tSpeedBot = -4200;
+		botMotorSpeed = 0.0002 * tSpeedBot +0.0501;
+    	topMotorSpeed = 0.0002 * tSpeedTop+0.0501;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		tSpeedTop = 3500;
-		tSpeedBot = 3500;
-    	botMotorSpeed = 0.00016 * tSpeedBot;
-    	topMotorSpeed = 0.00016 * tSpeedTop;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 //		SmartDashboard.putNumber("intakePotShootConstant", intakePotShootConstant);
 //		intakePotShootConstant = SmartDashboard.getNumber("intakePotShootConstant");
+
+    	
 		
-		if(intake.curIntakeState == intakeState.SHOOTING){
+		if(intake.curIntakeState == intakeState.POP){
 			outtakeSpeed = -0.7;
 		} else {
 			outtakeSpeed = -0.65;
@@ -111,24 +114,34 @@ public class T_Intake extends Command {
 			isL1Pressed = false;
 		}
 
-		if(intake.curIntakeState == intakeState.SHOOTING){
+		if(intake.curIntakeState == intakeState.POP){
 			intake.setTopRoller(speed);
 			intake.setBotRoller(outtakeBotSpeed);
 		} else {
 			intake.setBothRollers(speed);
 		}
-		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
-			intake.setLeftServo(0);
-			intake.setRightServo(1);
-		} else {
-			intake.setLeftServo(0.5);
-			intake.setRightServo(0.5);
-		}
-
+//		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
+//			intake.setLeftServo(0);
+//			intake.setRightServo(1);
+//		} else {
+			
+//		}
+//
+//		
+//		
+//		
+		
+		
+		
+		
+		
+		
+		
+		
 		pov = oi.getOperator().getPOV();
 
 		if ((pov == 0 || pov == 45 || pov == 315) && !isDUpPressed) {
-			intake.curIntakeState = intakeState.SHOOTING;
+			intake.curIntakeState = intakeState.POP;
 			isDUpPressed = true;
 		} else if ((pov == 180 || pov == 135 || pov == 225) && !isDDownPressed) {
 
@@ -144,6 +157,12 @@ public class T_Intake extends Command {
 			isDUpPressed = false;
 			isDRightPressed = false;
 		}
+		
+		
+		
+		
+		
+		
 		//
 		// // Hold R2 to intake
 		//
@@ -152,10 +171,11 @@ public class T_Intake extends Command {
 		switch (intake.curIntakeState) {
 		case INTAKING:
 			// // Set intake down
-
-			intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
-			
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_INTAKE;
+			intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
+			intake.setLeftServo(0.5);
+			intake.setRightServo(0.5);
+		
 			if(pov == 180 || pov == 135 || pov == 225){
 				deadCounter++;
 			}
@@ -163,50 +183,45 @@ public class T_Intake extends Command {
 				intake.curIntakeState = intakeState.DEAD;
 			}
 			
-			// if (intake.getPot() > Constants.INTAKE_POT_DOWN) {
-			// } else {
-			// intake.setIntakePivot(0);
-			// }
-			// if (oi.getDriver().getRawButton(InputConstants.BTN_R2)) {
-			// intake.setBothRollers(0.65);
-			// }
-			// // Hold L2 to outtake
-			// else if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
-			// intake.setBothRollers(-0.65);
-			// } else {
-			// intake.setBothRollers(0);
-			// }
-			//
-			// SmartDashboard.putNumber("WindowError", intakePosError);
-			// SmartDashboard.putNumber("WindowMotorSpeed", intakePosError *
-			// PIDConstants.INTAKE_POS_Kp);
+		
 			 SmartDashboard.putString("WindowPosition", "Intaking/ INTAKEDOWN");
 
 			break;
-		case SHOOTING:
+		case POP:
 
 			/*
 			 * 
 			 */
-			intakePosError = intake.getPot() - Constants.INTAKE_POT_UP;
+			
+			
+			intakePosError = intake.getPot() - Constants.INTAKE_POT_POP;
 
-			if (intake.getPot() < Constants.INTAKE_POT_UP) {
-				intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
-				SmartDashboard.putString("WindowPosition", "Shooting Pos/ INTAKE UP");
-				readyToShoot = true;
-			} else {
-				intake.setIntakePivot(0);
-				readyToShoot = false;
+			if(pov == 0 || pov == 315 || pov == 45){
+				shootCounter++;
+				
+			}
+			if(shootCounter > 25){
+				intake.curIntakeState = intakeState.SHOOTING;
 			}
 			
-	    	topSpeedError = tSpeedTop - intake.getTopSpeed();
-	    	botSpeedError = tSpeedBot - intake.getBotSpeed();
-	    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
-	    	SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
-			if (oi.getOperator().getRawButton(InputConstants.BTN_A) && readyToShoot) {
-		    	intake.setTopRoller(topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
-		    	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+			if (intake.getPot() < Constants.INTAKE_POT_POP) {
+				intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
+				SmartDashboard.putString("WindowPosition", "Shooting Pos/ INTAKE UP");
+			} else {
+				intake.setIntakePivot(0);
 			}
+			if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
+				intake.setLeftServo(0);
+				intake.setRightServo(1);
+			} else {
+				intake.setLeftServo(0.5);
+				intake.setRightServo(0.5);
+			}
+	    
+//			if (oi.getOperator().getRawButton(InputConstants.BTN_A) && readyToShoot) {
+//		    	intake.setTopRoller(topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+//		    	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+//			}
 
 	    	
 	    	
@@ -255,7 +270,46 @@ public class T_Intake extends Command {
 			deadCounter = 0;
 			break;
 
-		}
+		
+		case SHOOTING:
+			
+			shootCounter = 0;
+			intakePosError = intake.getPot() - Constants.INTAKE_POT_SHOOTING;
+			intake.setIntakePivot(intakePosError* PIDConstants.INTAKE_POS_Kp);
+			
+			topSpeedError = (tSpeedTop + intake.getTopSpeed());
+	    	botSpeedError = tSpeedBot + intake.getBotSpeed();
+	    	intake.setTopRoller(topMotorSpeed +topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+	    	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+
+	    	SmartDashboard.putNumber("topMotorSpeed", topMotorSpeed +topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+	    	SmartDashboard.putNumber("botMotorSpeed", botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
+	    	SmartDashboard.putNumber("topSpeedError", topSpeedError);
+	    	SmartDashboard.putNumber("botSpeedError", botSpeedError);
+	    	SmartDashboard.putNumber("topRPM", intake.getTopSpeed());
+	    	SmartDashboard.putNumber("botRPM", intake.getBotSpeed());
+	    	
+	    	if(Math.abs(topSpeedError) < 74 && Math.abs(botSpeedError) < 74){
+	    		readyToShoot = true;
+	    	}
+	    	
+	    	if(readyToShoot){
+	    		if (oi.getDriver().getRawButton(InputConstants.BTN_R2)) {
+	    			intake.setLeftServo(0);
+	    			intake.setRightServo(1);
+	    			readyToShoot = false;
+	    		} else{
+	    			intake.setLeftServo(0.5);
+	    			intake.setRightServo(0.5);
+	    		}
+	    		
+	    	}
+			
+			
+			
+			
+			
+		}	
 		
 		SmartDashboard.putNumber("Pot", intake.getPot());
 		// // //Set intake up

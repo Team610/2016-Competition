@@ -114,7 +114,7 @@ public class Intake extends Subsystem {
 	}
 
 	public enum intakeState {
-		INTAKING, SHOOTING, DEAD
+		INTAKING, POP, DEAD, SHOOTING
 	}
 
 	public enum servoPosition {
