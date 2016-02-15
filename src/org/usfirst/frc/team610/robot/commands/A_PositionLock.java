@@ -20,6 +20,7 @@ public class A_PositionLock extends Command {
 	private double tAngle;
 	private DriveTrain driveTrain;
 	private PIDController610 pidController;
+	double angle = 0;
 	
 	
 	
@@ -32,6 +33,12 @@ public class A_PositionLock extends Command {
     public A_PositionLock(int time){
     	driveTrain = DriveTrain.getInstance();
     	setTimeout(time);
+    	angle = -1;
+    }
+    public A_PositionLock(int time, double angle){
+    	driveTrain = DriveTrain.getInstance();
+    	setTimeout(time);
+    	this.angle  = angle;
     }
 
     // Called just before this Command runs the first time
@@ -42,32 +49,35 @@ public class A_PositionLock extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	tAngle = driveTrain.getYaw();
-    	error = 0 - tAngle;
+    	if(angle != -1){
+    		tAngle = angle;
+    	}else{
+        	tAngle = 0;
+
+    	}
+    	error = driveTrain.getYaw() - tAngle;
+    	SmartDashboard.putNumber("Error Pos Lock",error );
     	differenceError = error - lastError;
     	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
     	rightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
     	
-    	driveTrain.setLeft(-leftSpeed);
-    	driveTrain.setRight(rightSpeed);
+    	driveTrain.setLeft(leftSpeed);
+    	driveTrain.setRight(-rightSpeed);
     	
     	lastError = error;
     	
-    	SmartDashboard.putNumber("Left Speed: ", leftSpeed);
-    	SmartDashboard.putNumber("Right Speed: ", rightSpeed);
-    	SmartDashboard.putNumber("Error: ", error);
     
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(isTimedOut()){
-        	driveTrain.setLeft(0);
-        	driveTrain.setRight(0);
-
-        }
-        return isTimedOut();
+//        if(isTimedOut()){
+//        	driveTrain.setLeft(0);
+//        	driveTrain.setRight(0);
+//
+//        }
+        return false;
     }
 
     // Called once after isFinished returns true

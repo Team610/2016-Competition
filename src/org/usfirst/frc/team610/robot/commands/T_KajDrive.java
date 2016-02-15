@@ -68,7 +68,7 @@ public class T_KajDrive extends Command {
 		
 		pov = oi.getDriver().getPOV();
 
-		if (pov > -1) {
+		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
 			posLock = true;
 			driveTrain.resetEncoders();
 			isPovPressed = false;
@@ -89,7 +89,7 @@ public class T_KajDrive extends Command {
 //			intake.curIntakeState = intakeState.DEAD;
 //			isDRightPressed = true;
 //		}
-		SmartDashboard.putNumber("Pov", pov);
+		//SmartDashboard.putNumber("Pov", pov);
 		
 		
 		
@@ -146,9 +146,9 @@ public class T_KajDrive extends Command {
 			
 		}
 		
-		SmartDashboard.putBoolean("Lock", posLock);
-		SmartDashboard.putNumber("rightEnc", driveTrain.getRightInches());
-		SmartDashboard.putNumber("leftEnc", driveTrain.getLeftInches());
+//		SmartDashboard.putBoolean("Lock", posLock);
+//		SmartDashboard.putNumber("rightEnc", driveTrain.getRightInches());
+//		SmartDashboard.putNumber("leftEnc", driveTrain.getLeftInches());
 	}	
 
 	// Make this return true when this Command no longer needs to run execute()

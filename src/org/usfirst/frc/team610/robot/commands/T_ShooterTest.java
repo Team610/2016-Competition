@@ -40,9 +40,9 @@ public class T_ShooterTest extends Command {
     	
     	topSpeedError = tSpeed - intake.getTopSpeed();
     	botSpeedError = tSpeed - intake.getBotSpeed();
-    	
-    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
-    	SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
+//    	
+//    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
+//    	SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
     	
     	intake.setTopRoller(topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
     	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);

@@ -20,7 +20,7 @@ public class T_Hang extends Command {
 	private Intake intake;
 	private OI oi;
 	boolean isExtending, readyToPullUp, isXPressed;
-	boolean isL1Pressed;
+	boolean isSTARTPressed;
 	boolean manual;
 	int counter;
 	double joyValue;
@@ -41,7 +41,7 @@ public class T_Hang extends Command {
 		isExtending = false;
 		readyToPullUp = false;
 		isXPressed = false;
-		isL1Pressed = false;
+		isSTARTPressed = false;
 		manual = false;
 		hanger.resetEncoder();
 		counter = 0;
@@ -51,17 +51,17 @@ public class T_Hang extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// Press A to lock ratchet
-		if (oi.getOperator().getRawButton(InputConstants.BTN_A)) {
+		if (oi.getOperator().getRawButton(InputConstants.BTN_R2)) {
 			hanger.setRatchet(servoPosition.LOCKED);
 			intake.curIntakeState = intakeState.POP;
 		}
 		// Press B to lock ratchet
-		if (oi.getOperator().getRawButton(InputConstants.BTN_B)) {
+		if (oi.getOperator().getRawButton(InputConstants.BTN_BACK)) {
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
 		// Press Y and R1 to extend
-		if (oi.getOperator().getRawButton(InputConstants.BTN_Y)
+		if (oi.getOperator().getRawButton(InputConstants.BTN_L1)
 				&& oi.getOperator().getRawButton(InputConstants.BTN_R1)) {
 			isExtending = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
@@ -69,13 +69,13 @@ public class T_Hang extends Command {
 
 		// Press L1 to swap between manual and automatic
 
-		if (oi.getOperator().getRawButton(InputConstants.BTN_L1) && !isL1Pressed) {
-			isL1Pressed = true;
+		if (oi.getOperator().getRawButton(InputConstants.BTN_START) && !isSTARTPressed) {
+			isSTARTPressed = true;
 			manual = !manual;
 		}
 
-		if (!oi.getOperator().getRawButton(InputConstants.BTN_L1)) {
-			isL1Pressed = false;
+		if (!oi.getOperator().getRawButton(InputConstants.BTN_START)) {
+			isSTARTPressed = false;
 		}
 
 		SmartDashboard.putNumber("Enc Lift", hanger.getEnc());
