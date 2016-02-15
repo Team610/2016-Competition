@@ -35,6 +35,7 @@ public class T_Intake extends Command {
 	boolean isDUpPressed = false;
 	boolean isDDownPressed = false;
 	boolean isDRightPressed = false;
+	boolean isAPressed = false;
 	double outtakeSpeed = -0.65;
 	double outtakeBotSpeed = -.1;
 	int pov;
@@ -46,6 +47,9 @@ public class T_Intake extends Command {
 	double tSpeedTop;
 	double topSpeedError;
 	double botSpeedError;	
+	
+	double intakePosLastError = 0;
+	double intakePosSumError = 0;
 
 	public T_Intake() {
 		// Use requires() here to declare subsystem dependencies
@@ -57,8 +61,8 @@ public class T_Intake extends Command {
 		readyToShoot = false;
 		speed = 0;
 		deadCounter = 0;
-		tSpeedTop = -3500;
-		tSpeedBot = -4200;
+		tSpeedTop = Constants.SHOOTER_TOP; //-3500
+		tSpeedBot = Constants.SHOOTER_BOT; //-4200
 		botMotorSpeed = 0.0002 * tSpeedBot +0.0501;
     	topMotorSpeed = 0.0002 * tSpeedTop+0.0501;
 	}
@@ -71,7 +75,19 @@ public class T_Intake extends Command {
 	protected void execute() {
 //		SmartDashboard.putNumber("intakePotShootConstant", intakePotShootConstant);
 //		intakePotShootConstant = SmartDashboard.getNumber("intakePotShootConstant");
-
+		if(oi.getOperator().getRawButton(InputConstants.BTN_A)&&!isAPressed){
+			PIDConstants.update();
+			Constants.update();
+			tSpeedTop = Constants.SHOOTER_TOP; //-3500
+			tSpeedBot = Constants.SHOOTER_BOT;
+			botMotorSpeed = 0.0002 * tSpeedBot +0.0501;
+	    	topMotorSpeed = 0.0002 * tSpeedTop+0.0501;
+			isAPressed = true;
+		}
+		else
+		{
+			isAPressed = false;
+		}
     	
 		
 		if(intake.curIntakeState == intakeState.POP){
@@ -170,12 +186,13 @@ public class T_Intake extends Command {
 		//
 		switch (intake.curIntakeState) {
 		case INTAKING:
-			// // Set intake down
+			// // Set intake down]
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_INTAKE;
-			intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
+			intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp+ (intakePosError - intakePosLastError)*PIDConstants.INTAKE_POS_Kd);
+			intakePosLastError = intakePosError;
 			intake.setLeftServo(0.5);
 			intake.setRightServo(0.5);
-		
+			
 			if(pov == 180 || pov == 135 || pov == 225){
 				deadCounter++;
 			}
@@ -183,7 +200,7 @@ public class T_Intake extends Command {
 				intake.curIntakeState = intakeState.DEAD;
 			}
 			
-		
+			SmartDashboard.putNumber("intake pos - last error", intakePosError - intakePosLastError);
 			 SmartDashboard.putString("WindowPosition", "Intaking/ INTAKEDOWN");
 
 			break;
@@ -206,7 +223,7 @@ public class T_Intake extends Command {
 			
 			if (intake.getPot() < Constants.INTAKE_POT_POP) {
 				intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
-				SmartDashboard.putString("WindowPosition", "Shooting Pos/ INTAKE UP");
+				SmartDashboard.putString("WindowPosition", "Shooting Pos/ INTAKE POP");
 			} else {
 				intake.setIntakePivot(0);
 			}
@@ -275,10 +292,13 @@ public class T_Intake extends Command {
 			
 			shootCounter = 0;
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_SHOOTING;
-			intake.setIntakePivot(intakePosError* PIDConstants.INTAKE_POS_Kp);
+			intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp + (intakePosError - intakePosLastError)*PIDConstants.INTAKE_POS_Kd);
+			intakePosLastError = intakePosError;
 			
 			topSpeedError = (tSpeedTop + intake.getTopSpeed());
 	    	botSpeedError = tSpeedBot + intake.getBotSpeed();
+	    	
+	    	
 	    	intake.setTopRoller(topMotorSpeed +topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
 	    	intake.setBotRoller(botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
 
