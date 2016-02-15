@@ -99,8 +99,8 @@ public class A_PositionMove extends Command {
 		leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
 
 		
-		rightSpeed -= gyroRightSpeed;
-		leftSpeed += gyroLeftSpeed;
+		rightSpeed += gyroRightSpeed;
+		leftSpeed -= gyroLeftSpeed;
 		
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
