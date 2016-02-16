@@ -67,33 +67,19 @@ public class T_KajDrive extends Command {
 
 		pov = oi.getDriver().getPOV();
 		SmartDashboard.putNumber("Angle", driveTrain.getYaw());
+		
+		//Press L2 for position lock
 		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
 			posLock = true;
 			driveTrain.resetEncoders();
 			isPovPressed = false;
 		}
-		// if(posLock){
-		// if((pov == 0 || pov == 315 || pov == 45)){
-		// tDistance = 3;
-		//
-		// } else if ((pov == 180 || pov == 225 || pov == 135)){
-		// tDistance = -5;
-		// } else {
-		// tDistance = 0;
-		// }
-		//
-		// }
-
-		// } else if (pov == 90) {
-		// intake.curIntakeState = intakeState.DEAD;
-		// isDRightPressed = true;
-		// }
-		// SmartDashboard.putNumber("Pov", pov);
 
 		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
 		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
 
-		if (Math.abs(x) > 0.1 || Math.abs(y) > 0.1) {
+		//If you move your joystick, turn position lock off
+		if (Math.abs(x) > 0.075 || Math.abs(y) > 0.075) {
 			posLock = false;
 		}
 
@@ -103,7 +89,8 @@ public class T_KajDrive extends Command {
 			driveTrain.setRight(rightSpeed);
 			driveTrain.setLeft(leftSpeed);
 		} else if (posLock) {
-
+			
+			//Press Up on D-pad to increase tDistance and down to decrease it.
 			if ((pov == 0 || pov == 315 || pov == 45) && !isDUpPressed) {
 				isDUpPressed = true;
 				isPovPressed = false;
@@ -113,7 +100,7 @@ public class T_KajDrive extends Command {
 				isPovPressed = false;
 				tDistance -= 1;
 			}
-
+			//Make sure every time you press a button, you only press it once in code
 			if (pov == -1 && !isPovPressed) {
 				isDUpPressed = false;
 				isDDownPressed = false;
@@ -121,23 +108,27 @@ public class T_KajDrive extends Command {
 				driveTrain.resetEncoders();
 				tDistance = 0;
 			}
-
+			
+			//The current distance
 			curLeftDistance = driveTrain.getLeftInches();
 			curRightDistance = driveTrain.getRightInches();
 
+			//The error in distance
 			encLeftError = tDistance - curLeftDistance;
 			encRightError = tDistance - curRightDistance;
-
+			
+			//The Derivative of the errors
 			leftErrorDistance = lastEncLeftError - encLeftError;
 			rightErrorDistance = encRightError - lastEncRightError;
-
+			
+			//Set encoder PID
 			rightSpeed = encRightError * PIDConstants.ENCODER_Kp + rightErrorDistance * PIDConstants.ENCODER_Kd;
 			leftSpeed = encLeftError * PIDConstants.ENCODER_Kp + leftErrorDistance * PIDConstants.ENCODER_Kd;
-
+			
+			
 			driveTrain.setLeft(leftSpeed);
 			driveTrain.setRight(rightSpeed);
-			System.out.println("running kaj/test");
-
+			
 			lastEncLeftError = encLeftError;
 			lastEncRightError = encRightError;
 

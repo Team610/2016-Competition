@@ -24,7 +24,7 @@ public class PIDConstants {
 	{
 		INTAKE_POS_Kp = prefs.getDouble("intakeKp", 15) ;// 15
 		INTAKE_POS_Ki = prefs.getDouble("intakeKi", 0);
-		INTAKE_POS_Kd = prefs.getDouble("intakeKd", 0);
+		INTAKE_POS_Kd = prefs.getDouble("intakeKd", 1);
 	}
 	
 }

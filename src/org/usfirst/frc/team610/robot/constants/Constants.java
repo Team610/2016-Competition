@@ -24,6 +24,10 @@ public class Constants {
 	public static final double ENC_TOP_HANG = 1725;
 	public static final double ENC_TOP_FINAL = 70;
 	public static final double INTAKE_SHOOT_SPEED = 2000;
+	public static final double ROLLER_INTAKE = 0.65;
+	public static final double ROLLER_OUTTAKE = -0.65;
+	public static final double ROLLER_TOP_POP = -0.7;
+	public static final double ROLLER_BOT_POP = -0.1;
 	//-0.7000
 	public static double SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -3500) ; //change please
 	public static double SHOOTER_BOT = prefs.getDouble("botShooterSpeed", -4400) ; //change please
