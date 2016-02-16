@@ -35,11 +35,8 @@ public class D_SensorReadings extends Command {
 
     // Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-//    	SmartDashboard.putNumber("Left Encoder: ", driveTrain.getLeftInches());
-//    	SmartDashboard.putNumber("Right Encoder: ", driveTrain.getRightInches());
-//    	SmartDashboard.putNumber("Gyro from NavX: ", navx.getAngle());
+
     	SmartDashboard.putNumber("Window Pot", intake.getPot());
-//    	SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
 		
 //    	
     }
