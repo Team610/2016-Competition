@@ -43,7 +43,6 @@ public class A_SetIntakePosition extends Command {
 			intakePosError = intake.getPot() - Constants.INTAKE_POT_POP;			
 			if (intake.getPot() < Constants.INTAKE_POT_POP) {
 				intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp);
-			//	SmartDashboard.putString("WindowPosition", "Shooting Pos/ INTAKE POP");
 			} else {
 				intake.setIntakePivot(0);
 				isFinished = true;

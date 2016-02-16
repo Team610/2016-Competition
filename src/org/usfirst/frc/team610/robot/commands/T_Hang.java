@@ -4,12 +4,11 @@ import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.subsystems.Hanger;
+import org.usfirst.frc.team610.robot.subsystems.Hanger.servoPosition;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
-import org.usfirst.frc.team610.robot.subsystems.Hanger.servoPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -50,25 +49,25 @@ public class T_Hang extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// Press A to lock ratchet
+		// Press Operator R2 to lock ratchet
 		if (oi.getOperator().getRawButton(InputConstants.BTN_R2)) {
 			hanger.setRatchet(servoPosition.LOCKED);
 			intake.curIntakeState = intakeState.POP;
 		}
-		// Press B to lock ratchet
+		// Press Operator Back to lock ratchet
 		if (oi.getOperator().getRawButton(InputConstants.BTN_BACK)) {
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
-		// Press Y and R1 to extend
+		// Press Operator L1 and R1 to extend
 		if (oi.getOperator().getRawButton(InputConstants.BTN_L1)
 				&& oi.getOperator().getRawButton(InputConstants.BTN_R1)) {
 			isExtending = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
-		// Press L1 to swap between manual and automatic
-
+		// Press START to swap between manual and automatic
+		
 		if (oi.getOperator().getRawButton(InputConstants.BTN_START) && !isSTARTPressed) {
 			isSTARTPressed = true;
 			manual = !manual;
@@ -78,8 +77,6 @@ public class T_Hang extends Command {
 			isSTARTPressed = false;
 		}
 
-		SmartDashboard.putNumber("Enc Lift", hanger.getEnc());
-		SmartDashboard.putBoolean("Manual", manual);
 
 		if (isExtending) {
 			if (counter < 10) {
@@ -114,16 +111,7 @@ public class T_Hang extends Command {
 			} else {
 				hanger.setWinches(0);
 			}
-			// if (readytoPullUp &&
-			// oi.getDriver().getRawButton(InputConstants.BTN_X)) {
-			// hanger.setRatchet(servoPosition.LOCKED);
-			// intake.curIntakeState = intakeState.SHOOTING;
-			// if (Math.abs(hanger.getEnc() - Constants.ENC_TOP_FINAL) > 25) {
-			// hanger.setWinches(0.70);
-			// } else {
-			// hanger.setWinches(0);
-			// }
-			// }
+		
 		} else if (manual) {
 
 			// if the lift is at the bottom, you can't go down
@@ -135,32 +123,7 @@ public class T_Hang extends Command {
 			}
 		}
 
-		/*
-		 * if (isHanging) {
-		 * 
-		 * if (counter < 10) { hanger.setWinches(.15); //Positive is blipping
-		 * System.out.println("BLIPPING"); counter++;
-		 * 
-		 * }
-		 * 
-		 * else { // hanger.setWinches(0); // 30/50 is magic number //
-		 * hanger.setRatchet(servoPosition.LOCKED); if (Math.abs(hanger.getEnc()
-		 * - Constants.ENC_TOP_HANG) > 50) { System.out.println("Winching Up");
-		 * hanger.setWinches(-0.75); } else { hanger.setWinches(0);
-		 * System.out.println("DONE"); readytoPullUp = true;
-		 * 
-		 * } } if(oi.getOperator().getRawButton(InputConstants.BTN_X)){
-		 * isXPressed = true; }
-		 * 
-		 * 
-		 * if(readytoPullUp && isXPressed){
-		 * hanger.setRatchet(servoPosition.LOCKED); if(Math.abs(hanger.getEnc()
-		 * - Constants.ENC_TOP_FINAL) > 50){ hanger.setWinches(0.70); }else{
-		 * hanger.setWinches(0); } }
-		 * 
-		 * }
-		 */
-
+		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -13,7 +13,6 @@ public class T_Teleop extends CommandGroup {
     	addParallel(new T_Hang());
     //	addParallel(new T_Intake());
     //'	addParallel(new D_SensorReadings());
-    	//addParallel(new T_ShooterTest());
         
     }
 }

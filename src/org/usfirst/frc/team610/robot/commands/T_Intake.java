@@ -59,8 +59,6 @@ public class T_Intake extends Command {
 	double tAngle;
 
 	public T_Intake() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
 		intake = Intake.getInstance();
 		oi = OI.getInstance();
 		isShooting = false;
@@ -97,15 +95,7 @@ public class T_Intake extends Command {
 
 		pov = oi.getOperator().getPOV();
 
-		// if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
-		// speed = outtakeSpeed;
-		// outtakeBotSpeed = -0.1;
-		// } else if (oi.getDriver().getRawButton(InputConstants.BTN_R1)) {
-		// speed = 0.65;
-		// outtakeBotSpeed = 0.65;
-		// }else{
-		// speed = 0;
-		// }
+		
 
 		// B for intaking,
 		// A for dead
@@ -208,15 +198,6 @@ public class T_Intake extends Command {
 			intake.setTopRoller(topSpeed);
 			intake.setBotRoller(botSpeed);
 
-			// SmartDashboard.putNumber("topMotorSpeed", topMotorSpeed
-			// +topSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
-			// SmartDashboard.putNumber("botMotorSpeed", botMotorSpeed +
-			// botSpeedError * PIDConstants.INTAKE_SHOOT_Kp);
-			// SmartDashboard.putNumber("topSpeedError", topSpeedError);
-			// SmartDashboard.putNumber("botSpeedError", botSpeedError);
-			// SmartDashboard.putNumber("topRPM", intake.getTopSpeed());
-			// SmartDashboard.putNumber("botRPM", intake.getBotSpeed());
-
 			if (Math.abs(topSpeedError) < 50 && Math.abs(botSpeedError) < 50) {
 				readyToShoot = true;
 			}
@@ -245,6 +226,8 @@ public class T_Intake extends Command {
 			intake.setIntakePivot(0);
 		}
 
+		
+		
 		SmartDashboard.putNumber("WindowMotorPot", intake.getPot());
 
 	}

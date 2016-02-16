@@ -4,8 +4,6 @@ import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.InputConstants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
-import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +15,6 @@ public class T_KajDrive extends Command {
 
 	private DriveTrain driveTrain;
 	private OI oi;
-	private NavX navx;
 	double counter;
 	double tDistance;
 	double curLeftDistance;
@@ -35,21 +32,16 @@ public class T_KajDrive extends Command {
 	private int pov;
 
 	// Angles
-	private double error;
-	private double lastError;
-	private double differenceError;
-	private double tAngle;
+	
 	boolean isDUpPressed = false;
 	boolean isDDownPressed = false;
 	private boolean posLock;
 	boolean isPovPressed = false;
 
-	// Talon leftTalon;
 
 	public T_KajDrive() {
 
 		driveTrain = DriveTrain.getInstance();
-		// navx = NavX.getInstance();
 		counter = 0;
 		oi = OI.getInstance();
 		tDistance = 0;
@@ -57,7 +49,6 @@ public class T_KajDrive extends Command {
 
 	}
 
-	// Called just before this Command runs the first time
 	protected void initialize() {
 	}
 
@@ -66,7 +57,6 @@ public class T_KajDrive extends Command {
 		double x, y, leftSpeed, rightSpeed;
 
 		pov = oi.getDriver().getPOV();
-		SmartDashboard.putNumber("Angle", driveTrain.getYaw());
 		
 		//Press L2 for position lock
 		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
@@ -117,7 +107,7 @@ public class T_KajDrive extends Command {
 			encLeftError = tDistance - curLeftDistance;
 			encRightError = tDistance - curRightDistance;
 			
-			//The Derivative of the errors
+			
 			leftErrorDistance = lastEncLeftError - encLeftError;
 			rightErrorDistance = encRightError - lastEncRightError;
 			
@@ -133,10 +123,6 @@ public class T_KajDrive extends Command {
 			lastEncRightError = encRightError;
 
 		}
-
-		// SmartDashboard.putBoolean("Lock", posLock);
-		// SmartDashboard.putNumber("rightEnc", driveTrain.getRightInches());
-		// SmartDashboard.putNumber("leftEnc", driveTrain.getLeftInches());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

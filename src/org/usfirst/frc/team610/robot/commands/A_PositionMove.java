@@ -116,8 +116,9 @@ public class A_PositionMove extends Command {
 		}
 		lastError = error;
 
-		//
-		//
+		
+		//Uncomment if we change d from 0.00
+		
 		// lastEncRightError = encRightError;
 		// lastEncLeftError = encLeftError;
 
