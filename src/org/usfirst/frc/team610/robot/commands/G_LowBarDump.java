@@ -17,9 +17,10 @@ public class G_LowBarDump extends CommandGroup {
     	// Sequential Outtake Ball in Courtyard
     	//
     	//
-    	addSequential(new A_PositionMove(30));
-//    	addSequential(new A_PositionLock(40, 90));
-    	//addSequential(new A_SetIntakePosition(Intake.intakeState.INTAKING));
+    	addSequential(new A_PositionMove(-252));
+    	addSequential(new A_PositionLock(4, 45));
+    	addSequential(new A_PositionMove(-144));
+//    	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING));
     	
     	//addSequential(new A_SetIntake(-0.7));
     	

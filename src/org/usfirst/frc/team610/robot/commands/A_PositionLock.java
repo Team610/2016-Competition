@@ -20,7 +20,7 @@ public class A_PositionLock extends Command {
 	private double tAngle;
 	private DriveTrain driveTrain;
 	private PIDController610 pidController;
-	double angle = 0;
+	private double angle = 0;
 	
 	
 	
@@ -33,30 +33,24 @@ public class A_PositionLock extends Command {
     public A_PositionLock(int time){
     	driveTrain = DriveTrain.getInstance();
     	setTimeout(time);
-    	angle = -1;
+    	tAngle = 0;
     }
     public A_PositionLock(int time, double angle){
     	driveTrain = DriveTrain.getInstance();
     	setTimeout(time);
-    	this.angle  = angle;
+    	tAngle = angle;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	driveTrain.resetSensors();
-    	tAngle = driveTrain.getYaw();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(angle != -1){
-    		tAngle = angle;
-    	}else{
-        	tAngle = 0;
 
-    	}
     	error = driveTrain.getYaw() - tAngle;
-    	SmartDashboard.putNumber("Error Pos Lock",error );
+    	SmartDashboard.putNumber("Angle",driveTrain.getYaw() );
     	differenceError = error - lastError;
     	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
     	rightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
@@ -72,12 +66,12 @@ public class A_PositionLock extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        if(isTimedOut()){
-//        	driveTrain.setLeft(0);
-//        	driveTrain.setRight(0);
-//
-//        }
-        return false;
+        if(isTimedOut()){
+        	driveTrain.setLeft(0);
+        	driveTrain.setRight(0);
+
+        }
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true

@@ -12,29 +12,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class A_PositionMove extends Command {
 
 	// Distance
-	DriveTrain driveTrain;
-	double tDistance;
-	int count = 0;
-	double curLeftDistance;
-	double curRightDistance;
-	double encLeftError;
-	double encRightError;
-	double rightSpeed;
-	double leftSpeed;
-	double lastEncLeftError;
-	double lastEncRightError;
-	double leftErrorDistance;
-	double rightErrorDistance;
-	double gyroRightSpeed;
-	double gyroLeftSpeed;
-	boolean isFinished = false;
+	private DriveTrain driveTrain;
+	private double tDistance;
+	private int count = 0;
+	private double curLeftDistance;
+	private double curRightDistance;
+	private double encLeftError;
+	private double encRightError;
+	private double rightSpeed;
+	private double leftSpeed;
+	private double lastEncLeftError;
+	private double lastEncRightError;
+	private double leftErrorDistance;
+	private double rightErrorDistance;
+	private double gyroRightSpeed;
+	private double gyroLeftSpeed;
+	private boolean isFinished = false;
 
 	// Angles
 	private double error;
 	private double lastError;
 	private double differenceError;
 	private double tAngle;
-	double angle;
 
 	public A_PositionMove(double distance) {
 
@@ -44,7 +43,7 @@ public class A_PositionMove extends Command {
 		curRightDistance = 0;
 		curLeftDistance = 0;
 
-		angle = (Double) null;
+		tAngle = -1;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 	}
@@ -55,7 +54,7 @@ public class A_PositionMove extends Command {
 		driveTrain.resetSensors();
 		curRightDistance = 0;
 		curLeftDistance = 0;
-		this.angle = angle;
+		tAngle = angle;
 	}
 
 	// Called just before this Command runs the first time
@@ -65,8 +64,12 @@ public class A_PositionMove extends Command {
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
 
-		tAngle = driveTrain.getYaw();
-
+		if (tAngle == -1) {
+			tAngle = 0;
+		} else {
+			tAngle = driveTrain.getYaw();
+		}
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -75,11 +78,7 @@ public class A_PositionMove extends Command {
 		SmartDashboard.putNumber("LeftEncoderNew", driveTrain.getLeftInches());
 		SmartDashboard.putNumber("RightEncoderNew", driveTrain.getRightInches());
 
-		if (angle == (Double) null) {
-			tAngle = 0;
-		} else {
-			tAngle = angle;
-		}
+		
 
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
