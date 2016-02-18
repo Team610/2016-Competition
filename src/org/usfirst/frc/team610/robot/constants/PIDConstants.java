@@ -17,8 +17,8 @@ public class PIDConstants {
 	public static double INTAKE_POS_Kd = prefs.getDouble("intakeKd", 0);
 	
 	//add INTAKE_POS_Kd
-	public static final double INTAKE_SHOOT_Kp = 0.00023;
-	public static final double INTAKE_SHOOT_Kd = 0.1;
+	public static final double INTAKE_SHOOT_Kp = 0.0003;
+	public static final double INTAKE_SHOOT_Kd = 0;
 	
 	public static void update()
 	{

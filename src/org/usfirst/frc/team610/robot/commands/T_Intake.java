@@ -36,7 +36,7 @@ public class T_Intake extends Command {
 	boolean isDUpPressed = false;
 	boolean isDDownPressed = false;
 	boolean isDRightPressed = false;
-	boolean isAPressed = false;
+	boolean isXPressed = false;
 	double outtakeSpeed = -0.65;
 	double outtakeBotSpeed = -.1;
 	int pov;
@@ -72,6 +72,7 @@ public class T_Intake extends Command {
 		tSpeedBot = Constants.SHOOTER_BOT; // -4200
 		botMotorSpeed = 0.0002 * tSpeedBot + 0.0501;
 		topMotorSpeed = 0.0002 * tSpeedTop + 0.0501;
+		intake.curIntakeState = intakeState.DEAD;
 	}
 
 	// Called just before this Command runs the first time
@@ -81,90 +82,107 @@ public class T_Intake extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 
-		if (oi.getOperator().getRawButton(InputConstants.BTN_A) && !isAPressed) {
+		if (oi.getOperator().getRawButton(InputConstants.BTN_X) && !isXPressed) {
 			PIDConstants.update();
 			Constants.update();
 			tSpeedTop = Constants.SHOOTER_TOP; // -3500
 			tSpeedBot = Constants.SHOOTER_BOT;
-			botMotorSpeed = 0.0002 * tSpeedBot + 0.0501;
-			topMotorSpeed = 0.0002 * tSpeedTop + 0.0501;
-			isAPressed = true;
+			botMotorSpeed = 0.0002 * tSpeedBot;
+			topMotorSpeed = 0.0002 * tSpeedTop;
+			isXPressed = true;
 		} else {
-			isAPressed = false;
+			isXPressed = false;
 		}
+		tSpeedBot = Constants.SHOOTER_BOT;
+		tSpeedTop = Constants.SHOOTER_TOP;
+		botMotorSpeed = 0.0002 * tSpeedBot + 0.05;
+		topMotorSpeed = 0.0002 * tSpeedTop + 0.05;
 
 		pov = oi.getOperator().getPOV();
-
-		
 
 		// B for intaking,
 		// A for dead
 		// X for shooting
 		// Y for Pop
-
+		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
+		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
+		SmartDashboard.putNumber("Pot", intake.getPot());
 		if (oi.getOperator().getRawButton(InputConstants.BTN_B)) {
 			intake.curIntakeState = intakeState.INTAKING;
 			tAngle = Constants.INTAKE_POT_INTAKE;
 			outtakeSpeed = Constants.ROLLER_OUTTAKE;
 			intakeSpeed = Constants.ROLLER_INTAKE;
+			SmartDashboard.putString("State", "Intaking");
 		}
 		if (oi.getOperator().getRawButton(InputConstants.BTN_A)) {
 			intake.curIntakeState = intakeState.DEAD;
 			tAngle = Constants.INTAKE_POT_DEAD;
 			outtakeSpeed = Constants.ROLLER_OUTTAKE;
 			intakeSpeed = Constants.ROLLER_INTAKE;
+
+			SmartDashboard.putString("State", "Dead");
 		}
 		if (oi.getOperator().getRawButton(InputConstants.BTN_X)) {
 			intake.curIntakeState = intakeState.SHOOTING;
 			tAngle = Constants.INTAKE_POT_SHOOTING;
+			SmartDashboard.putString("State", "Shooting");
 		}
 		if (oi.getOperator().getRawButton(InputConstants.BTN_Y)) {
 			intake.curIntakeState = intakeState.POP;
 			tAngle = Constants.INTAKE_POT_POP;
 			topSpeed = Constants.ROLLER_TOP_POP;
 			botSpeed = Constants.ROLLER_BOT_POP;
+			SmartDashboard.putString("State", "Pop");
 		}
 
 		switch (intake.curIntakeState) {
 		case INTAKING:
 			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
 				speed = outtakeSpeed;
+				intake.setRightServo(0.3);
+				intake.setLeftServo(0.4);
 			} else if (oi.getDriver().getRawButton(InputConstants.BTN_R1)) {
 				speed = intakeSpeed;
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
 			} else {
 				speed = 0;
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
 			}
-			intake.setLeftServo(0.5);
-			intake.setRightServo(0.5);
 
 			intake.setBothRollers(speed);
 
 			break;
 		case POP:
 
-			if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
-				intake.setLeftServo(0);
-				intake.setRightServo(1);
+			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
+				intake.setTopRoller(topSpeed);
+				intake.setBotRoller(botSpeed);
+				intake.setRightServo(0.3);
+				intake.setLeftServo(0.4);
 			} else {
-				intake.setLeftServo(0.5);
-				intake.setRightServo(0.5);
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
+				intake.setTopRoller(0);
+				intake.setBotRoller(0);
 			}
-
-			intake.setTopRoller(topSpeed);
-			intake.setBotRoller(botSpeed);
-
 			break;
 
 		case DEAD:
 			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
 				speed = outtakeSpeed;
+				intake.setRightServo(0.3);
+				intake.setLeftServo(0.4);
 			} else if (oi.getDriver().getRawButton(InputConstants.BTN_R1)) {
 				speed = intakeSpeed;
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
 			} else {
 				speed = 0;
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
 			}
-			intake.setLeftServo(0.5);
-			intake.setRightServo(0.5);
 
 			intake.setBothRollers(speed);
 			break;
@@ -189,30 +207,37 @@ public class T_Intake extends Command {
 
 			shootCounter = 0;
 
-			topSpeedError = (tSpeedTop + intake.getTopSpeed());
+			topSpeedError = tSpeedTop + intake.getTopSpeed();
 			botSpeedError = tSpeedBot + intake.getBotSpeed();
 
-			topSpeed = topMotorSpeed + RPMTrim + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp;
-			botSpeed = botMotorSpeed + RPMTrim + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp;
-
+			topSpeed = topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp;
+			botSpeed = botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp;
+			
+			SmartDashboard.putNumber("TopSpeed", topSpeed);
+			SmartDashboard.putNumber("BotSpeed", botSpeed);
+			
 			intake.setTopRoller(topSpeed);
 			intake.setBotRoller(botSpeed);
 
-			if (Math.abs(topSpeedError) < 50 && Math.abs(botSpeedError) < 50) {
+			if (Math.abs(topSpeedError) < 500 && Math.abs(botSpeedError) < 500) {
 				readyToShoot = true;
 			}
 
 			if (readyToShoot) {
 				if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
-					intake.setLeftServo(0);
-					intake.setRightServo(1);
+					intake.setRightServo(0.3);
+					intake.setLeftServo(0.4);
 					readyToShoot = false;
 				} else {
-					intake.setLeftServo(0.5);
-					intake.setRightServo(0.5);
+					intake.setRightServo(1);
+					intake.setLeftServo(0);
 				}
 
+			} else {
+				intake.setRightServo(1);
+				intake.setLeftServo(0);
 			}
+			SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
 			break;
 		}
 		// End of switch
@@ -223,11 +248,18 @@ public class T_Intake extends Command {
 					intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDerivative * PIDConstants.INTAKE_POS_Kd);
 			intakePosLastError = intakePosError;
 		} else {
-			intake.setIntakePivot(0);
+			if (intake.getPot() > Constants.INTAKE_POT_DEAD) {
+				intakePosError = intake.getPot() - tAngle;
+				intakePosDerivative = intakePosError - intakePosLastError;
+				intake.setIntakePivot(
+						intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDerivative * PIDConstants.INTAKE_POS_Kd);
+				intakePosLastError = intakePosError;
+			} else {
+				intake.setIntakePivot(0);
+			}
 		}
-
-		
-		
+		SmartDashboard.putNumber("Top RPMError", topSpeedError);
+		SmartDashboard.putNumber("Bot RPMError", botSpeedError);
 		SmartDashboard.putNumber("WindowMotorPot", intake.getPot());
 
 	}

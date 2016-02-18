@@ -107,6 +107,8 @@ public class T_Hang extends Command {
 			if(hanger.getEnc() > Constants.ENC_TOP_FINAL){
 				if (Math.abs(joyValue) > 0.05) {
 					hanger.setWinches(joyValue);
+				} else {
+					hanger.setWinches(0);
 				}
 			} else {
 				hanger.setWinches(0);

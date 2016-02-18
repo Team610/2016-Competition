@@ -43,13 +43,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("BOT RPM", intake.getBotSpeed());
 		SmartDashboard.putNumber("TOP PERIOD", intake.getTopPeriod());
 		SmartDashboard.putNumber("BOT PERIOD", intake.getBotPeriod());
+		SmartDashboard.putNumber("Pot", intake.getPot());
 		Scheduler.getInstance().run();
 	}
 
 	public void autonomousInit() {
 		drivetrain.resetSensors();
-
-		
 		auton.start();
 	}
 
