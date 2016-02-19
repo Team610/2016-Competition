@@ -1,5 +1,6 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -16,8 +17,7 @@ public class DriveTrain extends Subsystem {
 
 	static DriveTrain instance;
 	
-	private static final double PULSES_PER_INCH = 97.1830985915493;
-	
+		
 	private Victor leftFront;
 	private Victor leftBack;
 	private Victor rightFront;
@@ -65,11 +65,11 @@ public class DriveTrain extends Subsystem {
     
     
     public double getRightInches(){
-    	return rightEnc.getDistance() / PULSES_PER_INCH;
+    	return rightEnc.getDistance() / Constants.DRIVETRAIN_PULSES_PER_INCH;
     }
   
     public double getLeftInches(){
-    	return -leftEnc.getDistance() / PULSES_PER_INCH;
+    	return -leftEnc.getDistance() / Constants.DRIVETRAIN_PULSES_PER_INCH;
     }
     public double getYaw(){
     	return navx.getAngle();

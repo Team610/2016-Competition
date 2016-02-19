@@ -114,15 +114,15 @@ public class T_Intake extends Command {
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			intake.curIntakeState = intakeState.INTAKING;
 			tAngle = Constants.INTAKE_POT_INTAKE;
-			outtakeSpeed = Constants.ROLLER_OUTTAKE;
-			intakeSpeed = Constants.ROLLER_INTAKE;
+			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
+			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 			SmartDashboard.putString("State", "Intaking");
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_A)) {
 			intake.curIntakeState = intakeState.DEAD;
 			tAngle = Constants.INTAKE_POT_DEAD;
-			outtakeSpeed = Constants.ROLLER_OUTTAKE;
-			intakeSpeed = Constants.ROLLER_INTAKE;
+			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
+			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 
 			SmartDashboard.putString("State", "Dead");
 		}
@@ -135,9 +135,9 @@ public class T_Intake extends Command {
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_Y)) {
 			intake.curIntakeState = intakeState.POP;
 			tAngle = Constants.INTAKE_POT_POP;
-			topSpeed = Constants.ROLLER_TOP_POP;
-			botSpeed = Constants.ROLLER_BOT_POP;
-			intakeSpeed = Constants.ROLLER_INTAKE;
+			topSpeed = Constants.INTAKE_TOP_POP_POWER;
+			botSpeed = Constants.INTAKE_BOT_POP_POWER;
+			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 			SmartDashboard.putString("State", "Pop");
 		}
 
