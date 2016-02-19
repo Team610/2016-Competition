@@ -18,14 +18,14 @@ public class T_Hang extends Command {
 	private Hanger hanger;
 	private Intake intake;
 	private OI oi;
-	boolean isExtending, readyToPullUp, isXPressed;
-	boolean isSTARTPressed;
-	boolean manual;
-	int counter;
-	double joyValue;
-	double curEnc;
-	double lastEnc;
-	double encError;
+	private boolean isExtending, readyToPullUp, isXPressed;
+	private boolean isSTARTPressed;
+	private boolean manual;
+	private int counter;
+	private double joyValue;
+	private double curEnc;
+	private double lastEnc;
+	private double encError;
 
 	public T_Hang() {
 		// Use requires() here to declare subsystem dependencies

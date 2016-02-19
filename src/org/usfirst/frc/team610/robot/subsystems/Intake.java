@@ -22,8 +22,8 @@ public class Intake extends Subsystem {
 	private Servo leftFeeder, rightFeeder;
 	public servoPosition flipperServoPos;
 	public intakeState curIntakeState;
-	AnalogPotentiometer intakePot;
-	ArrayList<Double> topRollers, botRollers;
+	private AnalogPotentiometer intakePot;
+	private ArrayList<Double> topRollers, botRollers;
 	double RPMfactor;
 	private double topPeriod;
 	private double botPeriod;

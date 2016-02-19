@@ -16,51 +16,51 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class T_Intake extends Command {
-	Intake intake;
-	OI oi;
-	double intakePotShootConstant;
-	double n = 0;
-	double intakePosError, shooterTopError, shooterBotError;
-	double intakePosKp = 0.01;
-	boolean isShooting;
-	boolean readyToShoot;
-	double rpmError = 0;
-	double topDiff, botDiff;
-	double speed;
-	boolean isR1Pressed = false;
-	boolean isBPressed = false;
-	boolean isR2Pressed = false;
-	boolean isL1Pressed = false;
-	boolean isL2Pressed = false;
-	boolean isYPressed = false;
-	boolean isDUpPressed = false;
-	boolean isDDownPressed = false;
-	boolean isDRightPressed = false;
-	boolean isXPressed = false;
-	double outtakeSpeed = -0.65;
-	double outtakeBotSpeed = -.1;
-	int pov;
-	int deadCounter, shootCounter;
-	double botMotorSpeed;
-	double topMotorSpeed;
+	private Intake intake;
+	private OI oi;
+	private double intakePotShootConstant;
+	private double n = 0;
+	private double intakePosError, shooterTopError, shooterBotError;
+	private double intakePosKp = 0.01;
+	private boolean isShooting;
+	private boolean readyToShoot;
+	private double rpmError = 0;
+	private double topDiff, botDiff;
+	private double speed;
+	private boolean isR1Pressed = false;
+	private boolean isBPressed = false;
+	private boolean isR2Pressed = false;
+	private boolean isL1Pressed = false;
+	private boolean isL2Pressed = false;
+	private boolean isYPressed = false;
+	private boolean isDUpPressed = false;
+	private boolean isDDownPressed = false;
+	private boolean isDRightPressed = false;
+	private boolean isXPressed = false;
+	private double outtakeSpeed = -0.65;
+	private double outtakeBotSpeed = -.1;
+	private int pov;
+	private int deadCounter, shootCounter;
+	private double botMotorSpeed;
+	private double topMotorSpeed;
 
-	double tSpeedBot;
-	double tSpeedTop;
-	double topSpeedError;
-	double botSpeedError;
-	double topSpeed;
-	double botSpeed;
-	double topSpeedErrDiff;
-	double botSpeedErrDiff;
-	double topLastError = 0;
-	double botLastError = 0;
+	private double tSpeedBot;
+	private double tSpeedTop;
+	private double topSpeedError;
+	private double botSpeedError;
+	private double topSpeed;
+	private double botSpeed;
+	private double topSpeedErrDiff;
+	private double botSpeedErrDiff;
+	private double topLastError = 0;
+	private double botLastError = 0;
 
-	double intakePosLastError = 0;
-	double intakePosSumError = 0;
-	double RPMTrim = 0;
-	double intakePosDiffError;
-	double intakeSpeed;
-	double tAngle;
+	private double intakePosLastError = 0;
+	private double intakePosSumError = 0;
+	private double RPMTrim = 0;
+	private double intakePosDiffError;
+	private double intakeSpeed;
+	private double tAngle;
 
 	public T_Intake() {
 		intake = Intake.getInstance();
@@ -91,18 +91,16 @@ public class T_Intake extends Command {
 			Constants.update();
 			tSpeedTop = Constants.SHOOTER_TOP; // -3500
 			tSpeedBot = Constants.SHOOTER_BOT;
-			// y = 0.0001x + 0.0294 - Top
-			// y = 0.0001x + 0.016 - Bot
-			botMotorSpeed = 0.00016 * tSpeedBot - 0.016;
-			topMotorSpeed = 0.00016 * tSpeedTop - 0.0294;
+			botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
+			topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
 			isXPressed = true;
 		} else {
 			isXPressed = false;
 		}
 		tSpeedBot = Constants.SHOOTER_BOT;
 		tSpeedTop = Constants.SHOOTER_TOP;
-		botMotorSpeed = 0.00016 * tSpeedBot - 0.016;
-		topMotorSpeed = 0.00016 * tSpeedTop - 0.0294;
+		botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
+		topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
 
 		pov = oi.getOperator().getPOV();
 

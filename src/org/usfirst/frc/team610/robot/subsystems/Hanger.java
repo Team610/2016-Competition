@@ -19,13 +19,13 @@ public class Hanger extends Subsystem {
 	// Singleton Instance of Hanger
 	static Hanger inst;
 	// Victors for the two winch motors
-	Victor winch1, winch2;
+	private Victor winch1, winch2;
 	// NavX, to use extra PWM ports
-	NavX navx;
+	private NavX navx;
 	// Encoder attached to lift
-	Encoder liftEnc;
+	private Encoder liftEnc;
 	// Servo used on the ratchet on the gearbox
-	Servo ratchet;
+	private Servo ratchet;
 
 	public static Hanger getInstance() {
 		if (inst == null) {

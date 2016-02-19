@@ -24,6 +24,7 @@ public class DriveTrain extends Subsystem {
 	private Encoder leftEnc;
 	private Encoder rightEnc;
 	private NavX navx;
+	
 	public static DriveTrain getInstance(){
 		if(instance == null){
 			instance = new DriveTrain();

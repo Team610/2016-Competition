@@ -14,15 +14,15 @@ public class T_ShooterTest extends Command {
 	
 	private Intake intake;
 	private OI oi;
-	double botMotorSpeed;
-	double topMotorSpeed;
-	double tSpeed;
-	double topSpeedError;
-	double botSpeedError;
-	double topSpeed;
-	double botSpeed;
-	boolean isPressedL1 = false;
-	boolean isPressedR1 = false;
+	private double botMotorSpeed;
+	private double topMotorSpeed;
+	private double tSpeed;
+	private double topSpeedError;
+	private double botSpeedError;
+	private double topSpeed;
+	private double botSpeed;
+	private boolean isPressedL1 = false;
+	private boolean isPressedR1 = false;
 	
     public T_ShooterTest() {
     	intake = Intake.getInstance();

@@ -15,29 +15,29 @@ public class T_KajDrive extends Command {
 
 	private DriveTrain driveTrain;
 	private OI oi;
-	double counter;
-	double tRightDistance;
-	double curLeftDistance;
-	double curRightDistance;
-	double encLeftError;
-	double encRightError;
-	double rightSpeed;
-	double leftSpeed;
-	double lastEncLeftError;
-	double lastEncRightError;
-	double leftErrorDistance;
-	double rightErrorDistance;
-	double gyroRightSpeed;
-	double gyroLeftSpeed;
+	private double counter;
+	private double tRightDistance;
+	private double curLeftDistance;
+	private double curRightDistance;
+	private double encLeftError;
+	private double encRightError;
+	private double rightSpeed;
+	private double leftSpeed;
+	private double lastEncLeftError;
+	private double lastEncRightError;
+	private double leftErrorDistance;
+	private double rightErrorDistance;
+	private double gyroRightSpeed;
+	private double gyroLeftSpeed;
 	private int pov;
-	double tLeftDistance;
+	private double tLeftDistance;
 
 	// Angles
 	
-	boolean isDPressed = false;
-	boolean isDDownPressed = false;
+	private boolean isDPressed = false;
+	private boolean isDDownPressed = false;
 	private boolean posLock;
-	boolean isPovPressed = false;
+	private boolean isPovPressed = false;
 
 
 	public T_KajDrive() {

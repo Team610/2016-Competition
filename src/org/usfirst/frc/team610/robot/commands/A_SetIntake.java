@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class A_SetIntake extends Command {
 
 	private Intake intake;
-	double speed;
-	int time;
+	private double speed;
+	private int time;
 	
     public A_SetIntake(double speed) {
     	intake = Intake.getInstance();
