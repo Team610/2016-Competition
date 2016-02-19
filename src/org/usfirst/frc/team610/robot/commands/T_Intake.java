@@ -84,6 +84,8 @@ public class T_Intake extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		SmartDashboard.putNumber("New Window Pot", intake.getPot());
+		
 
 		if (oi.getOperator().getRawButton(InputConstants.BTN_X) && !isXPressed) {
 			Constants.update();

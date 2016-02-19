@@ -17,7 +17,7 @@ public class Constants {
 
 	public static double INTAKE_POT_SHOOTING = prefs.getDouble("shootingPotValue", 0.83+INTAKE_OFFSET);//0.83 + INTAKE_OFFSET;
 	public static final double INTAKE_POT_POP = 0.88 + INTAKE_OFFSET;//TEMP PLS FIX
-	public static final double INTAKE_POT_DOWN = 0.01;
+	//public static final double INTAKE_POT_DOWN = 0.01;
 	public static final double INTAKE_POT_DEAD = 0.1 + INTAKE_OFFSET;
 	public static final double INTAKE_POT_INTAKE = 0.12 + INTAKE_OFFSET;
 	public static final double WINCH_SPEED_UP = 1;
@@ -27,11 +27,12 @@ public class Constants {
 	public static final double ROLLER_INTAKE = 0.65;
 	public static final double ROLLER_OUTTAKE = -0.65;
 	public static final double ROLLER_TOP_POP = -0.65;
-	public static final double ROLLER_BOT_POP = -0.1;
-	public static final double SHOOTER_SERVO_RIGHT_OUT = 0.65; //65
-	public static final double SHOOTER_SERVO_RIGHT_IN = 0;
+	public static final double ROLLER_BOT_POP = -0.1; 
+	//0.339
+	public static final double SHOOTER_SERVO_RIGHT_OUT = 0.564; //65
+	public static final double SHOOTER_SERVO_RIGHT_IN = 0.225;
 	public static final double SHOOTER_SERVO_LEFT_OUT = 0.3;
-	public static final double SHOOTER_SERVO_LEFT_IN = 1;
+	public static final double SHOOTER_SERVO_LEFT_IN = 0.639;
 	
 	//-0.7000
 	public static double SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -2000) ; //change please

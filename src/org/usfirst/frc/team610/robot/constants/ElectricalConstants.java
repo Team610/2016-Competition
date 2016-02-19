@@ -17,6 +17,8 @@ public class ElectricalConstants {
 	
 	public static final int INTAKE_FEEDER_LEFTSERVO = 8;
 	public static final int INTAKE_FEEDER_RIGHTSERVO = 9;
+	//RightServo notengaged = 0.225
+	//RightServo Engaged = 0.564
 	public static final int INTAKE_POT = 0;
 	public static final int LIFT_RATCHET = 7;
 	public static final int LIFT_WINCHA_NAVX = 0;
