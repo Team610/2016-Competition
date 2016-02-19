@@ -1,6 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
@@ -57,7 +58,7 @@ public class T_KajDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double x, y, leftSpeed, rightSpeed;
-
+		
 		pov = oi.getDriver().getPOV();
 		
 		//Press L2 for position lock
@@ -136,6 +137,12 @@ public class T_KajDrive extends Command {
 			lastEncLeftError = encLeftError;
 			lastEncRightError = encRightError;
 
+		}
+		
+		// Driver Start button updates Constants
+		if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_START))
+		{
+			Constants.update();
 		}
 	}
 
