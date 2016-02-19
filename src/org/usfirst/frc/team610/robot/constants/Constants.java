@@ -27,12 +27,11 @@ public class Constants {
 	public static double INTAKE_FLIPPER_SERVO_OUTB = prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTB", 0.9);
 	public static double INTAKE_FLIPPER_SERVO_INB = prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 	
-	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.03);
-	public static double INTAKE_POT_UP = prefs.getDouble("INTAKE_POT_UP", 0.700);
-	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.83);
-	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.88);
-	public static double INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.1);
-	public static double INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.12);
+	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.0);
+	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.727);
+	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
+	public static double INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
+	public static double INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
 	
 	//Shooter
 	public static double INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);
@@ -67,12 +66,11 @@ public class Constants {
 		INTAKE_FLIPPER_SERVO_OUTB = prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTB", 0.9);
 		INTAKE_FLIPPER_SERVO_INB = prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 		
-		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.03);
-		INTAKE_POT_UP = prefs.getDouble("INTAKE_POT_UP", 0.700);
-		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.83);
-		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.88);
-		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.1);
-		INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.12);
+		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.0);
+		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.727);
+		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
+		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
+		INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
 		
 		//Shooter
 		INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);

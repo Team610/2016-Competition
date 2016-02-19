@@ -113,14 +113,14 @@ public class T_Intake extends Command {
 		SmartDashboard.putNumber("Pot", intake.getPot());
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			intake.curIntakeState = intakeState.INTAKING;
-			tAngle = Constants.INTAKE_POT_INTAKE;
+			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET;
 			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 			SmartDashboard.putString("State", "Intaking");
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_A)) {
 			intake.curIntakeState = intakeState.DEAD;
-			tAngle = Constants.INTAKE_POT_DEAD;
+			tAngle = Constants.INTAKE_POT_DEAD + Constants.INTAKE_POT_OFFSET;
 			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 
@@ -129,12 +129,12 @@ public class T_Intake extends Command {
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X)) {
 			intake.curIntakeState = intakeState.SHOOTING;
 			//Plz god change this
-			tAngle = Constants.INTAKE_POT_SHOOTING;
+			tAngle = Constants.INTAKE_POT_SHOOTING + Constants.INTAKE_POT_OFFSET;
 			SmartDashboard.putString("State", "Shooting");
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_Y)) {
 			intake.curIntakeState = intakeState.POP;
-			tAngle = Constants.INTAKE_POT_POP;
+			tAngle = Constants.INTAKE_POT_POP + Constants.INTAKE_POT_OFFSET;
 			topSpeed = Constants.INTAKE_TOP_POP_POWER;
 			botSpeed = Constants.INTAKE_BOT_POP_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
@@ -269,7 +269,7 @@ public class T_Intake extends Command {
 					intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 			intakePosLastError = intakePosError;
 		} else {
-			if (intake.getPot() > Constants.INTAKE_POT_DEAD) {
+			if (intake.getPot() > Constants.INTAKE_POT_DEAD + Constants.INTAKE_POT_OFFSET) {
 				intakePosError = intake.getPot() - tAngle;
 				intakePosDiffError = intakePosError - intakePosLastError;
 				intake.setIntakePivot(
