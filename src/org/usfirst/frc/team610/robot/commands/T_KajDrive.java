@@ -16,7 +16,7 @@ public class T_KajDrive extends Command {
 	private DriveTrain driveTrain;
 	private OI oi;
 	double counter;
-	double tDistance;
+	double tRightDistance;
 	double curLeftDistance;
 	double curRightDistance;
 	double encLeftError;
@@ -30,10 +30,11 @@ public class T_KajDrive extends Command {
 	double gyroRightSpeed;
 	double gyroLeftSpeed;
 	private int pov;
+	double tLeftDistance;
 
 	// Angles
 	
-	boolean isDUpPressed = false;
+	boolean isDPressed = false;
 	boolean isDDownPressed = false;
 	private boolean posLock;
 	boolean isPovPressed = false;
@@ -44,7 +45,8 @@ public class T_KajDrive extends Command {
 		driveTrain = DriveTrain.getInstance();
 		counter = 0;
 		oi = OI.getInstance();
-		tDistance = 0;
+		tRightDistance = 0;
+		tLeftDistance = 0;
 		posLock = false;
 
 	}
@@ -81,22 +83,34 @@ public class T_KajDrive extends Command {
 		} else if (posLock) {
 			
 			//Press Up on D-pad to increase tDistance and down to decrease it.
-			if ((pov == 0 || pov == 315 || pov == 45) && !isDUpPressed) {
-				isDUpPressed = true;
+			if ((pov == 0) && !isDPressed) {
+				isDPressed = true;
 				isPovPressed = false;
-				tDistance += 1;
-			} else if ((pov == 180 || pov == 225 || pov == 135) && !isDDownPressed) {
-				isDDownPressed = true;
+				tRightDistance += 1;
+				tLeftDistance += 1;
+			} else if ((pov == 180) && !isDPressed) {
+				isDPressed = true;
 				isPovPressed = false;
-				tDistance -= 1;
+				tRightDistance -= 1;
+				tLeftDistance -= 1;
+			} else if (pov == 90 && !isDPressed){
+				isDPressed = true;
+				isPovPressed = false;
+				tRightDistance -= 1;
+				tLeftDistance += 1;
+			} else if (pov == 270 && !isDPressed){
+				isDPressed = true;
+				isPovPressed = false;
+				tRightDistance += 1;
+				tLeftDistance -= 1;
 			}
 			//Make sure every time you press a button, you only press it once in code
 			if (pov == -1 && !isPovPressed) {
-				isDUpPressed = false;
-				isDDownPressed = false;
+				isDPressed = false;
 				isPovPressed = true;
 				driveTrain.resetEncoders();
-				tDistance = 0;
+				tRightDistance = 0;
+				tLeftDistance = 0;
 			}
 			
 			//The current distance
@@ -104,8 +118,8 @@ public class T_KajDrive extends Command {
 			curRightDistance = driveTrain.getRightInches();
 
 			//The error in distance
-			encLeftError = tDistance - curLeftDistance;
-			encRightError = tDistance - curRightDistance;
+			encLeftError = tRightDistance - curLeftDistance;
+			encRightError = tLeftDistance - curRightDistance;
 			
 			
 			leftErrorDistance = lastEncLeftError - encLeftError;

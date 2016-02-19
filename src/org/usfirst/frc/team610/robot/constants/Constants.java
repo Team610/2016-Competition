@@ -12,11 +12,11 @@ public class Constants {
 	public static final double FLIPPER_SERVO_OUTB = 0.9;
 	public static final double FLIPPER_SERVO_INB = 0.2;
 	
-	public static final double INTAKE_OFFSET = 0.045;
+	public static final double INTAKE_OFFSET = 0.03;
 	public static final double INTAKE_POT_UP = 0.700 + INTAKE_OFFSET;
 
 	public static double INTAKE_POT_SHOOTING = prefs.getDouble("shootingPotValue", 0.83+INTAKE_OFFSET);//0.83 + INTAKE_OFFSET;
-	public static final double INTAKE_POT_POP = 0.87 + INTAKE_OFFSET;//TEMP PLS FIX
+	public static final double INTAKE_POT_POP = 0.88 + INTAKE_OFFSET;//TEMP PLS FIX
 	public static final double INTAKE_POT_DOWN = 0.01;
 	public static final double INTAKE_POT_DEAD = 0.1 + INTAKE_OFFSET;
 	public static final double INTAKE_POT_INTAKE = 0.12 + INTAKE_OFFSET;
@@ -28,9 +28,14 @@ public class Constants {
 	public static final double ROLLER_OUTTAKE = -0.65;
 	public static final double ROLLER_TOP_POP = -0.65;
 	public static final double ROLLER_BOT_POP = -0.1;
+	public static final double SHOOTER_SERVO_RIGHT_OUT = 0.65; //65
+	public static final double SHOOTER_SERVO_RIGHT_IN = 0;
+	public static final double SHOOTER_SERVO_LEFT_OUT = 0.3;
+	public static final double SHOOTER_SERVO_LEFT_IN = 1;
+	
 	//-0.7000
-	public static double SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -1500) ; //change please
-	public static double SHOOTER_BOT = prefs.getDouble("botShooterSpeed", -500) ; //change please
+	public static double SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -2000) ; //change please
+	public static double SHOOTER_BOT = prefs.getDouble("botShooterSpeed", -2000) ; //change please
 //	public static final double INTAKE_SHOOT_OUT_L = 0.5;
 //	public static final double INTAKE_SHOOT_IN_L = 0.2;
 //	public static final double INTAKE_SHOOT_OUT_R = 0.5;
@@ -38,8 +43,8 @@ public class Constants {
 	public static void update()
 	{
 		INTAKE_POT_SHOOTING = prefs.getDouble("shotPOS", 0.814+INTAKE_OFFSET);// 15
-		SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -3500) ;
-		SHOOTER_BOT = prefs.getDouble("botShooterSpeed", -4400) ;
+		SHOOTER_TOP = prefs.getDouble("topShooterSpeed", -2000) ;
+		SHOOTER_BOT = prefs.getDouble("botShooterSpeed", -2000) ;
 	}
 	
 }
