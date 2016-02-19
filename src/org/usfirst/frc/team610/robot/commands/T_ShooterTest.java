@@ -1,7 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
-import org.usfirst.frc.team610.robot.constants.InputConstants;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -38,22 +38,22 @@ public class T_ShooterTest extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	if(oi.getOperator().getRawButton(InputConstants.BTN_L1) && !isPressedL1){
+    	if(oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1) && !isPressedL1){
     		topSpeed += 0.05;
     		botSpeed += 0.05;
     		isPressedL1 = true;
     	}
     	
-    	if(!oi.getOperator().getRawButton(InputConstants.BTN_L1)){
+    	if(!oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1)){
     		isPressedL1 = false;
     	}
     	
-    	if(oi.getOperator().getRawButton(InputConstants.BTN_R1) && !isPressedR1){
+    	if(oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1) && !isPressedR1){
     		topSpeed -= 0.05;
     		botSpeed -= 0.05;
     		isPressedR1 = true;
     	}
-    	if(!oi.getOperator().getRawButton(InputConstants.BTN_R1)){
+    	if(!oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)){
     		isPressedR1 = false;
     	}
     	

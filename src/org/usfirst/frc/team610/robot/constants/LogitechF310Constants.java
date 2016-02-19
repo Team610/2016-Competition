@@ -1,6 +1,6 @@
 package org.usfirst.frc.team610.robot.constants;
 
-public class InputConstants {
+public class LogitechF310Constants {
 
 	public static final int BTN_X = 1;
 	public static final int BTN_A = 2;

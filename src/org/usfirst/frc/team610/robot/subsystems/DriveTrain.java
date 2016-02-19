@@ -16,6 +16,7 @@ public class DriveTrain extends Subsystem {
 
 	static DriveTrain instance;
 	
+	private static final double PULSES_PER_INCH = 97.1830985915493;
 	
 	private Victor leftFront;
 	private Victor leftBack;
@@ -64,11 +65,11 @@ public class DriveTrain extends Subsystem {
     
     
     public double getRightInches(){
-    	return rightEnc.getDistance() / 97.1830985915493;
+    	return rightEnc.getDistance() / PULSES_PER_INCH;
     }
   
     public double getLeftInches(){
-    	return -leftEnc.getDistance() / 97.1830985915493;
+    	return -leftEnc.getDistance() / PULSES_PER_INCH;
     }
     public double getYaw(){
     	return navx.getAngle();

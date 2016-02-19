@@ -1,7 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
-import org.usfirst.frc.team610.robot.constants.InputConstants;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
@@ -61,14 +61,14 @@ public class T_KajDrive extends Command {
 		pov = oi.getDriver().getPOV();
 		
 		//Press L2 for position lock
-		if (oi.getDriver().getRawButton(InputConstants.BTN_L2)) {
+		if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L2)) {
 			posLock = true;
 			driveTrain.resetEncoders();
 			isPovPressed = false;
 		}
 
-		x = oi.getDriver().getRawAxis(InputConstants.AXIS_RIGHT_X);
-		y = oi.getDriver().getRawAxis(InputConstants.AXIS_LEFT_Y);
+		x = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_RIGHT_X);
+		y = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 
 		//If you move your joystick, turn position lock off
 		if (Math.abs(x) > 0.075 || Math.abs(y) > 0.075) {

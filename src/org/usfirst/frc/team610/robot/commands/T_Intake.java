@@ -3,7 +3,7 @@ package org.usfirst.frc.team610.robot.commands;
 import org.omg.CORBA.ShortHolder;
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
-import org.usfirst.frc.team610.robot.constants.InputConstants;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
@@ -87,7 +87,7 @@ public class T_Intake extends Command {
 		SmartDashboard.putNumber("New Window Pot", intake.getPot());
 		
 
-		if (oi.getOperator().getRawButton(InputConstants.BTN_X) && !isXPressed) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X) && !isXPressed) {
 			Constants.update();
 			tSpeedTop = Constants.SHOOTER_TOP; // -3500
 			tSpeedBot = Constants.SHOOTER_BOT;
@@ -111,14 +111,14 @@ public class T_Intake extends Command {
 		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
 		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
 		SmartDashboard.putNumber("Pot", intake.getPot());
-		if (oi.getOperator().getRawButton(InputConstants.BTN_B)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			intake.curIntakeState = intakeState.INTAKING;
 			tAngle = Constants.INTAKE_POT_INTAKE;
 			outtakeSpeed = Constants.ROLLER_OUTTAKE;
 			intakeSpeed = Constants.ROLLER_INTAKE;
 			SmartDashboard.putString("State", "Intaking");
 		}
-		if (oi.getOperator().getRawButton(InputConstants.BTN_A)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_A)) {
 			intake.curIntakeState = intakeState.DEAD;
 			tAngle = Constants.INTAKE_POT_DEAD;
 			outtakeSpeed = Constants.ROLLER_OUTTAKE;
@@ -126,13 +126,13 @@ public class T_Intake extends Command {
 
 			SmartDashboard.putString("State", "Dead");
 		}
-		if (oi.getOperator().getRawButton(InputConstants.BTN_X)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X)) {
 			intake.curIntakeState = intakeState.SHOOTING;
 			//Plz god change this
 			tAngle = Constants.INTAKE_POT_SHOOTING;
 			SmartDashboard.putString("State", "Shooting");
 		}
-		if (oi.getOperator().getRawButton(InputConstants.BTN_Y)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_Y)) {
 			intake.curIntakeState = intakeState.POP;
 			tAngle = Constants.INTAKE_POT_POP;
 			topSpeed = Constants.ROLLER_TOP_POP;
@@ -143,11 +143,11 @@ public class T_Intake extends Command {
 
 		switch (intake.curIntakeState) {
 		case INTAKING:
-			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				speed = outtakeSpeed;
 				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
 				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
-			} else if (oi.getDriver().getRawButton(InputConstants.BTN_R1)) {
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
 				speed = intakeSpeed;
 				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
 				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
@@ -162,12 +162,12 @@ public class T_Intake extends Command {
 			break;
 		case POP:
 
-			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				intake.setTopRoller(topSpeed);
 				intake.setBotRoller(botSpeed);
 				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
 				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
-			} else if(oi.getDriver().getRawButton(InputConstants.BTN_R1)){
+			} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
 			} else {
@@ -179,11 +179,11 @@ public class T_Intake extends Command {
 			break;
 
 		case DEAD:
-			if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				speed = outtakeSpeed;
 				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
 				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
-			} else if (oi.getDriver().getRawButton(InputConstants.BTN_R1)) {
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
 				speed = intakeSpeed;
 				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
 				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
@@ -210,7 +210,7 @@ public class T_Intake extends Command {
 				isDUpPressed = false;
 				isDDownPressed = false;
 			}
-			if (oi.getOperator().getRawButton(InputConstants.BTN_L2)) {
+			if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)) {
 				RPMTrim = 0;
 			}
 
@@ -245,7 +245,7 @@ public class T_Intake extends Command {
 			}
 
 			if (readyToShoot) {
-				if (oi.getDriver().getRawButton(InputConstants.BTN_L1)) {
+				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 					intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
 					intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
 					readyToShoot = false;

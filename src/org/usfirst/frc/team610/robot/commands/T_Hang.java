@@ -2,7 +2,7 @@ package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
-import org.usfirst.frc.team610.robot.constants.InputConstants;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Hanger.servoPosition;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
@@ -50,30 +50,30 @@ public class T_Hang extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// Press Operator R2 to lock ratchet
-		if (oi.getOperator().getRawButton(InputConstants.BTN_R2)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_R2)) {
 			hanger.setRatchet(servoPosition.LOCKED);
 			intake.curIntakeState = intakeState.POP;
 		}
 		// Press Operator Back to lock ratchet
-		if (oi.getOperator().getRawButton(InputConstants.BTN_BACK)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_BACK)) {
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
 		// Press Operator L1 and R1 to extend
-		if (oi.getOperator().getRawButton(InputConstants.BTN_L1)
-				&& oi.getOperator().getRawButton(InputConstants.BTN_R1)) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1)
+				&& oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)) {
 			isExtending = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
 		// Press START to swap between manual and automatic
 		
-		if (oi.getOperator().getRawButton(InputConstants.BTN_START) && !isSTARTPressed) {
+		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_START) && !isSTARTPressed) {
 			isSTARTPressed = true;
 			manual = !manual;
 		}
 
-		if (!oi.getOperator().getRawButton(InputConstants.BTN_START)) {
+		if (!oi.getOperator().getRawButton(LogitechF310Constants.BTN_START)) {
 			isSTARTPressed = false;
 		}
 
@@ -103,7 +103,7 @@ public class T_Hang extends Command {
 		if (!manual && readyToPullUp) {
 
 			// if the lift is at the bottom, you can't go down
-			joyValue = oi.getOperator().getRawAxis(InputConstants.AXIS_LEFT_Y);
+			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			if(hanger.getEnc() > Constants.ENC_TOP_FINAL){
 				if (Math.abs(joyValue) > 0.05) {
 					hanger.setWinches(joyValue);
@@ -117,7 +117,7 @@ public class T_Hang extends Command {
 		} else if (manual) {
 
 			// if the lift is at the bottom, you can't go down
-			joyValue = oi.getOperator().getRawAxis(InputConstants.AXIS_LEFT_Y);
+			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			if (Math.abs(joyValue) > 0.05) {
 				hanger.setWinches(joyValue);
 			} else {
