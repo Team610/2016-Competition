@@ -121,17 +121,17 @@ public class Intake extends Subsystem {
 		OUT, IN
 	}
 
-	public void setPinballFlippers(servoPosition s) {
-		if (s == servoPosition.OUT) {
-			setRightServo(Constants.INTAKE_FLIPPER_SERVO_OUTA);
-			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_OUTB);
-		} else if (s == servoPosition.IN) {
-			setRightServo(Constants.INTAKE_FLIPPER_SERVO_INA);
-			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_INB);
-		}
-		flipperServoPos = s;
-
-	}
+//	public void setPinballFlippers(servoPosition s) {
+//		if (s == servoPosition.OUT) {
+//			setRightServo(Constants.INTAKE_FLIPPER_SERVO_OUTA);
+//			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_OUTB);
+//		} else if (s == servoPosition.IN) {
+//			setRightServo(Constants.INTAKE_FLIPPER_SERVO_INA);
+//			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_INB);
+//		}
+//		flipperServoPos = s;
+//
+//	}
 
 	public void setIntakePivot(double v) {
 		intakePivot.set(v);
