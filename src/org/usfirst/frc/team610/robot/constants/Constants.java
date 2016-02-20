@@ -32,8 +32,8 @@ public class Constants {
 	// public static double INTAKE_FLIPPER_SERVO_INB =
 	// prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 
-	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", -0.094);
-	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.86);
+	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.08);
+	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.88);
 	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
 	public static double INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
 	public static double INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
@@ -50,9 +50,9 @@ public class Constants {
 	public static double SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.125);
 
 	// -0.7000
-	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -5200); // change
+	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -4900); // change
 																					// please
-	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -2900); // change
+	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -1900); // change
 																					// please
 
 	public static void update() {
@@ -72,8 +72,8 @@ public class Constants {
 //		INTAKE_FLIPPER_SERVO_OUTB = prefs.getDouble(000"INTAKE_FLIPPER_SERVO_OUTB", 0.9);
 //		INTAKE_FLIPPER_SERVO_INB = prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 
-		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", -0.094);
-		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.86);
+		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.08);
+		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.88);
 		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
 		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
 		INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
@@ -89,9 +89,9 @@ public class Constants {
 		SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.481);
 		SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.125);
 
-		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -5200); // change
+		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -4900); // change
 																	// please
-		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -2900); // change
+		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -1900); // change
 																	// please
 	}
 

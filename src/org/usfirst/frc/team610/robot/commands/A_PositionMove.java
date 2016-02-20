@@ -29,6 +29,7 @@ public class A_PositionMove extends Command {
 	private double gyroLeftSpeed;
 	private boolean isFinished = false;
 
+	
 	// Angles
 	private double error;
 	private double lastError;
@@ -48,7 +49,7 @@ public class A_PositionMove extends Command {
 		// eg. requires(chassis);
 	}
 
-	public A_PositionMove(double distance, double angle) {
+	public A_PositionMove(double distance, double angle, double speedLimit) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
