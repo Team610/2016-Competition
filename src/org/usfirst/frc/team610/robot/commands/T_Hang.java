@@ -44,6 +44,7 @@ public class T_Hang extends Command {
 		manual = false;
 		hanger.resetEncoder();
 		counter = 0;
+		hanger.setWinches(0);
 
 	}
 
