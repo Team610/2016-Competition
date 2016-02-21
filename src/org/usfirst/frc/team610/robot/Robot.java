@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		drivetrain.resetSensors();
+		teleop.cancel();
 		auton.start();
 	}
 
@@ -57,11 +57,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		Scheduler.getInstance().removeAll();
+		auton.cancel();
 		teleop.start();
-	//	hangerTest.start();
 		sensor.start();
-//		LiveWindow.run();
 	}
 
 	public void teleopPeriodic() {

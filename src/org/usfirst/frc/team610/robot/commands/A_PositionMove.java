@@ -28,7 +28,7 @@ public class A_PositionMove extends Command {
 	private double gyroRightSpeed;
 	private double gyroLeftSpeed;
 	private boolean isFinished = false;
-
+	private double limit;
 	
 	// Angles
 	private double error;
@@ -45,17 +45,28 @@ public class A_PositionMove extends Command {
 		curLeftDistance = 0;
 
 		tAngle = -1;
+		this.limit = Integer.MAX_VALUE;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 	}
 
-	public A_PositionMove(double distance, double angle, double speedLimit) {
+	public A_PositionMove(double distance, double angle) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
 		curRightDistance = 0;
 		curLeftDistance = 0;
 		tAngle = angle;
+		this.limit = Integer.MAX_VALUE;
+	}
+	public A_PositionMove(double distance, double angle, double limit) {
+		tDistance = distance;
+		driveTrain = DriveTrain.getInstance();
+		driveTrain.resetSensors();
+		curRightDistance = 0;
+		curLeftDistance = 0;
+		tAngle = angle;
+		this.limit = limit;
 	}
 
 	// Called just before this Command runs the first time
@@ -70,6 +81,7 @@ public class A_PositionMove extends Command {
 		} else {
 			tAngle = driveTrain.getYaw();
 		}
+		isFinished = false;
 		
 	}
 
@@ -101,11 +113,29 @@ public class A_PositionMove extends Command {
 
 		rightSpeed += gyroRightSpeed;
 		leftSpeed -= gyroLeftSpeed;
-
+		
+//		if(rightSpeed > 1){
+//			leftSpeed -= rightSpeed - 1;
+//		}
+//		
+//		if(leftSpeed > 1){
+//			rightSpeed -= leftSpeed - 1;
+//		}
+		
+		if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
+			if(leftSpeed < 0 || rightSpeed < 0){
+				leftSpeed = -limit;
+				rightSpeed = - limit;
+			} else if(leftSpeed > 0 || rightSpeed > 0){
+				rightSpeed = limit;
+				leftSpeed = limit;
+			}
+		}
+		
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
 
-		if (Math.abs(encLeftError) < 2 && Math.abs(encRightError) < 1) {
+		if (Math.abs(encLeftError) < 1 && Math.abs(encRightError) < 1) {
 			count++;
 
 			if (count > 25) {

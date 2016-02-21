@@ -87,7 +87,7 @@ public class T_Hang extends Command {
 				curEnc = hanger.getEnc();
 
 				if (curEnc > 0) {
-					if (Math.abs(hanger.getEnc() - Constants.HANGER_ENC_TOP_HANG) > 25) {
+					if (Math.abs(hanger.getEnc() - Constants.HANGER_ENC_TOP_HANG) > 10) {
 						hanger.setWinches(-0.4);
 						
 					} else {

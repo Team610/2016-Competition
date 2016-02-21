@@ -1,13 +1,14 @@
 package org.usfirst.frc.team610.robot.commands;
 
-import org.omg.CORBA.ShortHolder;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
-import org.usfirst.frc.team610.robot.subsystems.Intake.servoPosition;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -62,6 +63,10 @@ public class T_Intake extends Command {
 	private double intakeSpeed;
 	private double tAngle;
 	private int popCounter = 0;
+	double potValue;
+	
+	private ArrayList <Double> potValues = new ArrayList <Double>();
+	private ArrayList <Double> sortedPotValues = new ArrayList <Double>();
 
 	public T_Intake() {
 		intake = Intake.getInstance();
@@ -76,28 +81,43 @@ public class T_Intake extends Command {
 		tSpeedTop = Constants.SHOOTER_TOP; // -3500
 		tSpeedBot = Constants.SHOOTER_BOT; // -4200
 
-		intake.curIntakeState = intakeState.DEAD;
+		intake.curIntakeState = intakeState.POP;
+		potValue = 0;
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		intake.curIntakeState = intakeState.POP;
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		SmartDashboard.putNumber("New Window Pot", intake.getPot());
-		
 
-		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X) && !isXPressed) {
-			Constants.update();
-			tSpeedTop = Constants.SHOOTER_TOP; // -3500
-			tSpeedBot = Constants.SHOOTER_BOT;
-			botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
-			topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
-			isXPressed = true;
-		} else {
-			isXPressed = false;
+		//Median Filter
+		if(potValues.size() > 4){
+			potValues.remove(potValues.size() - 1);
 		}
+		potValues.add(0, intake.getPot());
+		sortedPotValues = (ArrayList<Double>) potValues.clone();
+		Collections.sort(sortedPotValues);
+		if(potValues.size() > 3){
+			potValue = sortedPotValues.get(2);
+		}
+		SmartDashboard.putNumber("Sorted Pot Value", potValue);
+		
+		// if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X) &&
+		// !isXPressed) {
+		// Constants.update();
+		// tSpeedTop = Constants.SHOOTER_TOP; // -3500
+		// tSpeedBot = Constants.SHOOTER_BOT;
+		// botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
+		// topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
+		// isXPressed = true;
+		// } else {
+		// isXPressed = false;
+		// }
 		tSpeedBot = Constants.SHOOTER_BOT;
 		tSpeedTop = Constants.SHOOTER_TOP;
 		botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
@@ -129,7 +149,7 @@ public class T_Intake extends Command {
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X)) {
 			intake.curIntakeState = intakeState.SHOOTING;
-			//Plz god change this
+			// Plz god change this
 			tAngle = Constants.INTAKE_POT_SHOOTING + Constants.INTAKE_POT_OFFSET;
 			SmartDashboard.putString("State", "Shooting");
 		}
@@ -166,12 +186,12 @@ public class T_Intake extends Command {
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				intake.setTopRoller(topSpeed);
 				intake.setBotRoller(botSpeed);
-				popCounter ++;
-				if(popCounter > 5){
+				popCounter++;
+				if (popCounter > 5) {
 					intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
 					intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
 				}
-			} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
 			} else {
@@ -235,8 +255,7 @@ public class T_Intake extends Command {
 			SmartDashboard.putNumber("TopSpeed", topSpeed);
 			SmartDashboard.putNumber("BotSpeed", botSpeed);
 
-			
-			//0.1
+			// 0.1
 			if (Math.abs(intakePosError) < 0.1) {
 				intake.setTopRoller(topSpeed);
 				intake.setBotRoller(botSpeed);
@@ -247,9 +266,10 @@ public class T_Intake extends Command {
 			topLastError = topSpeedError;
 			botLastError = botSpeedError;
 
-			//if (Math.abs(topSpeedError) < 100 && Math.abs(botSpeedError) < 100) {
-				readyToShoot = true;
-			//}
+			// if (Math.abs(topSpeedError) < 100 && Math.abs(botSpeedError) <
+			// 100) {
+			readyToShoot = true;
+			// }
 
 			if (readyToShoot) {
 				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
@@ -269,40 +289,44 @@ public class T_Intake extends Command {
 			break;
 		}
 		// End of switch
-		intakePosError = intake.getPot() - tAngle;
+		intakePosError = potValue - tAngle;
 		if (!intake.curIntakeState.equals(intakeState.DEAD) && !intake.curIntakeState.equals(intakeState.POP)) {
-			intakePosError = intake.getPot() - tAngle;
+			intakePosError = potValue - tAngle;
 			intakePosDiffError = intakePosError - intakePosLastError;
+
 			intake.setIntakePivot(
 					intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 			intakePosLastError = intakePosError;
+
 		} else {
-			if(intake.curIntakeState.equals(intakeState.DEAD)){
-				if (Math.abs(intakePosError) > 0.1) {
-					intakePosError = intake.getPot() - tAngle;
+			if (intake.curIntakeState.equals(intakeState.DEAD)) {
+				if (Math.abs(intakePosError) > 0.05) {
+					intakePosError = potValue - tAngle;
 					intakePosDiffError = intakePosError - intakePosLastError;
-					intake.setIntakePivot(
-							intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
+					intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
+							+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 					intakePosLastError = intakePosError;
 				} else {
 					intake.setIntakePivot(0);
 				}
-			} else if (intake.curIntakeState.equals(intakeState.POP)){
-				if (Math.abs(intakePosError) > 0.1 ) {
-					intakePosError = intake.getPot() - tAngle;
+			} else if (intake.curIntakeState.equals(intakeState.POP)) {
+				if (Math.abs(intakePosError) > 0.05) {
+					intakePosError = potValue - tAngle;
 					intakePosDiffError = intakePosError - intakePosLastError;
-					intake.setIntakePivot(
-							intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
+					intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
+							+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 					intakePosLastError = intakePosError;
 				} else {
 					intake.setIntakePivot(0);
 				}
 			}
 		}
-		SmartDashboard.putNumber("Top RPMError", topSpeedError);
-		SmartDashboard.putNumber("Bot RPMError", botSpeedError);
+		// SmartDashboard.putNumber("Top RPMError", topSpeedError);
+		// SmartDashboard.putNumber("Bot RPMError", botSpeedError);
 		SmartDashboard.putNumber("Window Pot Error", intakePosError);
-		SmartDashboard.putNumber("WindowMotorPot", intake.getPot());
+		SmartDashboard.putNumber("WindowMotorPot", potValue);
+		SmartDashboard.putNumber("Window Power",
+				intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 
 	}
 

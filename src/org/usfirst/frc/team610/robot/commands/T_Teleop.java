@@ -14,6 +14,7 @@ public class T_Teleop extends CommandGroup {
     	addParallel(new T_Intake());
 //    	addParallel(new T_ShooterTest());
 //    	addParallel(new D_SensorReadings());
+//    	addParallel(new WindowTest());
         
     }
 }

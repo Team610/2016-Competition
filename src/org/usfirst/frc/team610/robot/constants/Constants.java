@@ -20,7 +20,7 @@ public class Constants {
 	public static double HANGER_RATCHET_OPEN = prefs.getDouble("HANGER_RATCHET_OPEN", 0.3);
 	public static double HANGER_WINCH_SPEED_UP = prefs.getDouble("HANGER_WINCH_SPEED_UP", 1);
 	public static double HANGER_ENC_TOP_HANG = prefs.getDouble("HANGER_ENC_TOP_HANG", 1725);
-	public static double HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 50);
+	public static double HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 10);
 
 	// Intake
 	// public static double INTAKE_FLIPPER_SERVO_OUTA =
@@ -32,11 +32,11 @@ public class Constants {
 	// public static double INTAKE_FLIPPER_SERVO_INB =
 	// prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 
-	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.08);
-	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.88);
-	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
-	public static double INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
-	public static double INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
+	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.00);
+	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.535);
+	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.567);
+	public static double INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.155);
+	public static double INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.160);
 
 	// Shooter
 	public static double INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);
@@ -55,6 +55,10 @@ public class Constants {
 	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -1900); // change
 																					// please
 
+	public static double AUTON_FIRST_MOVE = prefs.getDouble("AUTON_FIRST_MOVE", 180);
+	public static double AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);
+	public static double AUTON_SECOND_MOVE = prefs.getDouble("AUTON_SECOND_MOVE", 96);
+	
 	public static void update() {
 		// Drivetrain
 		DRIVETRAIN_PULSES_PER_INCH = prefs.getDouble("DRIVETRAIN_PULSES_PER_INCH", 97.1830985915493);
@@ -64,7 +68,7 @@ public class Constants {
 		HANGER_RATCHET_OPEN = prefs.getDouble("HANGER_RATCHET_OPEN", 0.3);
 		HANGER_WINCH_SPEED_UP = prefs.getDouble("HANGER_WINCH_SPEED_UP", 1);
 		HANGER_ENC_TOP_HANG = prefs.getDouble("HANGER_ENC_TOP_HANG", 1725);
-		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 20);
+		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 10);
 
 		// Intake
 //		INTAKE_FLIPPER_SERVO_OUTA = prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTA", 0.1);
@@ -72,11 +76,11 @@ public class Constants {
 //		INTAKE_FLIPPER_SERVO_OUTB = prefs.getDouble(000"INTAKE_FLIPPER_SERVO_OUTB", 0.9);
 //		INTAKE_FLIPPER_SERVO_INB = prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 
-		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.08);
-		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.88);
-		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.937);
-		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.136);
-		INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.166);
+		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.00);
+		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.535);
+		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.567);
+		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.155);
+		INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.160);
 
 		// Shooter
 		INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);
@@ -93,6 +97,12 @@ public class Constants {
 																	// please
 		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -1900); // change
 																	// please
+		AUTON_FIRST_MOVE = prefs.getDouble("AUTON_FIRST_MOVE", 180);
+		AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);
+		AUTON_SECOND_MOVE = prefs.getDouble("AUTON_SECOND_MOVE", 96);
+		
+		//Auton movements
+		
 	}
 
 }

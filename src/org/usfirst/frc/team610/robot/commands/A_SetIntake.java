@@ -1,5 +1,6 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,26 +16,31 @@ public class A_SetIntake extends Command {
 	
     public A_SetIntake(double speed) {
     	intake = Intake.getInstance();
-
     	this.speed = speed;
+    	this.time = 1;
     }
     public A_SetIntake(int time, double speed){
     	this.time = time;
     	this.speed = speed;
     	intake = Intake.getInstance();
-    	setTimeout(time);
+ 
 
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	setTimeout(time);
     	System.out.println("SetIntaking: " + speed);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	intake.setBothRollers(speed);
+    	if(speed < 0){
+    		intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
+    		intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

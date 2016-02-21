@@ -21,6 +21,7 @@ public class A_PositionLock extends Command {
 	private DriveTrain driveTrain;
 	private PIDController610 pidController;
 	private double angle = 0;
+	private double time;
 	
 	
 	
@@ -32,18 +33,19 @@ public class A_PositionLock extends Command {
     }
     public A_PositionLock(int time){
     	driveTrain = DriveTrain.getInstance();
-    	setTimeout(time);
+    	this.time = time;
     	tAngle = 0;
     }
     public A_PositionLock(int time, double angle){
     	driveTrain = DriveTrain.getInstance();
-    	setTimeout(time);
+    	this.time = time;
     	tAngle = angle;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	driveTrain.resetSensors();
+    	setTimeout(time);
     }
 
     // Called repeatedly when this Command is scheduled to run

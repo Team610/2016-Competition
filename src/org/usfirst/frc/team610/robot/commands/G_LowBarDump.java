@@ -1,6 +1,9 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import org.usfirst.frc.team610.robot.constants.Constants;
+import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
+import org.usfirst.frc.team610.robot.subsystems.NavX;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -17,10 +20,20 @@ public class G_LowBarDump extends CommandGroup {
     	// Sequential Outtake Ball in Courtyard
     	//
     	//
-    	addSequential(new A_PositionMove(-252));
-    	addSequential(new A_PositionLock(4, 45));
-    	addSequential(new A_PositionMove(-144));
-//    	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING));
+//    	NavX.getInstance().resetAngle();
+//    	DriveTrain.getInstance().resetSensors();
+    	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 5));
+    	addSequential(new A_PositionMove(190, 0, 0.8));
+    	addSequential(new A_PositionLock(2,53));
+    	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING, 3));
+    	addSequential(new A_PositionMove(96, 0, 1));
+    	addSequential(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));
+//    	addSequential(new A_PositionMove(-96, 0, 1));
+//    	addSequential(new A_PositionLock(2,127));
+//    	addParallel(new A_SetIntakePosition(Intake.intakeState.DEAD, 5));
+//    	addSequential(new A_PositionMove(180, 0, 1));
+//    	addSequential(new A_PositionLock(2,-20));
+  
     	
     	//addSequential(new A_SetIntake(-0.7));
     	
