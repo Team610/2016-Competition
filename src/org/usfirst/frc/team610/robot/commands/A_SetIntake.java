@@ -47,6 +47,9 @@ public class A_SetIntake extends Command {
     protected boolean isFinished() {
     	if(isTimedOut()){
     		intake.setBothRollers(0);
+
+    		intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
+    		intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
     	}
         return isTimedOut();
     }

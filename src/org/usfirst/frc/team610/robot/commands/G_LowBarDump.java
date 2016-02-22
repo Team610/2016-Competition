@@ -20,16 +20,20 @@ public class G_LowBarDump extends CommandGroup {
     	// Sequential Outtake Ball in Courtyard
     	//
     	//
-//    	NavX.getInstance().resetAngle();
-//    	DriveTrain.getInstance().resetSensors();
-    	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 5));
-    	addSequential(new A_PositionMove(190, 0, 0.8));
-    	addSequential(new A_PositionLock(2,53));
+    	NavX.getInstance().resetAngle();
+    	DriveTrain.getInstance().resetSensors();
+    	addParallel(new A_PositionLock(1, 0));
+    	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 1));
+    	//190 total
+    	addSequential(new A_PositionMove(190, 0, 0.6));
+    	addSequential(new A_PositionLock(2,55));
     	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING, 3));
-    	addSequential(new A_PositionMove(96, 0, 1));
+    	addSequential(new A_PositionMove(96, 0, 0.5));
     	addSequential(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));
-//    	addSequential(new A_PositionMove(-96, 0, 1));
-//    	addSequential(new A_PositionLock(2,127));
+    	addParallel(new A_SetIntakePosition(Intake.intakeState.POP, 3));
+    	addSequential(new A_PositionMove(-90, 0, 1));
+    	
+//    	addSequential(new A_PositionLock(3,127));
 //    	addParallel(new A_SetIntakePosition(Intake.intakeState.DEAD, 5));
 //    	addSequential(new A_PositionMove(180, 0, 1));
 //    	addSequential(new A_PositionLock(2,-20));

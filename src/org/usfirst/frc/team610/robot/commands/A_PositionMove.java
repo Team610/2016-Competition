@@ -57,7 +57,7 @@ public class A_PositionMove extends Command {
 		curRightDistance = 0;
 		curLeftDistance = 0;
 		tAngle = angle;
-		this.limit = Integer.MAX_VALUE;
+		this.limit = 1;
 	}
 	public A_PositionMove(double distance, double angle, double limit) {
 		tDistance = distance;
@@ -72,7 +72,7 @@ public class A_PositionMove extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		driveTrain.resetSensors();
-
+		count = 0;
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
 
@@ -82,6 +82,7 @@ public class A_PositionMove extends Command {
 			tAngle = driveTrain.getYaw();
 		}
 		isFinished = false;
+		setTimeout(5);
 		
 	}
 
@@ -97,6 +98,7 @@ public class A_PositionMove extends Command {
 		curRightDistance = driveTrain.getRightInches();
 		
 		error = tAngle - driveTrain.getYaw();
+		SmartDashboard.putNumber("Gyro Error", error);
 		differenceError = error - lastError;
 
 		gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
@@ -114,13 +116,13 @@ public class A_PositionMove extends Command {
 		rightSpeed += gyroRightSpeed;
 		leftSpeed -= gyroLeftSpeed;
 		
-//		if(rightSpeed > 1){
-//			leftSpeed -= rightSpeed - 1;
-//		}
-//		
-//		if(leftSpeed > 1){
-//			rightSpeed -= leftSpeed - 1;
-//		}
+		if(rightSpeed > limit){
+			leftSpeed -= rightSpeed - limit;
+		}
+		
+		if(leftSpeed > limit){
+			rightSpeed -= leftSpeed - limit;
+		}
 		
 		if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
 			if(leftSpeed < 0 || rightSpeed < 0){
@@ -135,7 +137,7 @@ public class A_PositionMove extends Command {
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
 
-		if (Math.abs(encLeftError) < 1 && Math.abs(encRightError) < 1) {
+		if ((Math.abs(encLeftError) + Math.abs(encRightError))/2 < 0.1) {
 			count++;
 
 			if (count > 25) {
@@ -144,6 +146,8 @@ public class A_PositionMove extends Command {
 				driveTrain.setRight(0);
 				isFinished = true;
 			}
+		} else {
+			count = 0;
 		}
 		lastError = error;
 

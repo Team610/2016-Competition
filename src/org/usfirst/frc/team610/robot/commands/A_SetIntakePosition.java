@@ -54,7 +54,7 @@ public class A_SetIntakePosition extends Command {
 			tAngle = Constants.INTAKE_POT_DEAD + Constants.INTAKE_POT_OFFSET;
 			break;
 		case INTAKING:
-			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET + 0.05;
+			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET + 0.09;
 			break;
 		case POP:
 			tAngle = Constants.INTAKE_POT_POP + Constants.INTAKE_POT_OFFSET;
