@@ -22,10 +22,11 @@ public class G_LowBarDump extends CommandGroup {
     	//
     	NavX.getInstance().resetAngle();
     	DriveTrain.getInstance().resetSensors();
-    	addParallel(new A_PositionLock(1, 0));
+    	addParallel(new A_ResetTurn(1));
     	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 1));
     	//190 total
     	addSequential(new A_PositionMove(190, 0, 0.6));
+    	addSequential(new A_ResetTurn(0.5));
     	addSequential(new A_PositionLock(2,55));
     	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING, 3));
     	addSequential(new A_PositionMove(96, 0, 0.5));
