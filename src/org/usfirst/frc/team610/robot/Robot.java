@@ -2,7 +2,7 @@
 package org.usfirst.frc.team610.robot;
 
 import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
-import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
+import org.usfirst.frc.team610.robot.commands.G_Cheval;
 import org.usfirst.frc.team610.robot.commands.T_Teleop;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 
 		intake = Intake.getInstance();
-		auton = new G_LowBarDump();
+		auton = new G_Cheval(1);
 		drivetrain = DriveTrain.getInstance();
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();

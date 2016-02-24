@@ -16,9 +16,8 @@ public class G_Static extends CommandGroup {
     public  G_Static(int mode) {
     	
     	DriveTrain.getInstance().resetEncoders();
-    	NavX.getInstance().resetAngle();
-    	addSequential(new A_PositionMove(120, 0, 0.8));
-    	addSequential(new A_ResetTurn(0.5));
+    	addSequential(new A_PositionMove(140, 0, 0.55));
+    	addSequential(new A_ResetTurn(3));
     	addSequential(new A_SetIntakePosition(intakeState.INTAKING));
     	
     	switch(mode){

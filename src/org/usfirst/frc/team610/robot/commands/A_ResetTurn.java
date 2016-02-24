@@ -11,20 +11,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class A_ResetTurn extends Command {
 
-	DriveTrain driveTrain;
-	double differenceError;
-	double lastError;
-	double tAngle;
-	double time;
-	double error;
-	double diffError;
-	double leftSpeed;
-	double rightSpeed;
+	private DriveTrain driveTrain;
+	private double differenceError;
+	private double lastError;
+	private double tAngle;
+	private double time;
+	private double error;
+	private double diffError;
+	private double leftSpeed;
+	private double rightSpeed;
 	
 	
     public A_ResetTurn(double time) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	driveTrain = DriveTrain.getInstance();
     	this.time = time;
     }
 
@@ -45,7 +46,6 @@ public class A_ResetTurn extends Command {
 
     	driveTrain.setLeft(leftSpeed);
     	driveTrain.setRight(-rightSpeed);
-    	
     	
     	lastError = error;	
     }

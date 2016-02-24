@@ -44,10 +44,10 @@ public class Constants {
 	public static double INTAKE_TOP_POP_POWER = prefs.getDouble("INTAKE_TOP_POP_POWER", -0.65);
 	public static double INTAKE_BOT_POP_POWER = prefs.getDouble("INTAKE_BOT_POP_POWER", -0.2);
 	// 0.339
-	public static double SHOOTER_SERVO_RIGHT_OUT = prefs.getDouble("SHOOTER_SERVO_RIGHT_OUT", 0.5); // 65
-	public static double SHOOTER_SERVO_RIGHT_IN = prefs.getDouble("SHOOTER_SERVO_RIGHT_IN", 0.85);
-	public static double SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.481);
-	public static double SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.125);
+	public static double SHOOTER_SERVO_RIGHT_OUT = prefs.getDouble("SHOOTER_SERVO_RIGHT_OUT", 0.2); // 65
+	public static double SHOOTER_SERVO_RIGHT_IN = prefs.getDouble("SHOOTER_SERVO_RIGHT_IN", 0.58);
+	public static double SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.52);
+	public static double SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.15);
 
 	// -0.7000
 	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -4900); // change
@@ -88,10 +88,10 @@ public class Constants {
 		INTAKE_TOP_POP_POWER = prefs.getDouble("INTAKE_TOP_POP_POWER", -0.65);
 		INTAKE_BOT_POP_POWER = prefs.getDouble("INTAKE_BOT_POP_POWER", -0.1);
 
-		SHOOTER_SERVO_RIGHT_OUT = prefs.getDouble("SHOOTER_SERVO_RIGHT_OUT", 0.5); // 65
-		SHOOTER_SERVO_RIGHT_IN = prefs.getDouble("SHOOTER_SERVO_RIGHT_IN", 0.85);
-		SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.481);
-		SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.125);
+		SHOOTER_SERVO_RIGHT_OUT = prefs.getDouble("SHOOTER_SERVO_RIGHT_OUT", 0.2); // 65
+		SHOOTER_SERVO_RIGHT_IN = prefs.getDouble("SHOOTER_SERVO_RIGHT_IN", 0.58);
+		SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.52);
+		SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.15);
 
 		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -4900); // change
 																	// please
