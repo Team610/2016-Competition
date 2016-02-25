@@ -3,10 +3,8 @@ package org.usfirst.frc.team610.robot.commands;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
-import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -86,8 +84,6 @@ public class A_SetIntakePosition extends Command {
 				isFinished = true;
 			}
 		}
-		SmartDashboard.putBoolean("isFinished", isFinished);
-		SmartDashboard.putBoolean("Timed Out", isTimedOut());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

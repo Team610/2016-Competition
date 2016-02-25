@@ -17,7 +17,6 @@ public class A_ResetTurn extends Command {
 	private double tAngle;
 	private double time;
 	private double error;
-	private double diffError;
 	private double leftSpeed;
 	private double rightSpeed;
 	
@@ -38,7 +37,7 @@ public class A_ResetTurn extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	error = driveTrain.getYaw() - tAngle;
-    	SmartDashboard.putNumber("Angle",driveTrain.getYaw() );
+    	SmartDashboard.putNumber("GyroAngle ",driveTrain.getYaw() );
     	differenceError = error - lastError;
     		
     	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;

@@ -22,16 +22,6 @@ public class Constants {
 	public static double HANGER_ENC_TOP_HANG = prefs.getDouble("HANGER_ENC_TOP_HANG", 1725);
 	public static double HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 10);
 
-	// Intake
-	// public static double INTAKE_FLIPPER_SERVO_OUTA =
-	// prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTA", 0.1);
-	// public static double INTAKE_FLIPPER_SERVO_INA =
-	// prefs.getDouble("INTAKE_FLIPPER_SERVO_INA", 0.8);
-	// public static double INTAKE_FLIPPER_SERVO_OUTB =
-	// prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTB", 0.9);
-	// public static double INTAKE_FLIPPER_SERVO_INB =
-	// prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
-
 	public static double INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.00);
 	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.535);
 	public static double INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.567);
@@ -69,12 +59,6 @@ public class Constants {
 		HANGER_WINCH_SPEED_UP = prefs.getDouble("HANGER_WINCH_SPEED_UP", 1);
 		HANGER_ENC_TOP_HANG = prefs.getDouble("HANGER_ENC_TOP_HANG", 1725);
 		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", 10);
-
-		// Intake
-//		INTAKE_FLIPPER_SERVO_OUTA = prefs.getDouble("INTAKE_FLIPPER_SERVO_OUTA", 0.1);
-//		INTAKE_FLIPPER_SERVO_INA = prefs.getDouble("INTAKE_FLIPPER_SERVO_INA", 0.8);
-//		INTAKE_FLIPPER_SERVO_OUTB = prefs.getDouble(000"INTAKE_FLIPPER_SERVO_OUTB", 0.9);
-//		INTAKE_FLIPPER_SERVO_INB = prefs.getDouble("INTAKE_FLIPPER_SERVO_INB", 0.2);
 
 		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0.00);
 		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.535);

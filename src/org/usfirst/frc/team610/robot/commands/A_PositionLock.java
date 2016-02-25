@@ -3,9 +3,7 @@ package org.usfirst.frc.team610.robot.commands;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.PIDController610;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -19,8 +17,6 @@ public class A_PositionLock extends Command {
 	private double differenceError;
 	private double tAngle;
 	private DriveTrain driveTrain;
-	private PIDController610 pidController;
-	private double angle = 0;
 	private double time;
 	private boolean isFinished;
 	private int tick;
@@ -55,7 +51,6 @@ public class A_PositionLock extends Command {
     protected void execute() {
 
     	error = driveTrain.getYaw() - tAngle;
-    	SmartDashboard.putNumber("Angle",driveTrain.getYaw() );
     	differenceError = error - lastError;
     	
     	

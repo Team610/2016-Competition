@@ -3,7 +3,10 @@ package org.usfirst.frc.team610.robot;
 
 import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
 import org.usfirst.frc.team610.robot.commands.G_Cheval;
+import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
+import org.usfirst.frc.team610.robot.commands.G_Static;
 import org.usfirst.frc.team610.robot.commands.T_Teleop;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
@@ -23,32 +26,52 @@ public class Robot extends IterativeRobot {
 	Intake intake;
 	DriveTrain drivetrain;
 	NavX navx;
-
+	OI oi;
+	int mode;
 	public void robotInit() {
-
+		oi = OI.getInstance();
 		intake = Intake.getInstance();
-		auton = new G_Cheval(1);
 		drivetrain = DriveTrain.getInstance();
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();
-	//	hangerTest = new T_HangerTester();
 	}
 
 	public void disabledInit() {
-	//	sensor.start();
+		teleop.cancel();
+		auton.cancel();
+		sensor.start();
 	}
 
 	public void disabledPeriodic() {
-		SmartDashboard.putNumber("TOP RPM", intake.getTopSpeed());
-		SmartDashboard.putNumber("BOT RPM", intake.getBotSpeed());
-		SmartDashboard.putNumber("TOP PERIOD", intake.getTopPeriod());
-		SmartDashboard.putNumber("BOT PERIOD", intake.getBotPeriod());
-		SmartDashboard.putNumber("Pot", intake.getPot());
+		SmartDashboard.putNumber("", intake.getPot());
+		
+		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_A)){
+			mode = 1;
+		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_B)){
+			mode = 2;
+		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)){
+			mode = 3;
+		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_Y)){
+			mode = 4;
+		}
+		
+		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
+			auton = new G_Cheval(mode);
+			SmartDashboard.putString("Auton Mode: ", "Cheval_" + mode);
+		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+			auton = new G_Static(mode);
+			SmartDashboard.putString("Auton Mode: ", "Static_" + mode);
+		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L2)){
+			auton = new G_LowBarDump();
+			SmartDashboard.putString("Auton Mode: ", "LowBarDump");
+		}
+		
 		Scheduler.getInstance().run();
 	}
 
 	public void autonomousInit() {
 		teleop.cancel();
+		sensor.start();
 		auton.start();
 	}
 

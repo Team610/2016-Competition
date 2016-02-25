@@ -19,32 +19,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class T_Intake extends Command {
 	private Intake intake;
 	private OI oi;
-	private double intakePotShootConstant;
-	private double n = 0;
-	private double intakePosError, shooterTopError, shooterBotError;
-	private double intakePosKp = 0.01;
-	private boolean isShooting;
+	private double intakePosError;
 	private boolean readyToShoot;
-	private double rpmError = 0;
-	private double topDiff, botDiff;
 	private double speed;
-	private boolean isR1Pressed = false;
-	private boolean isBPressed = false;
-	private boolean isR2Pressed = false;
-	private boolean isL1Pressed = false;
-	private boolean isL2Pressed = false;
-	private boolean isYPressed = false;
 	private boolean isDUpPressed = false;
 	private boolean isDDownPressed = false;
-	private boolean isDRightPressed = false;
-	private boolean isXPressed = false;
 	private double outtakeSpeed = -0.65;
-	private double outtakeBotSpeed = -.1;
 	private int pov;
-	private int deadCounter, shootCounter;
 	private double botMotorSpeed;
 	private double topMotorSpeed;
-
 	private double tSpeedBot;
 	private double tSpeedTop;
 	private double topSpeedError;
@@ -57,7 +40,6 @@ public class T_Intake extends Command {
 	private double botLastError = 0;
 
 	private double intakePosLastError = 0;
-	private double intakePosSumError = 0;
 	private double RPMTrim = 0;
 	private double intakePosDiffError;
 	private double intakeSpeed;
@@ -71,13 +53,10 @@ public class T_Intake extends Command {
 	public T_Intake() {
 		intake = Intake.getInstance();
 		oi = OI.getInstance();
-		isShooting = false;
-		intakePotShootConstant = 0.850;
 		readyToShoot = false;
 		topSpeed = 0;
 		botSpeed = 0;
 		speed = 0;
-		deadCounter = 0;
 		tSpeedTop = Constants.SHOOTER_TOP; // -3500
 		tSpeedBot = Constants.SHOOTER_BOT; // -4200
 
@@ -88,12 +67,12 @@ public class T_Intake extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		intake.curIntakeState = intakeState.POP;
+		tAngle = Constants.INTAKE_POT_POP;
 		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("New Window Pot", intake.getPot());
 
 		//Median Filter
 		if(potValues.size() > 4){
@@ -105,19 +84,8 @@ public class T_Intake extends Command {
 		if(potValues.size() > 3){
 			potValue = sortedPotValues.get(2);
 		}
-		SmartDashboard.putNumber("Sorted Pot Value", potValue);
 		
-		// if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X) &&
-		// !isXPressed) {
-		// Constants.update();
-		// tSpeedTop = Constants.SHOOTER_TOP; // -3500
-		// tSpeedBot = Constants.SHOOTER_BOT;
-		// botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
-		// topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
-		// isXPressed = true;
-		// } else {
-		// isXPressed = false;
-		// }
+		
 		tSpeedBot = Constants.SHOOTER_BOT;
 		tSpeedTop = Constants.SHOOTER_TOP;
 		botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
@@ -129,9 +97,7 @@ public class T_Intake extends Command {
 		// A for dead
 		// X for shooting
 		// Y for Pop
-		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
-		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
-		SmartDashboard.putNumber("Pot", intake.getPot());
+
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			intake.curIntakeState = intakeState.INTAKING;
 			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET;
@@ -160,6 +126,13 @@ public class T_Intake extends Command {
 			botSpeed = Constants.INTAKE_BOT_POP_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 			SmartDashboard.putString("State", "Pop");
+		}
+		if(oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)){
+			intake.curIntakeState = intakeState.INTAKING;
+			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET + 0.09;
+			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
+			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
+			SmartDashboard.putString("State", "Intaking PLUS");
 		}
 
 		switch (intake.curIntakeState) {
@@ -239,8 +212,6 @@ public class T_Intake extends Command {
 				RPMTrim = 0;
 			}
 
-			shootCounter = 0;
-
 			topSpeedError = tSpeedTop + intake.getTopSpeed();
 			botSpeedError = tSpeedBot + intake.getBotSpeed();
 
@@ -252,8 +223,6 @@ public class T_Intake extends Command {
 			botSpeed = botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp
 					- botSpeedErrDiff * PIDConstants.INTAKE_SHOOT_Kd;
 
-			SmartDashboard.putNumber("TopSpeed", topSpeed);
-			SmartDashboard.putNumber("BotSpeed", botSpeed);
 
 			// 0.1
 			if (Math.abs(intakePosError) < 0.1) {
@@ -289,6 +258,7 @@ public class T_Intake extends Command {
 			break;
 		}
 		// End of switch
+		
 		intakePosError = potValue - tAngle;
 		if (!intake.curIntakeState.equals(intakeState.DEAD) && !intake.curIntakeState.equals(intakeState.POP)) {
 			intakePosError = potValue - tAngle;
@@ -321,12 +291,6 @@ public class T_Intake extends Command {
 				}
 			}
 		}
-		// SmartDashboard.putNumber("Top RPMError", topSpeedError);
-		// SmartDashboard.putNumber("Bot RPMError", botSpeedError);
-		SmartDashboard.putNumber("Window Pot Error", intakePosError);
-		SmartDashboard.putNumber("WindowMotorPot", potValue);
-		SmartDashboard.putNumber("Window Power",
-				intakePosError * PIDConstants.INTAKE_POS_Kp + intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
 
 	}
 

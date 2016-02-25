@@ -4,7 +4,6 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Moves, using PID, to a certain distance in inches.
@@ -88,17 +87,11 @@ public class A_PositionMove extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("GyroNew", driveTrain.getYaw());
-		SmartDashboard.putNumber("LeftEncoderNew", driveTrain.getLeftInches());
-		SmartDashboard.putNumber("RightEncoderNew", driveTrain.getRightInches());
-
-		
 
 		curLeftDistance = driveTrain.getLeftInches();
 		curRightDistance = driveTrain.getRightInches();
 		
 		error = tAngle - driveTrain.getYaw();
-		SmartDashboard.putNumber("Gyro Error", error);
 		differenceError = error - lastError;
 
 		gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;

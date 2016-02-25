@@ -36,9 +36,10 @@ public class D_SensorReadings extends Command {
     // Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 
-    	SmartDashboard.putNumber("Window Pot", intake.getPot());
-		
-//    	
+    	SmartDashboard.putNumber("ClawPot: ", intake.getPot());
+		SmartDashboard.putNumber("GyroAngle: ", navx.getAngle());
+		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
+		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -7,7 +7,6 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -16,27 +15,21 @@ public class T_KajDrive extends Command {
 
 	private DriveTrain driveTrain;
 	private OI oi;
-	private double counter;
 	private double tRightDistance;
 	private double curLeftDistance;
 	private double curRightDistance;
 	private double encLeftError;
 	private double encRightError;
-	private double rightSpeed;
-	private double leftSpeed;
 	private double lastEncLeftError;
 	private double lastEncRightError;
 	private double leftErrorDistance;
 	private double rightErrorDistance;
-	private double gyroRightSpeed;
-	private double gyroLeftSpeed;
 	private int pov;
 	private double tLeftDistance;
 
 	// Angles
 	
 	private boolean isDPressed = false;
-	private boolean isDDownPressed = false;
 	private boolean posLock;
 	private boolean isPovPressed = false;
 
@@ -44,7 +37,6 @@ public class T_KajDrive extends Command {
 	public T_KajDrive() {
 
 		driveTrain = DriveTrain.getInstance();
-		counter = 0;
 		oi = OI.getInstance();
 		tRightDistance = 0;
 		tLeftDistance = 0;

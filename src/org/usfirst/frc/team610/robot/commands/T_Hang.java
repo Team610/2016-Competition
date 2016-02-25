@@ -18,14 +18,12 @@ public class T_Hang extends Command {
 	private Hanger hanger;
 	private Intake intake;
 	private OI oi;
-	private boolean isExtending, readyToPullUp, isXPressed;
+	private boolean isExtending, readyToPullUp;
 	private boolean isSTARTPressed;
 	private boolean manual;
 	private int counter;
 	private double joyValue;
 	private double curEnc;
-	private double lastEnc;
-	private double encError;
 
 	public T_Hang() {
 		// Use requires() here to declare subsystem dependencies
@@ -39,7 +37,6 @@ public class T_Hang extends Command {
 	protected void initialize() {
 		isExtending = false;
 		readyToPullUp = false;
-		isXPressed = false;
 		isSTARTPressed = false;
 		manual = false;
 		hanger.resetEncoder();
