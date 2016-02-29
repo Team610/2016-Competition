@@ -17,6 +17,7 @@ public class NavX extends Subsystem {
 	public final int NUM_ROBORIO_ONBOARD_DIGIO_PINS = 10;
 	public final int NUM_ROBORIO_ONBOARD_PWM_PINS = 10;
 
+	//Get static instance of NavX
 	public static NavX getInstance() {
 		if (inst == null) {
 
@@ -40,13 +41,16 @@ public class NavX extends Subsystem {
 
 	}
 
+	
 	public double getPitch() {
 		return navx.getPitch();
 	}
 
+	//Reset navX yaw
 	public void resetAngle() {
 		navx.zeroYaw();
 	}
+	
 
 	public enum PinType {
 		DigitalIO, PWM
