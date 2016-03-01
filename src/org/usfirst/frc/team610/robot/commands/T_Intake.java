@@ -220,21 +220,21 @@ public class T_Intake extends Command {
 		case SHOOTING:
 			
 			//RPM trim with Operator D-Pad
-			if ((pov == 0 || pov == 45 || pov == 315) && !isDPressed) {
-				RPMTrim += 50;
-				isDPressed = true;
-
-			} else if ((pov == 180 || pov == 135 || pov == 225) && !isDDownPressed) {
-				RPMTrim -= 50;
-				isDPressed = true;
-			}
-
-			if (pov == -1) {
-				isDPressed = false;
-			}
-			if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)) {
-				RPMTrim = 0;
-			}
+//			if ((pov == 0 || pov == 45 || pov == 315) && !isDPressed) {
+//				RPMTrim += 50;
+//				isDPressed = true;
+//
+//			} else if ((pov == 180 || pov == 135 || pov == 225) && !isDDownPressed) {
+//				RPMTrim -= 50;
+//				isDPressed = true;
+//			}
+//
+//			if (pov == -1) {
+//				isDPressed = false;
+//			}
+//			if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)) {
+//				RPMTrim = 0;
+//			}
 
 			//Activiate PID for hang shot!!!!
 			topSpeedError = tSpeedTop + intake.getTopSpeed();

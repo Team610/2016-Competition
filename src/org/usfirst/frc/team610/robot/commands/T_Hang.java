@@ -84,9 +84,8 @@ public class T_Hang extends Command {
 				curEnc = hanger.getEnc();
 
 				if (curEnc > 0) {
-					if (Math.abs(hanger.getEnc() - Constants.HANGER_ENC_TOP_HANG) > 10) {
+					if (Math.abs(hanger.getEnc() - Constants.HANGER_ENC_TOP_HANG) > 5) {
 						hanger.setWinches(-0.4);
-						
 					} else {
 						hanger.setWinches(0);
 						isExtending = false;
@@ -113,8 +112,7 @@ public class T_Hang extends Command {
 			}
 		
 		} else if (manual) {
-
-			// if the lift is at the bottom, you can't go down
+			
 			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			if (Math.abs(joyValue) > 0.05) {
 				hanger.setWinches(joyValue);
@@ -122,8 +120,6 @@ public class T_Hang extends Command {
 				hanger.setWinches(0);
 			}
 		}
-
-		
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
