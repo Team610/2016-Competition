@@ -1,13 +1,10 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
-import java.util.ArrayList;
-
-import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,12 +15,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
 
 	private static Intake instance;
+	private DigitalInput optical;
 	private Victor topRoller, botRoller, intakePivot;
-	private Servo leftFeeder, rightFeeder;
+	private Victor leftFeeder, rightFeeder;
 	public servoPosition flipperServoPos;
 	public intakeState curIntakeState;
 	private AnalogPotentiometer intakePot;
-	private ArrayList<Double> topRollers, botRollers;
 	double RPMfactor;
 	private double topPeriod;
 	private double botPeriod;
@@ -41,13 +38,11 @@ public class Intake extends Subsystem {
 	}
 
 	private Intake() {
-		topRollers = new ArrayList<Double>();
-		botRollers = new ArrayList<Double>();
 		RPMfactor = 60;// CHANGE
 		topRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_TOP);
 		botRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_BOT);
-		leftFeeder = new Servo(ElectricalConstants.INTAKE_FEEDER_LEFTSERVO);
-		rightFeeder = new Servo(ElectricalConstants.INTAKE_FEEDER_RIGHTSERVO);
+		leftFeeder = new Victor(ElectricalConstants.INTAKE_FEEDER_LEFT);
+		rightFeeder = new Victor(ElectricalConstants.INTAKE_FEEDER_RIGHT);
 		intakePivot = new Victor(ElectricalConstants.INTAKE_PIVOT);
 		intakePot = new AnalogPotentiometer(ElectricalConstants.INTAKE_POT);
 		optTopCounter = new Counter(ElectricalConstants.OPTICAL_TOP);
@@ -64,6 +59,7 @@ public class Intake extends Subsystem {
 		optBotCounter.reset();
 		topPeriod = Double.POSITIVE_INFINITY;
 		botPeriod = Double.POSITIVE_INFINITY;
+		optical = new DigitalInput(ElectricalConstants.OPTICAL_INTAKE);
 
 	}
 
@@ -121,34 +117,19 @@ public class Intake extends Subsystem {
 		OUT, IN
 	}
 
-//	public void setPinballFlippers(servoPosition s) {
-//		if (s == servoPosition.OUT) {
-//			setRightServo(Constants.INTAKE_FLIPPER_SERVO_OUTA);
-//			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_OUTB);
-//		} else if (s == servoPosition.IN) {
-//			setRightServo(Constants.INTAKE_FLIPPER_SERVO_INA);
-//			setLeftServo(Constants.INTAKE_FLIPPER_SERVO_INB);
-//		}
-//		flipperServoPos = s;
-//
-//	}
-
+	public boolean getOptical(){
+		return optical.get();
+	}
+	
 	public void setIntakePivot(double v) {
 		intakePivot.set(v);
 	}
-
-	public void setServos(double value) {
-		leftFeeder.set(value);
-		rightFeeder.set(value);
+	
+	public void setFeeder(double speed){
+		rightFeeder.set(speed);
+		leftFeeder.set(speed);
 	}
 
-	public void setRightServo(double value) {
-		rightFeeder.set(value);
-	}
-
-	public void setLeftServo(double value) {
-		leftFeeder.set(value);
-	}
 
 	// Flip in Code or Electrically?
 	public void setBothRollers(double v) {

@@ -155,16 +155,15 @@ public class T_Intake extends Command {
 			//Press nothing to stop
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				speed = outtakeSpeed;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
-			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
+				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+			} 
+			//Only intake if there's no ball
+			else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
 				speed = intakeSpeed;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
 			} else {
 				speed = 0;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(0);
 			}
 
 			intake.setBothRollers(speed);
@@ -181,16 +180,17 @@ public class T_Intake extends Command {
 				popCounter++;
 				//Wait 5 ticks to shoot
 				if (popCounter > 5) {
-					intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
-					intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
+					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
 				}
-			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
+			} 
+			//You can only intake if there's no ball
+			else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
+				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
 			} else {
 				popCounter = 0;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(0);
 				intake.setTopRoller(0);
 				intake.setBotRoller(0);
 			}
@@ -202,16 +202,13 @@ public class T_Intake extends Command {
 			//Press nothing to stop
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				speed = outtakeSpeed;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
-			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)) {
+				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
 				speed = intakeSpeed;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
 			} else {
 				speed = 0;
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(0);
 			}
 
 			intake.setBothRollers(speed);
@@ -270,17 +267,14 @@ public class T_Intake extends Command {
 			//If we are ready to shoot, press L1 to shoot!!!!!
 			if (readyToShoot) {
 				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
-					intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
-					intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
+					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
 					readyToShoot = false;
 				} else {
-					intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN - 0.05);
-					intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN + 0.05);
+					intake.setFeeder(0);
 				}
 
 			} else {
-				intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-				intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+				intake.setFeeder(0);
 			}
 			SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
 			break;

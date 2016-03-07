@@ -1,5 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
+import javax.security.auth.login.Configuration;
+
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 
@@ -38,8 +40,9 @@ public class A_SetIntake extends Command {
     protected void execute() {
     	intake.setBothRollers(speed);
     	if(speed < 0){
-    		intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_OUT);
-    		intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_OUT);
+    		intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+    	} else if(speed > 0){
+    		intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
     	}
     }
 
@@ -47,9 +50,7 @@ public class A_SetIntake extends Command {
     protected boolean isFinished() {
     	if(isTimedOut()){
     		intake.setBothRollers(0);
-
-    		intake.setRightServo(Constants.SHOOTER_SERVO_RIGHT_IN);
-    		intake.setLeftServo(Constants.SHOOTER_SERVO_LEFT_IN);
+    		intake.setFeeder(0);
     	}
         return isTimedOut();
     }
