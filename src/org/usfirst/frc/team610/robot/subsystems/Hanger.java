@@ -20,6 +20,8 @@ public class Hanger extends Subsystem {
 	static Hanger inst;
 	// Victors for the two winch motors
 	private Victor winch1, winch2;
+	
+	public boolean isHanging;
 	// NavX, to use extra PWM ports
 	private NavX navx;
 	// Encoder attached to lift
@@ -40,6 +42,7 @@ public class Hanger extends Subsystem {
 
 	private Hanger() {
 		navx = NavX.getInstance();
+		isHanging = false;
 		liftEnc = new Encoder(ElectricalConstants.ENCODER_LIFT_A, ElectricalConstants.ENCODER_LIFT_B);
 
 		winch1 = new Victor(NavX.getInstance().getChannelFromPin(PinType.PWM, ElectricalConstants.LIFT_WINCHA_NAVX));
@@ -53,6 +56,9 @@ public class Hanger extends Subsystem {
 		liftEnc.reset();
 	}
 
+	public void hangingMode(boolean b){
+		isHanging = b;
+	}
 	// GETTERS
 
 	public double getEnc() {

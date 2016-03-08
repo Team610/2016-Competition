@@ -7,6 +7,7 @@ import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
+import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
 
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class T_Intake extends Command {
 	private Intake intake;
+	private Hanger hanger;
 	private OI oi;
 	
 	private double intakePosError;
@@ -55,6 +57,7 @@ public class T_Intake extends Command {
 	private ArrayList <Double> sortedPotValues = new ArrayList <Double>();
 
 	public T_Intake() {
+		hanger = Hanger.getInstance();
 		intake = Intake.getInstance();
 		oi = OI.getInstance();
 		readyToShoot = false;
@@ -158,7 +161,8 @@ public class T_Intake extends Command {
 				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
 			} 
 			//Only intake if there's no ball
-			else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
+			//Took out optical check, won't be able to adjust ball if doesn't go in correctly 
+			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
 				speed = intakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
 			} else {
@@ -184,7 +188,7 @@ public class T_Intake extends Command {
 				}
 			} 
 			//You can only intake if there's no ball
-			else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
+			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical())  || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
@@ -203,7 +207,7 @@ public class T_Intake extends Command {
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				speed = outtakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
-			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) {
+			} else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
 				speed = intakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
 			} else {
@@ -234,6 +238,12 @@ public class T_Intake extends Command {
 //			}
 
 			//Activiate PID for hang shot!!!!
+			
+			if(hanger.isHanging){
+				// Use Hangshot rpms etc
+			}else{
+				//Use normal shoot 
+			}
 			topSpeedError = tSpeedTop + intake.getTopSpeed();
 			botSpeedError = tSpeedBot + intake.getBotSpeed();
 

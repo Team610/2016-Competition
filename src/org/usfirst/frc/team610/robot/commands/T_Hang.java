@@ -61,6 +61,7 @@ public class T_Hang extends Command {
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1)
 				&& oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)) {
 			isExtending = true;
+			hanger.isHanging = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
 
@@ -77,6 +78,8 @@ public class T_Hang extends Command {
 
 
 		if (isExtending) {
+			hanger.isHanging = true;
+			
 			if (counter < 10) {
 				hanger.setWinches(0.15);
 				counter++;
@@ -101,6 +104,7 @@ public class T_Hang extends Command {
 
 			// if the lift is at the bottom, you can't go down
 			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
+			
 			if(hanger.getEnc() > Constants.HANGER_ENC_TOP_FINAL){
 				if (Math.abs(joyValue) > 0.05) {
 					hanger.setWinches(joyValue);
@@ -113,6 +117,7 @@ public class T_Hang extends Command {
 		
 		} else if (manual) {
 			
+			hanger.isHanging = true; 
 			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			if (Math.abs(joyValue) > 0.05) {
 				hanger.setWinches(joyValue);
