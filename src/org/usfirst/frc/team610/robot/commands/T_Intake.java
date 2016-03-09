@@ -241,6 +241,7 @@ public class T_Intake extends Command {
 			
 			if(hanger.isHanging){
 				// Use Hangshot rpms etc
+				// Maybe just use flat motor values? maybe no pid needed
 			}else{
 				//Use normal shoot 
 			}

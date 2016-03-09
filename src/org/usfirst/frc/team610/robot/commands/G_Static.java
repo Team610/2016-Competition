@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class G_Static extends CommandGroup {
     
 	
+	
     public  G_Static(int mode) {
     	
     	DriveTrain.getInstance().resetEncoders();
@@ -33,6 +34,7 @@ public class G_Static extends CommandGroup {
     		addSequential(new A_PositionLock(2, -20));
     		addSequential(new A_PositionMove(155, 0, 0.75));
     		addSequential(new A_PositionLock(2, 90));
+    		break;
     	case 3:
     		//Third one form the wall
     		//Turn 54.7 right
@@ -56,6 +58,10 @@ public class G_Static extends CommandGroup {
 
     		addSequential(new A_PositionMove(24, 0, 0.5));
     		break;
+    		
+    		//Added to just go over defense and stop. 
+    	case 5:
+    	break;
     	}
     	
     	addParallel(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));

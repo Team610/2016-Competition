@@ -31,6 +31,8 @@ public class G_Cheval extends CommandGroup {
     		addSequential(new A_PositionLock(2, -20));
     		addSequential(new A_PositionMove(155, 0, 0.75));
     		addSequential(new A_PositionLock(2, 90));
+    		//Added break to stop running case 3 after case 2; Fix if needed
+    		break;
     	case 3:
     		//Third one form the wall
     		//Turn 54.7 right
@@ -53,6 +55,8 @@ public class G_Cheval extends CommandGroup {
     		addSequential(new A_PositionLock(2, -60));
 
     		addSequential(new A_PositionMove(24, 0, 0.5));
+    		break;
+    	case 5:
     		break;
     	}
     	

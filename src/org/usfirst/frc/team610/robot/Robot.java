@@ -53,6 +53,9 @@ public class Robot extends IterativeRobot {
 			mode = 3;
 		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_Y)){
 			mode = 4;
+		}else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_START)){
+			//5 Should be to just go over defense and stop. 
+			mode = 5;
 		}
 		
 		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){

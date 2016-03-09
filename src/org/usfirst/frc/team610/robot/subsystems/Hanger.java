@@ -56,9 +56,7 @@ public class Hanger extends Subsystem {
 		liftEnc.reset();
 	}
 
-	public void hangingMode(boolean b){
-		isHanging = b;
-	}
+	
 	// GETTERS
 
 	public double getEnc() {

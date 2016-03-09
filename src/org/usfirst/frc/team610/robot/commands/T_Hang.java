@@ -101,12 +101,14 @@ public class T_Hang extends Command {
 			}
 		}
 		if (!manual && readyToPullUp) {
+			
 
 			// if the lift is at the bottom, you can't go down
 			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			
 			if(hanger.getEnc() > Constants.HANGER_ENC_TOP_FINAL){
 				if (Math.abs(joyValue) > 0.05) {
+					hanger.isHanging = true;
 					hanger.setWinches(joyValue);
 				} else {
 					hanger.setWinches(0);
