@@ -25,11 +25,11 @@ public class G_LowBarDump extends CommandGroup {
     	addParallel(new A_ResetTurn(1));
     	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 1));
     	//190 total
-    	addSequential(new A_PositionMove(190, 0, 0.6));
+    	addSequential(new A_PositionMove(212, 0, 0.6));
     	addSequential(new A_ResetTurn(0.5));
-    	addSequential(new A_PositionLock(2,55));
-    	addParallel(new A_SetIntakePosition(Intake.intakeState.INTAKING, 3));
-    	addSequential(new A_PositionMove(96, 0, 0.5));
+    	addSequential(new A_PositionLock(2,60));
+    	addParallel(new A_SetIntakePosition(Intake.intakeState.UP, 3));
+    	addSequential(new A_PositionMove(90, 0, 0.5));
     	addSequential(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));
     	addParallel(new A_SetIntakePosition(Intake.intakeState.POP, 3));
     	addSequential(new A_PositionMove(-90, 0, 1));

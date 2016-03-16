@@ -18,7 +18,7 @@ public class G_Static extends CommandGroup {
     	DriveTrain.getInstance().resetEncoders();
     	addSequential(new A_PositionMove(145, 0, 0.55));
     	addSequential(new A_ResetTurn(3));
-    	addSequential(new A_SetIntakePosition(intakeState.INTAKING));
+//    	addSequential(new A_SetIntakePosition(intakeState.INTAKING));
     	
     	//DEFENITELY NOT TESTED\\
     	switch(mode){
@@ -61,10 +61,11 @@ public class G_Static extends CommandGroup {
     		
     		//Added to just go over defense and stop. 
     	case 5:
-    	break;
+    		
+    		break;
     	}
     	
-    	addParallel(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));
+    	//addParallel(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));
     }
     
     

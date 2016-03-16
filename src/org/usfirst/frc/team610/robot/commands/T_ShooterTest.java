@@ -14,11 +14,6 @@ public class T_ShooterTest extends Command {
 	
 	private Intake intake;
 	private OI oi;
-	private double botMotorSpeed;
-	private double topMotorSpeed;
-	private double tSpeed;
-	private double topSpeedError;
-	private double botSpeedError;
 	private double topSpeed;
 	private double botSpeed;
 	private boolean isPressedL1 = false;

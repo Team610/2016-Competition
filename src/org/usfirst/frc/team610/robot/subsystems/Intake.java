@@ -48,7 +48,8 @@ public class Intake extends Subsystem {
 		optTopCounter = new Counter(ElectricalConstants.OPTICAL_TOP);
 		optBotCounter = new Counter(ElectricalConstants.OPTICAL_BOTTOM);
 		// optTopCounter.setMaxPeriod(maxPeriod);
-		curIntakeState = intakeState.INTAKING;
+		curIntakeState = intakeState.UP;
+		
 		optTopCounter.setMaxPeriod(.1);
 		optTopCounter.setDistancePerPulse(1);
 		optTopCounter.setSamplesToAverage(1);
@@ -57,6 +58,7 @@ public class Intake extends Subsystem {
 		optBotCounter.setDistancePerPulse(1);
 		optBotCounter.setSamplesToAverage(1);
 		optBotCounter.reset();
+		
 		topPeriod = Double.POSITIVE_INFINITY;
 		botPeriod = Double.POSITIVE_INFINITY;
 		optical = new DigitalInput(ElectricalConstants.OPTICAL_INTAKE);
@@ -110,7 +112,7 @@ public class Intake extends Subsystem {
 	}
 
 	public enum intakeState {
-		INTAKING, POP, DEAD, SHOOTING
+		UP, POP, DEAD, SHOOTING, HANGING
 	}
 
 	public enum servoPosition {

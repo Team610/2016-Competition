@@ -15,9 +15,9 @@ public class ElectricalConstants {
 	
 	
 	//Magical numbers:
-	public static final int INTAKE_FEEDER_LEFT = 10;
+	public static final int INTAKE_FEEDER_LEFT = 8;
 	public static final int INTAKE_FEEDER_RIGHT= 9;
-	public static final int OPTICAL_INTAKE = 10;
+	public static final int OPTICAL_INTAKE = 8;
 	//
 	
 	

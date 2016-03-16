@@ -9,6 +9,7 @@ import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.Intake.intakeState;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -50,7 +51,7 @@ public class T_Hang extends Command {
 		// Press Operator R2 to lock ratchet
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_R2)) {
 			hanger.setRatchet(servoPosition.LOCKED);
-			intake.curIntakeState = intakeState.POP;
+			intake.curIntakeState = intakeState.HANGING;
 		}
 		// Press Operator Back to lock ratchet
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_BACK)) {
@@ -64,6 +65,7 @@ public class T_Hang extends Command {
 			hanger.isHanging = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
+		SmartDashboard.putNumber("enc", hanger.getEnc());
 
 		// Press START to swap between manual and automatic
 		
@@ -78,7 +80,6 @@ public class T_Hang extends Command {
 
 
 		if (isExtending) {
-			hanger.isHanging = true;
 			
 			if (counter < 10) {
 				hanger.setWinches(0.15);
@@ -87,7 +88,7 @@ public class T_Hang extends Command {
 				curEnc = hanger.getEnc();
 
 				if (curEnc > 0) {
-					if (Math.abs(hanger.getEnc() - Constants.HANGER_ENC_TOP_HANG) > 5) {
+					if (hanger.getEnc() < Constants.HANGER_ENC_TOP_HANG) {
 						hanger.setWinches(-0.4);
 					} else {
 						hanger.setWinches(0);
@@ -108,7 +109,6 @@ public class T_Hang extends Command {
 			
 			if(hanger.getEnc() > Constants.HANGER_ENC_TOP_FINAL){
 				if (Math.abs(joyValue) > 0.05) {
-					hanger.isHanging = true;
 					hanger.setWinches(joyValue);
 				} else {
 					hanger.setWinches(0);
@@ -119,7 +119,6 @@ public class T_Hang extends Command {
 		
 		} else if (manual) {
 			
-			hanger.isHanging = true; 
 			joyValue = oi.getOperator().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
 			if (Math.abs(joyValue) > 0.05) {
 				hanger.setWinches(joyValue);

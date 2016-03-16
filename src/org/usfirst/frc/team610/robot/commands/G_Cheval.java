@@ -16,7 +16,7 @@ public class G_Cheval extends CommandGroup {
     	addParallel(new A_SetIntakePosition(intakeState.POP, 1));
     	addSequential(new A_PositionMove(100, 0, 0.5));
     	addSequential(new A_ResetTurn(0.5));
-    	addSequential(new A_SetIntakePosition(intakeState.INTAKING));
+    	addSequential(new A_SetIntakePosition(intakeState.UP));
     	
     	switch(mode){
     	case 1:

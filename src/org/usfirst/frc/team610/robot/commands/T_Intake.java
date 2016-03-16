@@ -74,13 +74,14 @@ public class T_Intake extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		intake.curIntakeState = intakeState.POP;
-		tAngle = Constants.INTAKE_POT_POP;
+		tAngle = Constants.INTAKE_POT_POP + Constants.INTAKE_POT_OFFSET;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@SuppressWarnings("unchecked")
 	protected void execute() {
-
+		
+		
 		//Median Filter for gyro readings\\
 		//Take out oldest value
 		if(potValues.size() > 4){
@@ -98,10 +99,9 @@ public class T_Intake extends Command {
 		}
 		
 		//Feed forwards speed for top/bot motor speeds
-		tSpeedBot = Constants.SHOOTER_BOT;
-		tSpeedTop = Constants.SHOOTER_TOP;
-		botMotorSpeed = 0.000147 * tSpeedBot - 0.016;
-		topMotorSpeed = 0.000146 * tSpeedTop - 0.0294;
+		
+		botMotorSpeed = 1.6e-4 * tSpeedBot - 0.05;
+		topMotorSpeed = 1.52e-4 * tSpeedTop - 0.05;
 
 		
 		//Pov is D-Pad readings
@@ -115,9 +115,9 @@ public class T_Intake extends Command {
 
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			//Set current state to INTAKING
-			intake.curIntakeState = intakeState.INTAKING;
+			intake.curIntakeState = intakeState.UP;
 			//Set target Angle
-			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET;
+			tAngle = Constants.INTAKE_POT_UP + Constants.INTAKE_POT_OFFSET;
 			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 		}
@@ -130,8 +130,14 @@ public class T_Intake extends Command {
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_X)) {
 			//Set current state to SHOOTING
-			intake.curIntakeState = intakeState.SHOOTING;
-			tAngle = Constants.INTAKE_POT_SHOOTING + Constants.INTAKE_POT_OFFSET;
+			Constants.update();
+			if(hanger.isHanging){
+				intake.curIntakeState = intakeState.HANGING;
+				tAngle = Constants.INTAKE_POT_HANGING + Constants.INTAKE_POT_OFFSET;
+			} else {
+				intake.curIntakeState = intakeState.SHOOTING;
+				tAngle = Constants.INTAKE_POT_SHOOTING + Constants.INTAKE_POT_OFFSET;
+			}
 		}
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_Y)) {
 			//Set current state to POP
@@ -143,38 +149,49 @@ public class T_Intake extends Command {
 		}
 		if(oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)){
 			//Set current state to INTAKING
-			intake.curIntakeState = intakeState.INTAKING;
-			tAngle = Constants.INTAKE_POT_INTAKE + Constants.INTAKE_POT_OFFSET + 0.09;
+			intake.curIntakeState = intakeState.UP;
+			tAngle = Constants.INTAKE_POT_UP + Constants.INTAKE_POT_OFFSET + 0.09;
 			outtakeSpeed = Constants.INTAKE_OUTTAKE_POWER;
 			intakeSpeed = Constants.INTAKE_INTAKE_POWER;
 		}
+		
 		//Put intatke state to Smart Dashboard
 		SmartDashboard.putString("IntakteState: ", intake.curIntakeState.toString());
 
 		switch (intake.curIntakeState) {
-		case INTAKING:
+		case UP:
 			//Press L1 to outtake
 			//Press R1 to intake
 			//Press nothing to stop
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
-				speed = outtakeSpeed;
+				topSpeed = outtakeSpeed;
+				botSpeed = outtakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
 			} 
 			//Only intake if there's no ball
 			//Took out optical check, won't be able to adjust ball if doesn't go in correctly 
-			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
-				speed = intakeSpeed;
+			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical()) || (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X))) {
+				topSpeed = intakeSpeed;
+				botSpeed = intakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+			} else if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1) && !oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)){
+				topSpeed = 0;
+				botSpeed = -1;
+				intake.setFeeder(0);
 			} else {
-				speed = 0;
+				topSpeed = 0;
+				botSpeed = 0;
 				intake.setFeeder(0);
 			}
 
-			intake.setBothRollers(speed);
+			intake.setTopRoller(topSpeed);
+			intake.setBotRoller(botSpeed);
+			SmartDashboard.putNumber("TopSpeed", topSpeed);
+			SmartDashboard.putNumber("BotSpeed", botSpeed);
 
 			break;
 		case POP:
-			tAngle = Constants.INTAKE_POT_POP;
+			tAngle = Constants.INTAKE_POT_POP + Constants.INTAKE_POT_OFFSET;
 			//Press L1 to outtake
 			//Press R1 to intake
 			//Press nothing to stop
@@ -188,7 +205,7 @@ public class T_Intake extends Command {
 				}
 			} 
 			//You can only intake if there's no ball
-			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical())  || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
+			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical())  || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
@@ -201,24 +218,36 @@ public class T_Intake extends Command {
 			break;
 
 		case DEAD:
-			//Press L1 to outtake
-			//Press R1 to intake
-			//Press nothing to stop
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
-				speed = outtakeSpeed;
+				topSpeed = outtakeSpeed;
+				botSpeed = outtakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
-			} else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && !intake.getOptical()) || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
-				speed = intakeSpeed;
+			} 
+			//Only intake if there's no ball
+			//Took out optical check, won't be able to adjust ball if doesn't go in correctly 
+			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical()) || (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X))) {
+				topSpeed = intakeSpeed;
+				botSpeed = intakeSpeed;
 				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+			} else if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1) && !oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)){
+				topSpeed = 0;
+				botSpeed = -1;
+				intake.setFeeder(0);
 			} else {
-				speed = 0;
+				topSpeed = 0;
+				botSpeed = 0;
 				intake.setFeeder(0);
 			}
 
-			intake.setBothRollers(speed);
+			intake.setTopRoller(topSpeed);
+			intake.setBotRoller(botSpeed);
+			SmartDashboard.putNumber("TopSpeed", topSpeed);
+			SmartDashboard.putNumber("BotSpeed", botSpeed);
 			break;
-
 		case SHOOTING:
+			
+			tSpeedBot = Constants.SHOOTER_BOT;
+			tSpeedTop = Constants.SHOOTER_TOP;
 			
 			//RPM trim with Operator D-Pad
 //			if ((pov == 0 || pov == 45 || pov == 315) && !isDPressed) {
@@ -289,12 +318,81 @@ public class T_Intake extends Command {
 			}
 			SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
 			break;
+		case HANGING:
+
+			tAngle = Constants.INTAKE_POT_HANGING + Constants.INTAKE_POT_OFFSET;
+			
+			tSpeedBot = Constants.SHOOTER_BOT_HANG;
+			tSpeedTop = Constants.SHOOTER_TOP_HANG;
+			//RPM trim with Operator D-Pad
+//			if ((pov == 0 || pov == 45 || pov == 315) && !isDPressed) {
+//				RPMTrim += 50;
+//				isDPressed = true;
+//
+//			} else if ((pov == 180 || pov == 135 || pov == 225) && !isDDownPressed) {
+//				RPMTrim -= 50;
+//				isDPressed = true;
+//			}
+//
+//			if (pov == -1) {
+//				isDPressed = false;
+//			}
+//			if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L2)) {
+//				RPMTrim = 0;
+//			}
+
+			//Activiate PID for hang shot!!!!
+			
+			topSpeedError = tSpeedTop + intake.getTopSpeed();
+			botSpeedError = tSpeedBot + intake.getBotSpeed();
+
+			topSpeedErrDiff = topSpeedError - topLastError;
+			botSpeedErrDiff = botSpeedError - botLastError;
+
+			topSpeed = topMotorSpeed + topSpeedError * PIDConstants.INTAKE_SHOOT_Kp
+					- topSpeedErrDiff * PIDConstants.INTAKE_SHOOT_Kd;
+			botSpeed = botMotorSpeed + botSpeedError * PIDConstants.INTAKE_SHOOT_Kp
+					- botSpeedErrDiff * PIDConstants.INTAKE_SHOOT_Kd;
+
+
+			//Don't activiate rollers before we get to shooting pos
+			if (Math.abs(intakePosError) < 0.1) {
+				intake.setTopRoller(topSpeed);
+				intake.setBotRoller(botSpeed);
+			} else {
+				intake.setBothRollers(0);
+			}
+
+			topLastError = topSpeedError;
+			botLastError = botSpeedError;
+
+			
+			//Shoot if RPM is within 5% error
+			// if (Math.abs(topSpeedError) < topMotorSpeed * 0.05 && Math.abs(botSpeedError) <
+			// botMotorSpeed * 0.05) {
+			readyToShoot = true;
+			// }
+
+			//If we are ready to shoot, press L1 to shoot!!!!!
+			if (readyToShoot) {
+				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
+					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+					readyToShoot = false;
+				} else {
+					intake.setFeeder(0);
+				}
+
+			} else {
+				intake.setFeeder(0);
+			}
+			SmartDashboard.putBoolean("Ready to Shoot", readyToShoot);
+			break;
 		}
 		// End of switch statement 
 		
 		//PID for angle of Claw
 		intakePosError = potValue - tAngle;
-		if (intake.curIntakeState.equals(intakeState.INTAKING) || intake.curIntakeState.equals(intakeState.SHOOTING)) {
+		if (intake.curIntakeState.equals(intakeState.UP) || intake.curIntakeState.equals(intakeState.SHOOTING)) {
 			//Hold PID angle
 			intakePosError = potValue - tAngle;
 			intakePosDiffError = intakePosError - intakePosLastError;
@@ -305,16 +403,31 @@ public class T_Intake extends Command {
 
 		} else {
 			//Don't hold PID if the claw is at the position
-			if (Math.abs(intakePosError) > 0.05) {
-				intakePosError = potValue - tAngle;
-				intakePosDiffError = intakePosError - intakePosLastError;
-				intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
-						+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
-				intakePosLastError = intakePosError;
-			} else {
-				intake.setIntakePivot(0);
+			if(intake.curIntakeState.equals(intakeState.POP) || intake.curIntakeState.equals(intakeState.HANGING)){
+				if (Math.abs(intakePosError) > 0.1) {
+					intakePosError = potValue - tAngle;
+					intakePosDiffError = intakePosError - intakePosLastError;
+					intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
+							+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
+					intakePosLastError = intakePosError;
+				} else {
+					intake.setIntakePivot(0);
+				}
+			} else if (intake.curIntakeState.equals(intakeState.DEAD)){
+				if (intake.getPot() > Constants.INTAKE_POT_DIE + Constants.INTAKE_POT_OFFSET) {
+					intakePosError = potValue - tAngle;
+					intakePosDiffError = intakePosError - intakePosLastError;
+					intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
+							+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
+					intakePosLastError = intakePosError;
+				} else {
+					intake.setIntakePivot(0);
+				}
 			}
 		}
+		SmartDashboard.putNumber("Intake Power: ", intakePosError * PIDConstants.INTAKE_POS_Kp
+						+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

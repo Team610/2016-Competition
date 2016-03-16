@@ -135,7 +135,6 @@ public class T_KajDrive extends Command {
 		if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_START))
 		{
 			Constants.update();
-			PIDConstants.update();
 		}
 	}
 

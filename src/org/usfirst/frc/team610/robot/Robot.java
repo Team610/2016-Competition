@@ -5,9 +5,13 @@ import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
 import org.usfirst.frc.team610.robot.commands.G_Cheval;
 import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
 import org.usfirst.frc.team610.robot.commands.G_Static;
+import org.usfirst.frc.team610.robot.commands.G_StaticBack;
 import org.usfirst.frc.team610.robot.commands.T_Teleop;
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
 
@@ -38,7 +42,7 @@ public class Robot extends IterativeRobot {
 
 	public void disabledInit() {
 		teleop.cancel();
-		auton.cancel();
+		auton = new G_LowBarDump();
 		sensor.start();
 	}
 
@@ -58,6 +62,8 @@ public class Robot extends IterativeRobot {
 			mode = 5;
 		}
 		
+		SmartDashboard.putNumber("Mode: ", mode);
+		
 		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
 			auton = new G_Cheval(mode);
 			SmartDashboard.putString("Auton Mode: ", "Cheval_" + mode);
@@ -67,6 +73,9 @@ public class Robot extends IterativeRobot {
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L2)){
 			auton = new G_LowBarDump();
 			SmartDashboard.putString("Auton Mode: ", "LowBarDump");
+		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)){
+			auton = new G_StaticBack();
+			SmartDashboard.putString("Auton Mode: ", "Static_Backwards");
 		}
 		
 		Scheduler.getInstance().run();
@@ -83,12 +92,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		auton.cancel();
+		Hanger.getInstance().resetEncoder();
 		teleop.start();
 		sensor.start();
 	}
 
 	public void teleopPeriodic() {
+		Constants.update();
+		PIDConstants.update();
 		Scheduler.getInstance().run();
 	}
 
