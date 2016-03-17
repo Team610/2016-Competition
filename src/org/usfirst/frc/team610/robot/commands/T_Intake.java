@@ -113,6 +113,7 @@ public class T_Intake extends Command {
 		// Y for Pop
 		// L2 for intaking, up
 
+		
 		if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_B)) {
 			//Set current state to INTAKING
 			intake.curIntakeState = intakeState.UP;

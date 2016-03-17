@@ -1,5 +1,6 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
+import org.sixten.chareslib.PID;
 import org.usfirst.frc.team610.robot.OI;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
@@ -9,9 +10,9 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PID;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *

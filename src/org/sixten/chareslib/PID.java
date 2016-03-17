@@ -1,4 +1,4 @@
-package edu.wpi.first.wpilibj;
+package org.sixten.chareslib;
 
 
 public class PID {
@@ -23,8 +23,8 @@ public class PID {
 		diffError = 0;
 		output = 0;
 		curTarget = 0;
-		min = Double.MIN_VALUE;
-		max = Double.MAX_VALUE;
+		min = -1e50;
+		max = 1e50;
 	}
 	
 	public PID(double p, double i, double d){
@@ -46,7 +46,7 @@ public class PID {
 		}
 		error = target - input;
 		diffError = lastError - error;
-		if(error > target * 0.025){
+		if(Math.abs(target - input)/target > 0.025){
 			iCounter = 0;
 			output = error * p + diffError * d;	
 		} else {
