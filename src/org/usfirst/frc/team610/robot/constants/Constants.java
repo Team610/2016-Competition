@@ -39,16 +39,19 @@ public class Constants {
 //	public static double INTAKE_BOT_INTAKE_POWER = prefs.getDouble("INTAKE_BOT_INTAKE_POWER", 1);
 	public static double INTAKE_TOP_POP_POWER = prefs.getDouble("INTAKE_TOP_POP_POWER", -0.65);
 	public static double INTAKE_BOT_POP_POWER = prefs.getDouble("INTAKE_BOT_POP_POWER", -0.2);
+	
+	public static double INTAKE_FEEDER_IN = 1;
+	public static double INTAKE_FEEDER_OUT = -0.25;
+	
+	
+	
 	// 0.339
 //	public static double SHOOTER_SERVO_RIGHT_OUT = prefs.getDouble("SHOOTER_SERVO_RIGHT_OUT", 0.2); // 65
 //	public static double SHOOTER_SERVO_RIGHT_IN = prefs.getDouble("SHOOTER_SERVO_RIGHT_IN", 0.58);
 //	public static double SHOOTER_SERVO_LEFT_OUT = prefs.getDouble("SHOOTER_SERVO_LEFT_OUT", 0.52);
 //	public static double SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.15);
 
-	//Magical speed
-	public static double SHOOTER_FEEDER_IN = 1;
-	public static double SHOOTER_FEEDER_OUT = -0.25;
-	
+
 	// -0.7000
 	public static double SHOOTER_TOP =  prefs.getDouble("SHOOTER_TOP", -6000); // change
 																					// please

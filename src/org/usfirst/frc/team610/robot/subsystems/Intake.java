@@ -1,10 +1,15 @@
 package org.usfirst.frc.team610.robot.subsystems;
 
+import org.usfirst.frc.team610.robot.OI;
+import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
+import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
+import org.usfirst.frc.team610.robot.constants.PIDConstants;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PID;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -24,6 +29,8 @@ public class Intake extends Subsystem {
 	double RPMfactor;
 	private double topPeriod;
 	private double botPeriod;
+	private OI oi;
+	private PID pivotPID, topPID, botPID;
 
 	static Counter optTopCounter, optBotCounter;
 
@@ -38,6 +45,7 @@ public class Intake extends Subsystem {
 	}
 
 	private Intake() {
+		oi = OI.getInstance();
 		RPMfactor = 60;// CHANGE
 		topRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_TOP);
 		botRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_BOT);
@@ -48,7 +56,7 @@ public class Intake extends Subsystem {
 		optTopCounter = new Counter(ElectricalConstants.OPTICAL_TOP);
 		optBotCounter = new Counter(ElectricalConstants.OPTICAL_BOTTOM);
 		// optTopCounter.setMaxPeriod(maxPeriod);
-		curIntakeState = intakeState.UP;
+		curIntakeState = intakeState.POP;
 		
 		optTopCounter.setMaxPeriod(.1);
 		optTopCounter.setDistancePerPulse(1);
@@ -62,7 +70,11 @@ public class Intake extends Subsystem {
 		topPeriod = Double.POSITIVE_INFINITY;
 		botPeriod = Double.POSITIVE_INFINITY;
 		optical = new DigitalInput(ElectricalConstants.OPTICAL_INTAKE);
-
+		
+		pivotPID = new PID(PIDConstants.INTAKE_POS_Kp, 0, PIDConstants.INTAKE_POS_Kd, -1, 1);
+		topPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
+		botPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
+		
 	}
 
 //	public void updateLists() {
@@ -76,6 +88,7 @@ public class Intake extends Subsystem {
 //		}
 //
 //	}
+	
 
 	public double getTopSpeed() {
 		return RPMfactor/getTopPeriod();
@@ -145,6 +158,85 @@ public class Intake extends Subsystem {
 
 	public void setBotRoller(double v) {
 		botRoller.set(v);
+	}
+	//	botMotorSpeed = 1.6e-4 * tSpeedBot - 0.05;
+	//	topMotorSpeed = 1.52e-4 * tSpeedTop - 0.05;
+	private double getTopFeedForward(double rpm){
+		return 1.52e-4 * rpm - 0.05;
+	}
+	
+	private double getBotFeedForward(double rpm){
+		return 1.6e-4 * rpm - 0.05;
+	}
+	
+	public void setIntake(intakeState state){
+		switch(state){
+		case DEAD:
+			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+				setTopRoller(Constants.INTAKE_INTAKE_POWER);
+				setBotRoller(Constants.INTAKE_INTAKE_POWER);
+				setFeeder(Constants.INTAKE_FEEDER_IN);
+    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
+    			setTopRoller(Constants.INTAKE_OUTTAKE_POWER);
+				setBotRoller(Constants.INTAKE_OUTTAKE_POWER);
+				setFeeder(Constants.INTAKE_FEEDER_OUT);
+    		} else {
+    			setTopRoller(0);
+				setBotRoller(0);
+				setFeeder(0);
+    		}
+			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_DEAD));
+			break;
+		case POP:
+			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+				setTopRoller(Constants.INTAKE_INTAKE_POWER);
+				setBotRoller(Constants.INTAKE_INTAKE_POWER);
+				setFeeder(Constants.INTAKE_FEEDER_IN);
+    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
+    			setTopRoller(Constants.INTAKE_TOP_POP_POWER);
+				setBotRoller(Constants.INTAKE_BOT_POP_POWER);
+				setFeeder(Constants.INTAKE_FEEDER_OUT);
+    		} else {
+    			setTopRoller(0);
+				setBotRoller(0);
+				setFeeder(0);
+    		}
+			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_POP));
+			break;
+		case UP:
+			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+				setTopRoller(Constants.INTAKE_INTAKE_POWER);
+				setBotRoller(Constants.INTAKE_INTAKE_POWER);
+				setFeeder(Constants.INTAKE_FEEDER_IN);
+    		} else {
+    			setTopRoller(0);
+				setBotRoller(0);
+				setFeeder(0);
+    		}
+			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_UP));
+			break;
+		case HANGING:
+			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
+				setFeeder(Constants.INTAKE_FEEDER_OUT);
+			} else {
+				setFeeder(0);
+			}
+			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_HANGING));
+			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP_HANG, getTopFeedForward(Constants.SHOOTER_TOP_HANG)));
+			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT_HANG, getBotFeedForward(Constants.SHOOTER_BOT_HANG)));
+			break;
+		case SHOOTING:
+			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
+				setFeeder(Constants.INTAKE_FEEDER_OUT);
+			} else {
+				setFeeder(0);
+			}
+			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_SHOOTING));
+			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP, getTopFeedForward(Constants.SHOOTER_TOP)));
+			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT, getBotFeedForward(Constants.SHOOTER_BOT)));
+			
+			break;
+		}
 	}
 
 	//

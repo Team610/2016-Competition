@@ -50,6 +50,8 @@ public class T_NewIntake extends Command {
 	private int popCounter = 0;
 	double potValue;
 	
+	double feederSpeed = 0;
+	
 	private ArrayList <Double> potValues = new ArrayList <Double>();
 	private ArrayList <Double> sortedPotValues = new ArrayList <Double>();
 	
@@ -96,26 +98,9 @@ public class T_NewIntake extends Command {
     		intake.curIntakeState = intakeState.HANGING;
     	}
     	
-    	switch(intake.curIntakeState){
-    	case POP:
-    		tAngle = Constants.INTAKE_POT_POP;
-    		break;
-    	case SHOOTING:
-    		tAngle = Constants.INTAKE_POT_SHOOTING;
-    		break;
-    	case HANGING:
-    		tAngle = Constants.INTAKE_POT_HANGING;
-    		break;
-    	case UP:
-    		tAngle = Constants.INTAKE_POT_UP;
-    		break;
-    	case DEAD:
-    		tAngle = Constants.INTAKE_POT_DEAD;
-    		break;
-    	default:
-    		tAngle = Constants.INTAKE_POT_DEAD;
-    		break;
-    	}
+    	intake.setIntake(intake.curIntakeState);
+    	
+    	
     	
     }
     //INTAKING, POP, DEAD, SHOOTING, HANGING

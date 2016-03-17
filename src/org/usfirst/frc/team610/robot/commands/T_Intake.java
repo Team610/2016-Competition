@@ -166,14 +166,14 @@ public class T_Intake extends Command {
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				topSpeed = outtakeSpeed;
 				botSpeed = outtakeSpeed;
-				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+				intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
 			} 
 			//Only intake if there's no ball
 			//Took out optical check, won't be able to adjust ball if doesn't go in correctly 
 			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical()) || (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X))) {
 				topSpeed = intakeSpeed;
 				botSpeed = intakeSpeed;
-				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
 			} else if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1) && !oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)){
 				topSpeed = 0;
 				botSpeed = -1;
@@ -201,14 +201,14 @@ public class T_Intake extends Command {
 				popCounter++;
 				//Wait 5 ticks to shoot
 				if (popCounter > 5) {
-					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+					intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
 				}
 			} 
 			//You can only intake if there's no ball
 			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical())  || oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
 				intake.setTopRoller(intakeSpeed);
 				intake.setBotRoller(intakeSpeed);
-				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
 			} else {
 				popCounter = 0;
 				intake.setFeeder(0);
@@ -221,14 +221,14 @@ public class T_Intake extends Command {
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				topSpeed = outtakeSpeed;
 				botSpeed = outtakeSpeed;
-				intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+				intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
 			} 
 			//Only intake if there's no ball
 			//Took out optical check, won't be able to adjust ball if doesn't go in correctly 
 			else if ((oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && intake.getOptical()) || (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X))) {
 				topSpeed = intakeSpeed;
 				botSpeed = intakeSpeed;
-				intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
 			} else if (oi.getOperator().getRawButton(LogitechF310Constants.BTN_L1) && !oi.getOperator().getRawButton(LogitechF310Constants.BTN_R1)){
 				topSpeed = 0;
 				botSpeed = -1;
@@ -307,7 +307,7 @@ public class T_Intake extends Command {
 			//If we are ready to shoot, press L1 to shoot!!!!!
 			if (readyToShoot) {
 				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
-					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+					intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
 					readyToShoot = false;
 				} else {
 					intake.setFeeder(0);
@@ -376,7 +376,7 @@ public class T_Intake extends Command {
 			//If we are ready to shoot, press L1 to shoot!!!!!
 			if (readyToShoot) {
 				if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
-					intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+					intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
 					readyToShoot = false;
 				} else {
 					intake.setFeeder(0);
