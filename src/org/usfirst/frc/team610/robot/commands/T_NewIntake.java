@@ -16,58 +16,16 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class T_NewIntake extends Command {
 	private Intake intake;
-	private Hanger hanger;
 	private OI oi;
 	
-	private double intakePosError;
-	private boolean readyToShoot;
-	private double speed;
-	
-	private boolean isDPressed = false;
-	private boolean isDDownPressed = false;
-	private double outtakeSpeed = -0.65;
-	private int pov;
-	
-	private double botMotorSpeed;
-	private double topMotorSpeed;
-	private double tSpeedBot;
-	private double tSpeedTop;
-	private double RPMTrim = 0;
-	
-	private double topSpeedError;
-	private double botSpeedError;
-	private double topSpeed;
-	private double botSpeed;
-	private double topSpeedErrDiff;
-	private double botSpeedErrDiff;
-	private double topLastError = 0;
-	private double botLastError = 0;
-	
-	private double intakePosLastError = 0;
-	private double intakePosDiffError;
-	private double intakeSpeed;
-	private double tAngle;
-	private int popCounter = 0;
-	double potValue;
-	
-	double feederSpeed = 0;
-	
-	private ArrayList <Double> potValues = new ArrayList <Double>();
-	private ArrayList <Double> sortedPotValues = new ArrayList <Double>();
+
 	
     public T_NewIntake() {
     	hanger = Hanger.getInstance();
 		intake = Intake.getInstance();
 		oi = OI.getInstance();
-		readyToShoot = false;
-		topSpeed = 0;
-		botSpeed = 0;
-		speed = 0;
-		tSpeedTop = Constants.SHOOTER_TOP; // -3500
-		tSpeedBot = Constants.SHOOTER_BOT; // -4200
-
 		intake.curIntakeState = intakeState.POP;
-		potValue = 0;
+
     }
 
     // Called just before this Command runs the first time
