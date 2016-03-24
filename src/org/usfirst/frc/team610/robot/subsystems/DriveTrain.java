@@ -4,6 +4,8 @@ import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -17,7 +19,8 @@ public class DriveTrain extends Subsystem {
 
 	static DriveTrain instance;
 	
-		
+	private SerialPort visionInput;
+	
 	private Victor leftFront;
 	private Victor leftBack;
 	private Victor rightFront;
@@ -46,7 +49,7 @@ public class DriveTrain extends Subsystem {
 		rightBack.enableDeadbandElimination(true);
 		leftEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_LEFTA, ElectricalConstants.ENCODER_DRIVE_LEFTB);
 		rightEnc = new Encoder(ElectricalConstants.ENCODER_DRIVE_RIGHTA, ElectricalConstants.ENCODER_DRIVE_RIGHTB);
-
+		visionInput = new SerialPort(8, Port.kUSB);
 	}
 	
     public void initDefaultCommand() {
@@ -83,6 +86,10 @@ public class DriveTrain extends Subsystem {
     public void resetEncoders(){
     	leftEnc.reset();
     	rightEnc.reset();
+    }
+    
+    public String getVision(){
+    	return visionInput.readString();
     }
 
 }

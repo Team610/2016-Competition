@@ -38,9 +38,9 @@ public class A_SetIntake extends Command {
     protected void execute() {
     	intake.setBothRollers(speed);
     	if(speed < 0){
-    		intake.setFeeder(Constants.SHOOTER_FEEDER_OUT);
+    		intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
     	} else if(speed > 0){
-    		intake.setFeeder(Constants.SHOOTER_FEEDER_IN);
+    		intake.setFeeder(Constants.INTAKE_FEEDER_IN);
     	}
     }
 

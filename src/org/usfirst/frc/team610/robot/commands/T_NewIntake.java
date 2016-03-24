@@ -1,9 +1,6 @@
 package org.usfirst.frc.team610.robot.commands;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team610.robot.OI;
-import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
@@ -17,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class T_NewIntake extends Command {
 	private Intake intake;
 	private OI oi;
+	private Hanger hanger;
 	
 
 	

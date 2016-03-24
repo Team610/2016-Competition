@@ -10,9 +10,10 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -21,8 +22,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Subsystem {
 
 	private static Intake instance;
+	private PowerDistributionPanel pdb;
 	private DigitalInput optical;
-	private Victor topRoller, botRoller, intakePivot;
+	private Victor topRoller, botRoller;
+	private TalonSRX intakePivot;
 	private Victor leftFeeder, rightFeeder;
 	public servoPosition flipperServoPos;
 	public intakeState curIntakeState;
@@ -32,6 +35,8 @@ public class Intake extends Subsystem {
 	private double botPeriod;
 	private OI oi;
 	private PID pivotPID, topPID, botPID;
+	
+	private int waitCounter = 100;
 
 	static Counter optTopCounter, optBotCounter;
 
@@ -47,12 +52,15 @@ public class Intake extends Subsystem {
 
 	private Intake() {
 		oi = OI.getInstance();
+		
+		pdb = new PowerDistributionPanel();
+		
 		RPMfactor = 60;// CHANGE
 		topRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_TOP);
 		botRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_BOT);
 		leftFeeder = new Victor(ElectricalConstants.INTAKE_FEEDER_LEFT);
 		rightFeeder = new Victor(ElectricalConstants.INTAKE_FEEDER_RIGHT);
-		intakePivot = new Victor(ElectricalConstants.INTAKE_PIVOT);
+		intakePivot = new TalonSRX(ElectricalConstants.INTAKE_PIVOT);
 		intakePot = new AnalogPotentiometer(ElectricalConstants.INTAKE_POT);
 		optTopCounter = new Counter(ElectricalConstants.OPTICAL_TOP);
 		optBotCounter = new Counter(ElectricalConstants.OPTICAL_BOTTOM);
@@ -120,6 +128,10 @@ public class Intake extends Subsystem {
 			return botPeriod;
 		}
 	}
+	
+	public double getPivotCurrent(){
+		return pdb.getCurrent(Constants.PDB_INTAKE_PIVOT);
+	}
 
 	public double getPot() {
 		return intakePot.get();
@@ -170,6 +182,26 @@ public class Intake extends Subsystem {
 		return 1.6e-4 * rpm - 0.05;
 	}
 	
+	private double getTarget(intakeState state){
+		double out;
+		switch(state){
+		case DEAD:
+			out = Constants.INTAKE_POT_DEAD;
+		case POP:
+			out = Constants.INTAKE_POT_POP;
+		case UP:
+			out = Constants.INTAKE_POT_UP;
+		case HANGING:
+			out = Constants.INTAKE_POT_HANGING;
+		case SHOOTING:
+			out = Constants.INTAKE_POT_SHOOTING;
+		default:
+			out = Constants.INTAKE_POT_DEAD;
+		}
+		
+		return out;
+	}
+	
 	public void setIntake(intakeState state){
 		switch(state){
 		case DEAD:
@@ -186,7 +218,7 @@ public class Intake extends Subsystem {
 				setBotRoller(0);
 				setFeeder(0);
     		}
-			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_DEAD));
+			
 			break;
 		case POP:
 			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
@@ -202,7 +234,6 @@ public class Intake extends Subsystem {
 				setBotRoller(0);
 				setFeeder(0);
     		}
-			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_POP));
 			break;
 		case UP:
 			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
@@ -214,7 +245,6 @@ public class Intake extends Subsystem {
 				setBotRoller(0);
 				setFeeder(0);
     		}
-			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_UP));
 			break;
 		case HANGING:
 			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
@@ -222,7 +252,6 @@ public class Intake extends Subsystem {
 			} else {
 				setFeeder(0);
 			}
-			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_HANGING));
 			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP_HANG, getTopFeedForward(Constants.SHOOTER_TOP_HANG)));
 			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT_HANG, getBotFeedForward(Constants.SHOOTER_BOT_HANG)));
 			break;
@@ -232,11 +261,21 @@ public class Intake extends Subsystem {
 			} else {
 				setFeeder(0);
 			}
-			setIntakePivot(pivotPID.getValue(getPot(), Constants.INTAKE_POT_SHOOTING));
 			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP, getTopFeedForward(Constants.SHOOTER_TOP)));
 			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT, getBotFeedForward(Constants.SHOOTER_BOT)));
 			
 			break;
+		}
+		
+		//Change 14.5
+		if(getPivotCurrent() > 14.5){
+			setIntakePivot(0);
+			waitCounter = 0;
+		}
+		if(waitCounter < 100){
+			waitCounter++;
+		} else {
+			setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
 		}
 	}
 

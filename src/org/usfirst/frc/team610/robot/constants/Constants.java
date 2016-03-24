@@ -12,6 +12,9 @@ public class Constants {
 	// persistent storage
 	// If there is an entry already, the persistent value will be used instead
 
+	//Change
+	public static int PDB_INTAKE_PIVOT = 3;
+	
 	// Please update these after live tuning!
 	public static Preferences prefs = Preferences.getInstance();
 
