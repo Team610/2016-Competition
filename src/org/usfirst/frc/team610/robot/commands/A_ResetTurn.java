@@ -4,7 +4,6 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -12,13 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class A_ResetTurn extends Command {
 
 	private DriveTrain driveTrain;
-	private double differenceError;
-	private double lastError;
+	private double differenceError = 0;
+	private double lastError = 0;
 	private double tAngle;
 	private double time;
-	private double error;
-	private double leftSpeed;
-	private double rightSpeed;
+	private double error = 0;
+	private double leftSpeed = 0;
+	private double rightSpeed = 0;
 	
 	
     public A_ResetTurn(double time) {
@@ -37,7 +36,6 @@ public class A_ResetTurn extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	error = driveTrain.getYaw() - tAngle;
-    	SmartDashboard.putNumber("GyroAngle ",driveTrain.getYaw() );
     	differenceError = error - lastError;
     		
     	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;

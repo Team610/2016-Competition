@@ -65,7 +65,6 @@ public class T_Hang extends Command {
 			hanger.isHanging = true;
 			hanger.setRatchet(servoPosition.UNLOCKED);
 		}
-		SmartDashboard.putNumber("enc", hanger.getEnc());
 
 		// Press START to swap between manual and automatic
 		

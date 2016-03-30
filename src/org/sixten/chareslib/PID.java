@@ -46,13 +46,9 @@ public class PID {
 		}
 		error = target - input;
 		diffError = lastError - error;
-		if(Math.abs(target - input)/target > 0.025){
-			iCounter = 0;
-			output = error * p + diffError * d;	
-		} else {
-			iCounter += error;
-			output = iCounter * i; 
-		}
+		
+		output = error * p + diffError * d;	
+		
 		lastError = error;
 		if(output > max){
 			output = max;

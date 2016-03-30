@@ -1,6 +1,7 @@
 package org.usfirst.frc.team610.robot.commands;
 
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
 
@@ -16,7 +17,7 @@ public class D_SensorReadings extends Command {
 	private DriveTrain driveTrain;
 	private NavX navx;
 	private Intake intake;
-
+	private Hanger hanger;
 	 
 	
     public D_SensorReadings() {
@@ -40,6 +41,7 @@ public class D_SensorReadings extends Command {
 		SmartDashboard.putNumber("GyroAngle: ", navx.getAngle());
 		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
 		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
+		SmartDashboard.putNumber("Encoder Lift: ", hanger.getEnc());
     }
 
     // Make this return true when this Command no longer needs to run execute()

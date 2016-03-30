@@ -15,18 +15,18 @@ public class PIDConstants {
 	//P is 15
 	//D is 50
 	
-	public static double INTAKE_POS_Kp = prefs.getDouble("intakeKp", 5);
-	public static double INTAKE_POS_Kd = prefs.getDouble("intakeKd", 0);
-	public static double INTAKE_POS_Ki = prefs.getDouble("intakeKi", 1);
+	public static double INTAKE_POS_Kp = -15;
+	public static double INTAKE_POS_Kd = 10;
+	public static double INTAKE_POS_Ki = 0;
 	
 	//add INTAKE_POS_Kd
 	public static final double INTAKE_SHOOT_Kp = 0.0005;
 	public static final double INTAKE_SHOOT_Kd = 0.00000;
 	
 	public static void update(){
-		INTAKE_POS_Kp = prefs.getDouble("intakeKp", 5);
-		INTAKE_POS_Kd = prefs.getDouble("intakeKd", 0);
-		INTAKE_POS_Ki = prefs.getDouble("intakeKi", 1);
+//		INTAKE_POS_Kp = prefs.getDouble("intakeKp", 5);
+//		INTAKE_POS_Kd = prefs.getDouble("intakeKd", 0);
+//		INTAKE_POS_Ki = prefs.getDouble("intakeKi", 1);
 	}
 	
 	

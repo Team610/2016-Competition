@@ -29,12 +29,12 @@ public class Constants {
 	public static double HANGER_ENC_TOP_FINAL = -65;
 
 	public static double INTAKE_POT_OFFSET = 0;
-	public static double INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.497) + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_HANGING = 0.55 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_POP = 0.567 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_DIE = 0.40 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_DEAD = 0.25 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_UP = 0.225 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_SHOOTING = 0.22;
+	public static double INTAKE_POT_HANGING = 0.21 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_POP = 0.18 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_DIE = 0.47 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_DEAD = 0.48 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_UP = 0.35 + INTAKE_POT_OFFSET;
 
 	// Shooter
 	// intake - 0.8
@@ -96,7 +96,7 @@ public class Constants {
 		// INTAKE_BOT_INTAKE_POWER = prefs.getDouble("INTAKE_BOT_INTAKE_POWER",
 		// 1);
 //		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", -0.053);
-		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.497);
+//		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.497);
 		// INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.567);
 		// INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.155);
 		// INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.160);

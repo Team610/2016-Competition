@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -80,7 +81,7 @@ public class Intake extends Subsystem {
 		botPeriod = Double.POSITIVE_INFINITY;
 		optical = new DigitalInput(ElectricalConstants.OPTICAL_INTAKE);
 		
-		pivotPID = new PID(PIDConstants.INTAKE_POS_Kp, 0, PIDConstants.INTAKE_POS_Kd, -1, 1);
+		pivotPID = new PID(PIDConstants.INTAKE_POS_Kp, 0, PIDConstants.INTAKE_POS_Kd);
 		topPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
 		botPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
 		
@@ -174,36 +175,42 @@ public class Intake extends Subsystem {
 	}
 	//	botMotorSpeed = 1.6e-4 * tSpeedBot - 0.05;
 	//	topMotorSpeed = 1.52e-4 * tSpeedTop - 0.05;
-	private double getTopFeedForward(double rpm){
+	public double getTopFeedForward(double rpm){
 		return 1.52e-4 * rpm - 0.05;
 	}
 	
-	private double getBotFeedForward(double rpm){
+	public double getBotFeedForward(double rpm){
 		return 1.6e-4 * rpm - 0.05;
 	}
 	
-	private double getTarget(intakeState state){
+	public double getTarget(intakeState state){
 		double out;
 		switch(state){
 		case DEAD:
 			out = Constants.INTAKE_POT_DEAD;
+			break;
 		case POP:
 			out = Constants.INTAKE_POT_POP;
+			break;
 		case UP:
 			out = Constants.INTAKE_POT_UP;
+			break;
 		case HANGING:
 			out = Constants.INTAKE_POT_HANGING;
+			break;
 		case SHOOTING:
 			out = Constants.INTAKE_POT_SHOOTING;
+			break;
 		default:
 			out = Constants.INTAKE_POT_DEAD;
+			break;
 		}
 		
 		return out;
 	}
 	
-	public void setIntake(intakeState state){
-		switch(state){
+	public void setIntake(){
+		switch(curIntakeState){
 		case DEAD:
 			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
 				setTopRoller(Constants.INTAKE_INTAKE_POWER);
@@ -267,16 +274,28 @@ public class Intake extends Subsystem {
 			break;
 		}
 		
-		//Change 14.5
-		if(getPivotCurrent() > 14.5){
-			setIntakePivot(0);
-			waitCounter = 0;
-		}
-		if(waitCounter < 100){
-			waitCounter++;
+//		//Change 14.5
+//		if(getPivotCurrent() > 14.5){
+//			setIntakePivot(0);
+//			waitCounter = 0;
+//		}
+//		if(waitCounter < 100){
+//			waitCounter++;
+//		} else {
+//			setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
+//		}
+		if(curIntakeState.equals(intakeState.DEAD)){
+			if(getPot() < Constants.INTAKE_POT_DIE){
+				setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
+			} else {
+				setIntakePivot(0);
+			}
 		} else {
-			setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
+			setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
 		}
+		SmartDashboard.putNumber("Intake Power", pivotPID.getValue(getPot(), getTarget(curIntakeState)));
+		SmartDashboard.putNumber("Intake Angle", getTarget(curIntakeState));
+		SmartDashboard.putNumber("Current", getPivotCurrent());
 	}
 
 	//

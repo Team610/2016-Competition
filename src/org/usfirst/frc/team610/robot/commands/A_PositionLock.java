@@ -45,6 +45,11 @@ public class A_PositionLock extends Command {
     	setTimeout(time);
     	isFinished = false;
     	tick = 0;
+    	error = 0;
+    	lastError = 0;
+    	differenceError = 0;
+    	rightSpeed = 0;
+    	leftSpeed = 0;
     }
 
     // Called repeatedly when this Command is scheduled to run

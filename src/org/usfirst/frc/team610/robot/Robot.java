@@ -38,7 +38,6 @@ public class Robot extends IterativeRobot {
 		drivetrain = DriveTrain.getInstance();
 		teleop = new T_Teleop();
 		sensor = new D_SensorReadings();
-		Constants.setOffset();
 	}
 
 	public void disabledInit() {
