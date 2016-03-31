@@ -22,7 +22,8 @@ public class T_NewIntake extends Command {
 //	private PID topPID;
 //	private PID botPID;
 //	private PID pivotPID;
-
+	private int pov;
+	private boolean isPovPressed = false;
 	
     public T_NewIntake() {
     	hanger = Hanger.getInstance();
@@ -46,6 +47,7 @@ public class T_NewIntake extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
+    	pov = oi.getOperator().getPOV();
     	
     	//Press A for Dead
     	if(oi.getOperator().getRawButton(LogitechF310Constants.BTN_A)) {
@@ -66,82 +68,19 @@ public class T_NewIntake extends Command {
     	
     	intake.setIntake();
     	
-//    	switch(intake.curIntakeState){
-//		case DEAD:
-//			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
-//				intake.setTopRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setBotRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
-//    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-//    			intake.setTopRoller(Constants.INTAKE_OUTTAKE_POWER);
-//    			intake.setBotRoller(Constants.INTAKE_OUTTAKE_POWER);
-//    			intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
-//    		} else {
-//    			intake.setTopRoller(0);
-//    			intake.setBotRoller(0);
-//    			intake.setFeeder(0);
-//    		}
-//			
-//			break;
-//		case POP:
-//			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
-//				intake.setTopRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setBotRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
-//    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-//    			intake.setTopRoller(Constants.INTAKE_TOP_POP_POWER);
-//    			intake.setBotRoller(Constants.INTAKE_BOT_POP_POWER);
-//    			intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
-//    		} else {
-//    			intake.setTopRoller(0);
-//    			intake.setBotRoller(0);
-//    			intake.setFeeder(0);
-//    		}
-//			break;
-//		case UP:
-//			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
-//				intake.setTopRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setBotRoller(Constants.INTAKE_INTAKE_POWER);
-//				intake.setFeeder(Constants.INTAKE_FEEDER_IN);
-//    		} else {
-//    			intake.setTopRoller(0);
-//    			intake.setBotRoller(0);
-//    			intake.setFeeder(0);
-//    		}
-//			break;
-//		case HANGING:
-//			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-//				intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
-//			} else {
-//				intake.setFeeder(0);
-//			}
-//			intake.setTopRoller(topPID.getValue(intake.getTopSpeed(), Constants.SHOOTER_TOP_HANG, intake.getTopFeedForward(Constants.SHOOTER_TOP_HANG)));
-//			intake.setBotRoller(botPID.getValue(intake.getBotSpeed(), Constants.SHOOTER_BOT_HANG, intake.getBotFeedForward(Constants.SHOOTER_BOT_HANG)));
-//			break;
-//		case SHOOTING:
-//			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-//				intake.setFeeder(Constants.INTAKE_FEEDER_OUT);
-//			} else {
-//				intake.setFeeder(0);
-//			}
-//			intake.setTopRoller(topPID.getValue(intake.getTopSpeed(), Constants.SHOOTER_TOP, intake.getTopFeedForward(Constants.SHOOTER_TOP)));
-//			intake.setBotRoller(botPID.getValue(intake.getBotSpeed(), Constants.SHOOTER_BOT, intake.getBotFeedForward(Constants.SHOOTER_BOT)));
-//			
-//			break;
-//		}
-//		
-////		//Change 14.5
-////		if(getPivotCurrent() > 14.5){
-////			setIntakePivot(0);
-////			waitCounter = 0;
-////		}
-////		if(waitCounter < 100){
-////			waitCounter++;
-////		} else {
-////			setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
-////		}
-//		
-//    	intake.setIntakePivot(pivotPID.getValue(intake.getPot(), intake.getTarget(intake.curIntakeState)));
+    	if(pov == 0 && !isPovPressed){
+    		Constants.INTAKE_POT_SHOOTING += 0.005;
+    		isPovPressed = true;
+    	} else if (pov == 180 && !isPovPressed) {
+    		Constants.INTAKE_POT_SHOOTING -= 0.005;
+    		isPovPressed = true;
+    	}
+    	
+    	if(pov == -1){
+    		isPovPressed = false;
+    	}
+    	
+    	SmartDashboard.putNumber("Shooting Angle", Constants.INTAKE_POT_SHOOTING);
     	SmartDashboard.putString("State", intake.curIntakeState.toString());
     	
     	

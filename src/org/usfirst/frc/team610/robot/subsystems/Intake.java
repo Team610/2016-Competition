@@ -220,12 +220,14 @@ public class Intake extends Subsystem {
     			setTopRoller(Constants.INTAKE_OUTTAKE_POWER);
 				setBotRoller(Constants.INTAKE_OUTTAKE_POWER);
 				setFeeder(Constants.INTAKE_FEEDER_OUT);
+    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)){
+    			setTopRoller(-1);
+    			setBotRoller(1);
     		} else {
     			setTopRoller(0);
 				setBotRoller(0);
 				setFeeder(0);
     		}
-			
 			break;
 		case POP:
 			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
@@ -270,7 +272,6 @@ public class Intake extends Subsystem {
 			}
 			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP, getTopFeedForward(Constants.SHOOTER_TOP)));
 			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT, getBotFeedForward(Constants.SHOOTER_BOT)));
-			
 			break;
 		}
 		
