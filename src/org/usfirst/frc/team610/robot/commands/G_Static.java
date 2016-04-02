@@ -16,7 +16,7 @@ public class G_Static extends CommandGroup {
     public  G_Static(int mode) {
     	
     	DriveTrain.getInstance().resetEncoders();
-    	addSequential(new A_PositionMove(145, 0, 0.55));
+    	addSequential(new A_PositionMove(150, 0, 0.55));
     	addSequential(new A_ResetTurn(3));
 //    	addSequential(new A_SetIntakePosition(intakeState.INTAKING));
     	

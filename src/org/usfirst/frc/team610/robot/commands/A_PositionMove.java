@@ -34,6 +34,8 @@ public class A_PositionMove extends Command {
 	private double lastError;
 	private double differenceError;
 	private double tAngle;
+	
+	double time;
 
 	public A_PositionMove(double distance) {
 
@@ -42,14 +44,14 @@ public class A_PositionMove extends Command {
 		driveTrain.resetSensors();
 		curRightDistance = 0;
 		curLeftDistance = 0;
-
+		this.time = 5;
 		tAngle = -1;
 		this.limit = Integer.MAX_VALUE;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 	}
 
-	public A_PositionMove(double distance, double angle) {
+	public A_PositionMove(double distance, double angle, double time) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
@@ -57,8 +59,9 @@ public class A_PositionMove extends Command {
 		curLeftDistance = 0;
 		tAngle = angle;
 		this.limit = 1;
+		this.time = time;
 	}
-	public A_PositionMove(double distance, double angle, double limit) {
+	public A_PositionMove(double distance, double angle, double limit, double time) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
 		driveTrain.resetSensors();
@@ -66,6 +69,7 @@ public class A_PositionMove extends Command {
 		curLeftDistance = 0;
 		tAngle = angle;
 		this.limit = limit;
+		this.time = time;
 	}
 
 	// Called just before this Command runs the first time
@@ -81,7 +85,7 @@ public class A_PositionMove extends Command {
 			tAngle = driveTrain.getYaw();
 		}
 		isFinished = false;
-		setTimeout(5);
+		setTimeout(time);
 		
 	}
 
@@ -118,12 +122,15 @@ public class A_PositionMove extends Command {
 		}
 		
 		if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
-			if(leftSpeed < 0 || rightSpeed < 0){
-				leftSpeed = -limit;
-				rightSpeed = - limit;
-			} else if(leftSpeed > 0 || rightSpeed > 0){
-				rightSpeed = limit;
+			if(leftSpeed < 0){
+				leftSpeed = - limit;
+			} else if (leftSpeed > 0){
 				leftSpeed = limit;
+			}
+			if(rightSpeed < 0){
+				rightSpeed = - limit;
+			} else if (rightSpeed > 0){
+				rightSpeed = limit;
 			}
 		}
 		

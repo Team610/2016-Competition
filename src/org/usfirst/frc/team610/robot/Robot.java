@@ -4,6 +4,7 @@ package org.usfirst.frc.team610.robot;
 import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
 import org.usfirst.frc.team610.robot.commands.G_Cheval;
 import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
+import org.usfirst.frc.team610.robot.commands.G_LowBarHigh;
 import org.usfirst.frc.team610.robot.commands.G_Static;
 import org.usfirst.frc.team610.robot.commands.G_StaticBack;
 import org.usfirst.frc.team610.robot.commands.T_Teleop;
@@ -76,6 +77,9 @@ public class Robot extends IterativeRobot {
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)){
 			auton = new G_StaticBack();
 			SmartDashboard.putString("Auton Mode: ", "Static_Backwards");
+		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_START)){
+			auton = new G_LowBarHigh();
+			SmartDashboard.putString("Auton Mode: ", "LowBarHigh");
 		}
 		
 		Scheduler.getInstance().run();

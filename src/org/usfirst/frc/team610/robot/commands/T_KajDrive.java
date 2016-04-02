@@ -79,23 +79,23 @@ public class T_KajDrive extends Command {
 			if ((pov == 0) && !isDPressed) {
 				isDPressed = true;
 				isPovPressed = false;
-				tRightDistance += 1;
-				tLeftDistance += 1;
+				tRightDistance += 4;
+				tLeftDistance += 4;
 			} else if ((pov == 180) && !isDPressed) {
 				isDPressed = true;
 				isPovPressed = false;
-				tRightDistance -= 1;
-				tLeftDistance -= 1;
+				tRightDistance -= 4;
+				tLeftDistance -= 4;
 			} else if (pov == 90 && !isDPressed){
 				isDPressed = true;
 				isPovPressed = false;
-				tRightDistance -= 1;
-				tLeftDistance += 1;
+				tRightDistance -= 4;
+				tLeftDistance += 4;
 			} else if (pov == 270 && !isDPressed){
 				isDPressed = true;
 				isPovPressed = false;
-				tRightDistance += 1;
-				tLeftDistance -= 1;
+				tRightDistance += 4;
+				tLeftDistance -= 4;
 			}
 			//Make sure every time you press a button, you only press it once in code
 			if (pov == -1 && !isPovPressed) {

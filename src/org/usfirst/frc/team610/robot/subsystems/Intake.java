@@ -7,6 +7,8 @@ import org.usfirst.frc.team610.robot.constants.ElectricalConstants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
 import org.usfirst.frc.team610.robot.constants.PIDConstants;
 
+import com.ni.vision.NIVision.LegFeature;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -36,7 +38,8 @@ public class Intake extends Subsystem {
 	private double botPeriod;
 	private OI oi;
 	private PID pivotPID, topPID, botPID;
-	
+	private double feederSpeed;
+
 	private int waitCounter = 100;
 
 	static Counter optTopCounter, optBotCounter;
@@ -53,9 +56,9 @@ public class Intake extends Subsystem {
 
 	private Intake() {
 		oi = OI.getInstance();
-		
+
 		pdb = new PowerDistributionPanel();
-		
+
 		RPMfactor = 60;// CHANGE
 		topRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_TOP);
 		botRoller = new Victor(ElectricalConstants.INTAKE_ROLLER_BOT);
@@ -67,7 +70,7 @@ public class Intake extends Subsystem {
 		optBotCounter = new Counter(ElectricalConstants.OPTICAL_BOTTOM);
 		// optTopCounter.setMaxPeriod(maxPeriod);
 		curIntakeState = intakeState.POP;
-		
+
 		optTopCounter.setMaxPeriod(.1);
 		optTopCounter.setDistancePerPulse(1);
 		optTopCounter.setSamplesToAverage(1);
@@ -76,32 +79,31 @@ public class Intake extends Subsystem {
 		optBotCounter.setDistancePerPulse(1);
 		optBotCounter.setSamplesToAverage(1);
 		optBotCounter.reset();
-		
+
 		topPeriod = Double.POSITIVE_INFINITY;
 		botPeriod = Double.POSITIVE_INFINITY;
 		optical = new DigitalInput(ElectricalConstants.OPTICAL_INTAKE);
-		
+
 		pivotPID = new PID(PIDConstants.INTAKE_POS_Kp, 0, PIDConstants.INTAKE_POS_Kd);
 		topPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
 		botPID = new PID(PIDConstants.INTAKE_SHOOT_Kp, 0, PIDConstants.INTAKE_SHOOT_Kd, -1, 1);
-		
+
 	}
 
-//	public void updateLists() {
-//		if (topRollers.size() > 50) {
-//			topRollers.add(0, optTopCounter.getPeriod());
-//			topRollers.remove(topRollers.size());
-//			botRollers.add(0, optBotCounter.getPeriod());
-//			botRollers.remove(topRollers.size());
-//		} else {
-//
-//		}
-//
-//	}
-	
+	// public void updateLists() {
+	// if (topRollers.size() > 50) {
+	// topRollers.add(0, optTopCounter.getPeriod());
+	// topRollers.remove(topRollers.size());
+	// botRollers.add(0, optBotCounter.getPeriod());
+	// botRollers.remove(topRollers.size());
+	// } else {
+	//
+	// }
+	//
+	// }
 
 	public double getTopSpeed() {
-		return RPMfactor/getTopPeriod();
+		return RPMfactor / getTopPeriod();
 	}
 
 	public double getTopPeriod() {
@@ -116,7 +118,7 @@ public class Intake extends Subsystem {
 	}
 
 	public double getBotSpeed() {
-		return RPMfactor/getBotPeriod();
+		return RPMfactor / getBotPeriod();
 	}
 
 	public double getBotPeriod() {
@@ -129,9 +131,17 @@ public class Intake extends Subsystem {
 			return botPeriod;
 		}
 	}
-	
-	public double getPivotCurrent(){
+
+	public double getPivotCurrent() {
 		return pdb.getCurrent(Constants.PDB_INTAKE_PIVOT);
+	}
+
+	public double getLeftRollerCurrent() {
+		return pdb.getCurrent(9);
+	}
+
+	public double getRightRollerCurrent() {
+		return pdb.getCurrent(3);
 	}
 
 	public double getPot() {
@@ -146,19 +156,18 @@ public class Intake extends Subsystem {
 		OUT, IN
 	}
 
-	public boolean getOptical(){
+	public boolean getOptical() {
 		return optical.get();
 	}
-	
+
 	public void setIntakePivot(double v) {
 		intakePivot.set(v);
 	}
-	
-	public void setFeeder(double speed){
+
+	public void setFeeder(double speed) {
 		rightFeeder.set(speed);
 		leftFeeder.set(speed);
 	}
-
 
 	// Flip in Code or Electrically?
 	public void setBothRollers(double v) {
@@ -173,19 +182,18 @@ public class Intake extends Subsystem {
 	public void setBotRoller(double v) {
 		botRoller.set(v);
 	}
-	//	botMotorSpeed = 1.6e-4 * tSpeedBot - 0.05;
-	//	topMotorSpeed = 1.52e-4 * tSpeedTop - 0.05;
-	public double getTopFeedForward(double rpm){
-		return 1.52e-4 * rpm - 0.05;
+
+	public double getBotFeedForward(double rpm) {
+		return 1.4e-4 * rpm - 0.05;
 	}
-	
-	public double getBotFeedForward(double rpm){
-		return 1.6e-4 * rpm - 0.05;
+
+	public double getTopFeedForward(double rpm) {
+		return 1.4e-4 * rpm - 0.05;
 	}
-	
-	public double getTarget(intakeState state){
+
+	public double getTarget(intakeState state) {
 		double out;
-		switch(state){
+		switch (state) {
 		case DEAD:
 			out = Constants.INTAKE_POT_DEAD;
 			break;
@@ -205,105 +213,201 @@ public class Intake extends Subsystem {
 			out = Constants.INTAKE_POT_DEAD;
 			break;
 		}
-		
+
 		return out;
 	}
-	
-	public void setIntake(){
-		switch(curIntakeState){
+
+	public void setIntake() {
+		switch (curIntakeState) {
 		case DEAD:
-			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && getOptical()) {
 				setTopRoller(Constants.INTAKE_INTAKE_POWER);
 				setBotRoller(Constants.INTAKE_INTAKE_POWER);
-				setFeeder(Constants.INTAKE_FEEDER_IN);
-    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-    			setTopRoller(Constants.INTAKE_OUTTAKE_POWER);
+				feederSpeed = Constants.INTAKE_FEEDER_IN;
+
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
+				setTopRoller(Constants.INTAKE_OUTTAKE_POWER);
 				setBotRoller(Constants.INTAKE_OUTTAKE_POWER);
-				setFeeder(Constants.INTAKE_FEEDER_OUT);
-    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)){
-    			setTopRoller(-1);
-    			setBotRoller(1);
-    		} else {
-    			setTopRoller(0);
+				feederSpeed = Constants.INTAKE_FEEDER_OUT;
+
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)) {
+				setTopRoller(-1);
+				setBotRoller(1);
+			} else {
+				setTopRoller(0);
 				setBotRoller(0);
-				setFeeder(0);
-    		}
+				feederSpeed = 0;
+
+			}
 			break;
 		case POP:
-			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && getOptical()) {
 				setTopRoller(Constants.INTAKE_INTAKE_POWER);
 				setBotRoller(Constants.INTAKE_INTAKE_POWER);
-				setFeeder(Constants.INTAKE_FEEDER_IN);
-    		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-    			setTopRoller(Constants.INTAKE_TOP_POP_POWER);
+				feederSpeed = Constants.INTAKE_FEEDER_IN;
+
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
+				setTopRoller(Constants.INTAKE_TOP_POP_POWER);
 				setBotRoller(Constants.INTAKE_BOT_POP_POWER);
-				setFeeder(Constants.INTAKE_FEEDER_OUT);
-    		} else {
-    			setTopRoller(0);
+				feederSpeed = Constants.INTAKE_FEEDER_OUT;
+
+			} else {
+				setTopRoller(0);
 				setBotRoller(0);
-				setFeeder(0);
-    		}
+				feederSpeed = 0;
+
+			}
 			break;
 		case UP:
-			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1) && getOptical()) {
 				setTopRoller(Constants.INTAKE_INTAKE_POWER);
 				setBotRoller(Constants.INTAKE_INTAKE_POWER);
-				setFeeder(Constants.INTAKE_FEEDER_IN);
-    		} else {
-    			setTopRoller(0);
+				feederSpeed = Constants.INTAKE_FEEDER_IN;
+
+			} else {
+				setTopRoller(0);
 				setBotRoller(0);
-				setFeeder(0);
-    		}
+				feederSpeed = 0;
+
+			}
 			break;
 		case HANGING:
-			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-				setFeeder(Constants.INTAKE_FEEDER_OUT);
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
+				feederSpeed = Constants.INTAKE_FEEDER_OUT;
+
 			} else {
-				setFeeder(0);
+				feederSpeed = 0;
+
 			}
-			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP_HANG, getTopFeedForward(Constants.SHOOTER_TOP_HANG)));
-			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT_HANG, getBotFeedForward(Constants.SHOOTER_BOT_HANG)));
+
+			setTopRoller(topPID.getValue(-getTopSpeed(), Constants.SHOOTER_TOP_HANG,
+					getTopFeedForward(Constants.SHOOTER_TOP_HANG)));
+			setBotRoller(botPID.getValue(-getBotSpeed(), Constants.SHOOTER_BOT_HANG,
+					getBotFeedForward(Constants.SHOOTER_BOT_HANG)));
+
+			SmartDashboard.putNumber("BotTarget", Constants.SHOOTER_BOT_HANG);
+			SmartDashboard.putNumber("TopTarget", Constants.SHOOTER_TOP_HANG);
 			break;
 		case SHOOTING:
-			if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-				setFeeder(Constants.INTAKE_FEEDER_OUT);
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
+				feederSpeed = Constants.INTAKE_FEEDER_OUT;
+
 			} else {
-				setFeeder(0);
+				feederSpeed = 0;
+
 			}
-			setTopRoller(topPID.getValue(getTopSpeed(), Constants.SHOOTER_TOP, getTopFeedForward(Constants.SHOOTER_TOP)));
-			setBotRoller(botPID.getValue(getBotSpeed(), Constants.SHOOTER_BOT, getBotFeedForward(Constants.SHOOTER_BOT)));
+			double topSpeed = topPID.getValue(-getTopSpeed(), Constants.SHOOTER_TOP,
+					getTopFeedForward(Constants.SHOOTER_TOP));
+			double botSpeed = botPID.getValue(-getBotSpeed(), Constants.SHOOTER_BOT,
+					getBotFeedForward(Constants.SHOOTER_BOT));
+
+			if (botSpeed < 0) {
+				setBotRoller(botSpeed);
+			}
+			if (topSpeed < 0) {
+				setTopRoller(topSpeed);
+			}
+			SmartDashboard.putNumber("BotTarget", Constants.SHOOTER_BOT);
+			SmartDashboard.putNumber("TopTarget", Constants.SHOOTER_TOP);
+			SmartDashboard.putNumber("BotSpeed", botSpeed);
+			SmartDashboard.putNumber("TopSpeed", topSpeed);
 			break;
+
 		}
-		
-//		//Change 14.5
-//		if(getPivotCurrent() > 14.5){
-//			setIntakePivot(0);
-//			waitCounter = 0;
-//		}
-//		if(waitCounter < 100){
-//			waitCounter++;
-//		} else {
-//			setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
-//		}
-		if(curIntakeState.equals(intakeState.DEAD)){
-			if(getPot() < Constants.INTAKE_POT_DIE){
+
+		// //Change 14.5
+		// if(getPivotCurrent() > 14.5){
+		// setIntakePivot(0);
+		// waitCounter = 0;
+		// }
+		// if(waitCounter < 100){
+		// waitCounter++;
+		// } else {
+		// setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
+		// }
+		if (curIntakeState.equals(intakeState.DEAD)) {
+			if (getPot() < Constants.INTAKE_POT_DIE) {
 				setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
 			} else {
-				setIntakePivot(0);
+				setIntakePivot(-0.05);
 			}
 		} else {
 			setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
 		}
-		SmartDashboard.putNumber("Intake Power", pivotPID.getValue(getPot(), getTarget(curIntakeState)));
-		SmartDashboard.putNumber("Intake Angle", getTarget(curIntakeState));
-		SmartDashboard.putNumber("Current", getPivotCurrent());
-	}
 
-	//
-	// public double getPower(){
-	// //Temp, need to find RPM to power
-	// return getRPM() * 20;
-	// }
+		if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
+			feederSpeed = Constants.INTAKE_FEEDER_IN;
+
+			setTopRoller(Constants.INTAKE_INTAKE_POWER);
+			setBothRollers(Constants.INTAKE_INTAKE_POWER);
+		}
+
+		SmartDashboard.putNumber("Intake Angle", getTarget(curIntakeState));
+		SmartDashboard.putNumber("RightCurrent", getRightRollerCurrent());
+		SmartDashboard.putNumber("LeftCurrent", getLeftRollerCurrent());
+		if (getLeftRollerCurrent() > Constants.LEFT_ROLLER_CURRENT
+				|| getRightRollerCurrent() > Constants.RIGHT_ROLLER_CURRENT) {
+			setFeeder(0);
+			waitCounter = 0;
+		}
+
+		if (waitCounter < 300) {
+			waitCounter++;
+			setFeeder(0);
+		} else {
+			setFeeder(feederSpeed);
+		}
+	}
+	
+	public void setAutoIntake(){
+		switch(curIntakeState){
+		case DEAD:
+			setTopRoller(0);
+			setBotRoller(0);
+			break;
+		case POP:
+			
+			setTopRoller(Constants.INTAKE_INTAKE_POWER);
+			setBotRoller(Constants.INTAKE_INTAKE_POWER);
+			break;
+		case UP:
+			setTopRoller(0);
+			setBotRoller(0);
+			break;
+		case SHOOTING:
+			
+			double topSpeed = topPID.getValue(-getTopSpeed(), Constants.SHOOTER_TOP,
+					getTopFeedForward(Constants.SHOOTER_TOP));
+			double botSpeed = botPID.getValue(-getBotSpeed(), Constants.SHOOTER_BOT,
+					getBotFeedForward(Constants.SHOOTER_BOT));
+
+			if (botSpeed < 0) {
+				setBotRoller(botSpeed);
+			}
+			if (topSpeed < 0) {
+				setTopRoller(topSpeed);
+			}
+			SmartDashboard.putNumber("BotTarget", Constants.SHOOTER_BOT);
+			SmartDashboard.putNumber("TopTarget", Constants.SHOOTER_TOP);
+			SmartDashboard.putNumber("BotSpeed", botSpeed);
+			SmartDashboard.putNumber("TopSpeed", topSpeed);
+			break;
+		default:
+			setTopRoller(Constants.INTAKE_INTAKE_POWER);
+			setBotRoller(Constants.INTAKE_INTAKE_POWER);
+			break;
+
+		}
+		if (curIntakeState.equals(intakeState.DEAD)) {
+			if (getPot() < Constants.INTAKE_POT_DIE) {
+				setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
+			} else {
+				setIntakePivot(-0.05);
+			}
+		} else {
+			setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
+		}
+	}
 
 	public void initDefaultCommand() {
 

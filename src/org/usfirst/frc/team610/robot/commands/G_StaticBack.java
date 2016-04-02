@@ -11,7 +11,7 @@ public class G_StaticBack extends CommandGroup {
     
     public  G_StaticBack() {
     	DriveTrain.getInstance().resetEncoders();
-    	addSequential(new A_PositionMove(-145, 0, 0.55));
+    	addSequential(new A_PositionMove(-145, 0, 1));
     	addSequential(new A_ResetTurn(3));
         // Add Commands here:
         // e.g. addSequential(new Command1());

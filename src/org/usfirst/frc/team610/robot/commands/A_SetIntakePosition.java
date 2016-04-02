@@ -49,41 +49,25 @@ public class A_SetIntakePosition extends Command {
 	protected void execute() {
 		switch (this.intakeState) {
 		case DEAD:
-			tAngle = Constants.INTAKE_POT_DEAD + Constants.INTAKE_POT_OFFSET;
+			intake.curIntakeState = intakeState.DEAD;
 			break;
 		case UP:
-			tAngle = Constants.INTAKE_POT_UP + Constants.INTAKE_POT_OFFSET + 0.03;
+			intake.curIntakeState = intakeState.UP;
 			break;
 		case POP:
-			tAngle = Constants.INTAKE_POT_POP + Constants.INTAKE_POT_OFFSET;
+			intake.curIntakeState = intakeState.POP;
 			break;
 		case SHOOTING:
-			tAngle = Constants.INTAKE_POT_SHOOTING + Constants.INTAKE_POT_OFFSET;
+			intake.curIntakeState = intakeState.SHOOTING;
 			break;
 		default:
-			tAngle = Constants.INTAKE_POT_DEAD + Constants.INTAKE_POT_OFFSET;
+			intake.curIntakeState = intakeState.DEAD;
 			break;
 
 		}
 		
 		
-		intakePosError = intake.getPot() - tAngle;
-		intakePosDiffError = intakePosError - intakePosLastError;
-		intake.setIntakePivot(intakePosError * PIDConstants.INTAKE_POS_Kp
-				+ intakePosDiffError * PIDConstants.INTAKE_POS_Kd);
-		intakePosLastError = intakePosError;
-		if (this.intakeState.equals(intakeState.DEAD)) {
-			if (Math.abs(intakePosError) < 0.001) {
-				intake.setIntakePivot(0);
-				isFinished = true;
-			}
-				
-		} else if (this.intakeState.equals(intakeState.POP)) {
-			if (Math.abs(intakePosError) < 0.001) {
-				intake.setIntakePivot(0);
-				isFinished = true;
-			}
-		}
+		intake.setIntake();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

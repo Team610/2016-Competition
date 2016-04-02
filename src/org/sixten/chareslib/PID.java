@@ -77,7 +77,6 @@ public class PID {
 		}
 		
 		return output;
-		
 	}
 	
 

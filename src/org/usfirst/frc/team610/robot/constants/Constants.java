@@ -26,16 +26,18 @@ public class Constants {
 	public static double HANGER_RATCHET_OPEN = prefs.getDouble("HANGER_RATCHET_OPEN", 0.3);
 	public static double HANGER_WINCH_SPEED_UP = prefs.getDouble("HANGER_WINCH_SPEED_UP", 1);
 	public static double HANGER_ENC_TOP_HANG = prefs.getDouble("HANGER_ENC_TOP_HANG", 1725);
-	public static double HANGER_ENC_TOP_FINAL = -65;
+	public static double HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", -50);
 
 	public static double INTAKE_POT_OFFSET = 0;
-	public static double INTAKE_POT_SHOOTING = 0.22;
-	public static double INTAKE_POT_HANGING = 0.21 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_SHOOTING = 0.18;
+	public static double INTAKE_POT_HANGING = 0.19 + INTAKE_POT_OFFSET;
 	public static double INTAKE_POT_POP = 0.18 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_DIE = 0.47 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_DEAD = 0.48 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_UP = 0.35 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_DIE = 0.51 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_DEAD = 0.54 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_UP = 0.47 + INTAKE_POT_OFFSET;
 
+	public static double LEFT_ROLLER_CURRENT = prefs.getDouble("LEFT_ROLLER_CURRENT", 22.5);
+	public static double RIGHT_ROLLER_CURRENT = prefs.getDouble("RIGHT_ROLLER_CURRENT", 22.5);
 	// Shooter
 	// intake - 0.8
 	// outtake - -0.65
@@ -117,10 +119,13 @@ public class Constants {
 		// 0.52);
 		// SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN",
 		// 0.15);
-
+		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", -50);
 		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -6000); // change
 		// // please
 		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -4000); // change
+		
+		LEFT_ROLLER_CURRENT = prefs.getDouble("LEFT_ROLLER_CURRENT", 22.5);
+		RIGHT_ROLLER_CURRENT = prefs.getDouble("RIGHT_ROLLER_CURRENT", 22.5);
 		// // please
 		// AUTON_FIRST_MOVE = prefs.getDouble("AUTON_FIRST_MOVE", 180);
 		// AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);

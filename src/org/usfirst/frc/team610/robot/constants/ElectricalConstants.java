@@ -14,11 +14,9 @@ public class ElectricalConstants {
 
 	
 	
-	//Magical numbers:
 	public static final int INTAKE_FEEDER_LEFT = 8;
 	public static final int INTAKE_FEEDER_RIGHT= 9;
 	public static final int OPTICAL_INTAKE = 8;
-	//
 	
 	
 	//RightServo notengaged = 0.225
@@ -27,6 +25,7 @@ public class ElectricalConstants {
 	public static final int LIFT_RATCHET = 7;
 	public static final int LIFT_WINCHA_NAVX = 0;
 	public static final int LIFT_WINCHB_NAVX = 1;
+	
 	public static final int ENCODER_DRIVE_LEFTA = 1;//CHECK
 	public static final int ENCODER_DRIVE_LEFTB = 0;//CHECK
 	public static final int ENCODER_DRIVE_RIGHTA = 3;

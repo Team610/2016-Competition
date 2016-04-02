@@ -26,6 +26,7 @@ public class D_SensorReadings extends Command {
     	driveTrain = DriveTrain.getInstance();
     	navx = NavX.getInstance();
     	intake = Intake.getInstance();
+    	hanger = Hanger.getInstance();
     	
     }
 
@@ -42,6 +43,8 @@ public class D_SensorReadings extends Command {
 		SmartDashboard.putNumber("Top RPM", intake.getTopSpeed());
 		SmartDashboard.putNumber("Bot RPM", intake.getBotSpeed());
 		SmartDashboard.putNumber("Encoder Lift: ", hanger.getEnc());
+		SmartDashboard.putNumber("RightEncoder", driveTrain.getRightInches());
+		SmartDashboard.putNumber("LeftEncoder", driveTrain.getLeftInches());
     }
 
     // Make this return true when this Command no longer needs to run execute()
