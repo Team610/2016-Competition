@@ -115,11 +115,17 @@ public class A_PositionMove extends Command {
 		
 		if(rightSpeed > limit){
 			leftSpeed -= rightSpeed - limit;
+		} else if(rightSpeed < -limit) {
+			leftSpeed += limit + rightSpeed;
 		}
 		
 		if(leftSpeed > limit){
 			rightSpeed -= leftSpeed - limit;
+		} else if (leftSpeed < -limit) {
+			rightSpeed += limit + leftSpeed;
 		}
+		
+		
 		
 		if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
 			if(leftSpeed < 0){

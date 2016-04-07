@@ -64,10 +64,10 @@ public class Constants {
 	// prefs.getDouble("SHOOTER_SERVO_LEFT_IN", 0.15);
 
 	// -0.7000
-	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -6000); // change
+	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3900); // change
 																				// please
-	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_TOP", -4000); // change
-																				// please
+	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_TOP", -3900); // change
+																			// please
 
 	public static double SHOOTER_TOP_HANG = -3000;
 	public static double SHOOTER_BOT_HANG = -3000;
@@ -120,9 +120,9 @@ public class Constants {
 		// SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN",
 		// 0.15);
 		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", -50);
-		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -6000); // change
+		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3900); // change
 		// // please
-		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -4000); // change
+		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -3900); // change
 		
 		LEFT_ROLLER_CURRENT = prefs.getDouble("LEFT_ROLLER_CURRENT", 22.5);
 		RIGHT_ROLLER_CURRENT = prefs.getDouble("RIGHT_ROLLER_CURRENT", 22.5);

@@ -10,42 +10,22 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class G_LowBarDump extends CommandGroup {
+public class G_LowBarHigh extends CommandGroup {
     
-    public  G_LowBarDump() {
+    public  G_LowBarHigh() {
     	
-    	
-    	
-    	//Parallel IntakeDead & Drive forward through low bar
-    	// Sequential Outtake Ball in Courtyard
-    	//
-    	//
     	NavX.getInstance().resetAngle();
     	DriveTrain.getInstance().resetSensors();
     	addParallel(new A_ResetTurn(1));
     	addSequential(new A_SetIntakePosition(Intake.intakeState.DEAD, 1));
     	//190 total
-    	addSequential(new A_PositionMove(200, 0, 0.5, 5));
+    	addSequential(new A_PositionMove(-212, 0, 0.6, 5));
+    	addParallel(new A_SetIntakePosition(Intake.intakeState.SHOOTING, 10));
     	addSequential(new A_ResetTurn(0.5));
     	addSequential(new A_PositionLock(2,62));
-    	addParallel(new A_SetIntakePosition(Intake.intakeState.UP, 5));
-    	addSequential(new A_PositionMove(65, 0, 0.6, 3));
-    	addSequential(new A_SetIntake(-0.5));
-//    	addParallel(new A_SetIntakePosition(Intake.intakeState.POP, 3));
-//    	addSequential(new A_PositionMove(-90, 0, 1));
-    	
-//    	addSequential(new A_PositionLock(3,127));
-//    	addParallel(new A_SetIntakePosition(Intake.intakeState.DEAD, 5));
-//    	addSequential(new A_PositionMove(180, 0, 1));
-//    	addSequential(new A_PositionLock(2,-20));
-  
-    	
-    	//addSequential(new A_SetIntake(-0.7));
-    	
-    	
-    	
-    	
-    	
+    	addSequential(new A_PositionMove(-69, 0, 0.5, 3));
+    	addSequential(new A_ResetTurn(0.5));
+    	addSequential(new A_SetFeeder(1,Constants.INTAKE_FEEDER_OUT));
     	
     	
     	

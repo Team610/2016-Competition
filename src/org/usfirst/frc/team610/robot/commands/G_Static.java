@@ -63,6 +63,13 @@ public class G_Static extends CommandGroup {
     	case 5:
     		
     		break;
+    		
+    	case 8:
+    		addSequential(new A_ResetTurn(15));
+    		break;
+    	default:
+    		addSequential(new A_ResetTurn(15));
+    		break;
     	}
     	
     	//addParallel(new A_SetIntake(Constants.INTAKE_OUTTAKE_POWER));

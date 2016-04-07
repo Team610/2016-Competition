@@ -67,7 +67,7 @@ public class A_SetIntakePosition extends Command {
 		}
 		
 		
-		intake.setIntake();
+		intake.setAutoIntake();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

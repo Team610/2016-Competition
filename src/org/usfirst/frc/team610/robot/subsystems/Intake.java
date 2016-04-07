@@ -39,8 +39,9 @@ public class Intake extends Subsystem {
 	private OI oi;
 	private PID pivotPID, topPID, botPID;
 	private double feederSpeed;
+	private int delay = 0;
 
-	private int waitCounter = 100;
+	private int waitCounter = 0;
 
 	static Counter optTopCounter, optBotCounter;
 
@@ -345,18 +346,20 @@ public class Intake extends Subsystem {
 		SmartDashboard.putNumber("Intake Angle", getTarget(curIntakeState));
 		SmartDashboard.putNumber("RightCurrent", getRightRollerCurrent());
 		SmartDashboard.putNumber("LeftCurrent", getLeftRollerCurrent());
-		if (getLeftRollerCurrent() > Constants.LEFT_ROLLER_CURRENT
-				|| getRightRollerCurrent() > Constants.RIGHT_ROLLER_CURRENT) {
-			setFeeder(0);
-			waitCounter = 0;
-		}
-
-		if (waitCounter < 300) {
-			waitCounter++;
-			setFeeder(0);
-		} else {
-			setFeeder(feederSpeed);
-		}
+//		if (getLeftRollerCurrent() > Constants.LEFT_ROLLER_CURRENT
+//				|| getRightRollerCurrent() > Constants.RIGHT_ROLLER_CURRENT) {
+//			waitCounter ++;
+//		}
+//
+//		if (waitCounter > 150  && delay < 75) {
+//			delay ++;
+//			setFeeder(0);
+//		} else {
+//			delay = 0;
+//			setFeeder(feederSpeed);
+//		}
+		
+		setFeeder(feederSpeed);
 	}
 	
 	public void setAutoIntake(){
@@ -364,6 +367,7 @@ public class Intake extends Subsystem {
 		case DEAD:
 			setTopRoller(0);
 			setBotRoller(0);
+			setFeeder(0);
 			break;
 		case POP:
 			
@@ -371,8 +375,7 @@ public class Intake extends Subsystem {
 			setBotRoller(Constants.INTAKE_INTAKE_POWER);
 			break;
 		case UP:
-			setTopRoller(0);
-			setBotRoller(0);
+			
 			break;
 		case SHOOTING:
 			

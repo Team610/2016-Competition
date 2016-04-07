@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team610.robot;
 
+import org.usfirst.frc.team610.robot.commands.A_ResetTurn;
 import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
 import org.usfirst.frc.team610.robot.commands.G_Cheval;
 import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
@@ -61,7 +62,7 @@ public class Robot extends IterativeRobot {
 		}else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_START)){
 			//5 Should be to just go over defense and stop. 
 			mode = 5;
-		}
+		} 
 		
 		SmartDashboard.putNumber("Mode: ", mode);
 		
@@ -80,6 +81,9 @@ public class Robot extends IterativeRobot {
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_START)){
 			auton = new G_LowBarHigh();
 			SmartDashboard.putString("Auton Mode: ", "LowBarHigh");
+		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_BACK)){
+			auton = new G_Static(8);
+			SmartDashboard.putString("Auton Mode: ", "Sitting Duck");
 		}
 		
 		Scheduler.getInstance().run();
