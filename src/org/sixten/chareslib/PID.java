@@ -79,14 +79,16 @@ public class PID {
 		return output;
 	}
 	
-
-	
 	public void resetPID(){
 		error = 0;
 		lastError = 0;
 		diffError = 0;
 		iCounter = 0;
 		output = 0;
+	}
+	
+	public double getError(){
+		return error;
 	}
 	
 }

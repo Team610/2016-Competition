@@ -12,9 +12,9 @@ public class Constants {
 	// persistent storage
 	// If there is an entry already, the persistent value will be used instead
 
-	//Change
+	// Change
 	public static int PDB_INTAKE_PIVOT = 3;
-	
+
 	// Please update these after live tuning!
 	public static Preferences prefs = Preferences.getInstance();
 
@@ -34,7 +34,7 @@ public class Constants {
 	public static double INTAKE_POT_POP = 0.18 + INTAKE_POT_OFFSET;
 	public static double INTAKE_POT_DIE = 0.51 + INTAKE_POT_OFFSET;
 	public static double INTAKE_POT_DEAD = 0.54 + INTAKE_POT_OFFSET;
-	public static double INTAKE_POT_UP = 0.47 + INTAKE_POT_OFFSET;
+	public static double INTAKE_POT_UP = 0.25 + INTAKE_POT_OFFSET;
 
 	public static double LEFT_ROLLER_CURRENT = prefs.getDouble("LEFT_ROLLER_CURRENT", 22.5);
 	public static double RIGHT_ROLLER_CURRENT = prefs.getDouble("RIGHT_ROLLER_CURRENT", 22.5);
@@ -67,7 +67,7 @@ public class Constants {
 	public static double SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3900); // change
 																				// please
 	public static double SHOOTER_BOT = prefs.getDouble("SHOOTER_TOP", -3900); // change
-																			// please
+																				// please
 
 	public static double SHOOTER_TOP_HANG = -3000;
 	public static double SHOOTER_BOT_HANG = -3000;
@@ -76,11 +76,14 @@ public class Constants {
 	public static double AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);
 	public static double AUTON_SECOND_MOVE = prefs.getDouble("AUTON_SECOND_MOVE", 96);
 
-	public static void setOffset(){
+	public static double LOCK_GYRO_SENSITIVITY = 0.05;
+	public static double LOCK_ENC_SENSITIVITY = 0.05;
+
+	public static void setOffset() {
 		SmartDashboard.putNumber("Offset:", 0);
 		INTAKE_POT_OFFSET = Intake.getInstance().getPot() - INTAKE_POT_POP;
 	}
-	
+
 	public static void update() {
 		// Drivetrain
 		// DRIVETRAIN_PULSES_PER_INCH =
@@ -97,12 +100,22 @@ public class Constants {
 		// 0.6);
 		// INTAKE_BOT_INTAKE_POWER = prefs.getDouble("INTAKE_BOT_INTAKE_POWER",
 		// 1);
-//		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", -0.053);
-//		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.497);
-		// INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.567);
-		// INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.155);
-		// INTAKE_POT_INTAKE = prefs.getDouble("INTAKE_POT_INTAKE", 0.160);
+		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0);
+		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.18) + INTAKE_POT_OFFSET;
+		INTAKE_POT_HANGING = prefs.getDouble("INTAKE_POT_HANGING", 0.19) + INTAKE_POT_OFFSET;
+		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.18) + INTAKE_POT_OFFSET;
+		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.54) + INTAKE_POT_OFFSET;
+		INTAKE_POT_UP = prefs.getDouble("INTAKE_POT_UP", 0.25) + INTAKE_POT_OFFSET;
 
+		
+//		public static double INTAKE_POT_OFFSET = 0;
+//		public static double INTAKE_POT_SHOOTING = 0.18;
+//		public static double INTAKE_POT_HANGING = 0.19 + INTAKE_POT_OFFSET;
+//		public static double INTAKE_POT_POP = 0.18 + INTAKE_POT_OFFSET;
+//		public static double INTAKE_POT_DIE = 0.51 + INTAKE_POT_OFFSET;
+//		public static double INTAKE_POT_DEAD = 0.54 + INTAKE_POT_OFFSET;
+//		public static double INTAKE_POT_UP = 0.47 + INTAKE_POT_OFFSET;
+		
 		// // Shooter09
 		// INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);
 		// INTAKE_OUTTAKE_POWER = prefs.getDouble("INTAKE_OUTTAKE_POWER",
@@ -123,9 +136,7 @@ public class Constants {
 		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3900); // change
 		// // please
 		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -3900); // change
-		
-		LEFT_ROLLER_CURRENT = prefs.getDouble("LEFT_ROLLER_CURRENT", 22.5);
-		RIGHT_ROLLER_CURRENT = prefs.getDouble("RIGHT_ROLLER_CURRENT", 22.5);
+
 		// // please
 		// AUTON_FIRST_MOVE = prefs.getDouble("AUTON_FIRST_MOVE", 180);
 		// AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);

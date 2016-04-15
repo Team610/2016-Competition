@@ -39,9 +39,6 @@ public class Intake extends Subsystem {
 	private OI oi;
 	private PID pivotPID, topPID, botPID;
 	private double feederSpeed;
-	private int delay = 0;
-
-	private int waitCounter = 0;
 
 	static Counter optTopCounter, optBotCounter;
 
@@ -232,8 +229,9 @@ public class Intake extends Subsystem {
 				feederSpeed = Constants.INTAKE_FEEDER_OUT;
 
 			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)) {
-				setTopRoller(-1);
-				setBotRoller(1);
+				setTopRoller(Constants.INTAKE_INTAKE_POWER);
+				setBotRoller(Constants.INTAKE_INTAKE_POWER);
+				feederSpeed = Constants.INTAKE_FEEDER_IN;
 			} else {
 				setTopRoller(0);
 				setBotRoller(0);
@@ -252,6 +250,12 @@ public class Intake extends Subsystem {
 				setBotRoller(Constants.INTAKE_BOT_POP_POWER);
 				feederSpeed = Constants.INTAKE_FEEDER_OUT;
 
+			} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)) {
+				setTopRoller(Constants.INTAKE_INTAKE_POWER);
+				setBotRoller(Constants.INTAKE_INTAKE_POWER);
+				feederSpeed = Constants.INTAKE_FEEDER_IN;
+			} else if (!getOptical()){
+				feederSpeed = Constants.INTAKE_FEEDER_IN; 
 			} else {
 				setTopRoller(0);
 				setBotRoller(0);
@@ -293,9 +297,10 @@ public class Intake extends Subsystem {
 			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)) {
 				feederSpeed = Constants.INTAKE_FEEDER_OUT;
 
+			} else if (!getOptical()){
+				feederSpeed = Constants.INTAKE_FEEDER_IN; 
 			} else {
 				feederSpeed = 0;
-
 			}
 			double topSpeed = topPID.getValue(-getTopSpeed(), Constants.SHOOTER_TOP,
 					getTopFeedForward(Constants.SHOOTER_TOP));
@@ -313,19 +318,8 @@ public class Intake extends Subsystem {
 			SmartDashboard.putNumber("BotSpeed", botSpeed);
 			SmartDashboard.putNumber("TopSpeed", topSpeed);
 			break;
-
 		}
 
-		// //Change 14.5
-		// if(getPivotCurrent() > 14.5){
-		// setIntakePivot(0);
-		// waitCounter = 0;
-		// }
-		// if(waitCounter < 100){
-		// waitCounter++;
-		// } else {
-		// setIntakePivot(pivotPID.getValue(getPot(), getTarget(state)));
-		// }
 		if (curIntakeState.equals(intakeState.DEAD)) {
 			if (getPot() < Constants.INTAKE_POT_DIE) {
 				setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
@@ -336,28 +330,7 @@ public class Intake extends Subsystem {
 			setIntakePivot(pivotPID.getValue(getPot(), getTarget(curIntakeState)));
 		}
 
-		if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_X)) {
-			feederSpeed = Constants.INTAKE_FEEDER_IN;
-
-			setTopRoller(Constants.INTAKE_INTAKE_POWER);
-			setBothRollers(Constants.INTAKE_INTAKE_POWER);
-		}
-
 		SmartDashboard.putNumber("Intake Angle", getTarget(curIntakeState));
-		SmartDashboard.putNumber("RightCurrent", getRightRollerCurrent());
-		SmartDashboard.putNumber("LeftCurrent", getLeftRollerCurrent());
-//		if (getLeftRollerCurrent() > Constants.LEFT_ROLLER_CURRENT
-//				|| getRightRollerCurrent() > Constants.RIGHT_ROLLER_CURRENT) {
-//			waitCounter ++;
-//		}
-//
-//		if (waitCounter > 150  && delay < 75) {
-//			delay ++;
-//			setFeeder(0);
-//		} else {
-//			delay = 0;
-//			setFeeder(feederSpeed);
-//		}
 		
 		setFeeder(feederSpeed);
 	}
