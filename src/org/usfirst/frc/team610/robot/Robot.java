@@ -1,13 +1,12 @@
 
 package org.usfirst.frc.team610.robot;
 
-import org.usfirst.frc.team610.robot.commands.A_ResetTurn;
 import org.usfirst.frc.team610.robot.commands.D_SensorReadings;
-import org.usfirst.frc.team610.robot.commands.G_Cheval;
-import org.usfirst.frc.team610.robot.commands.G_LowBarDump;
 import org.usfirst.frc.team610.robot.commands.G_LowBarHigh;
 import org.usfirst.frc.team610.robot.commands.G_Static;
 import org.usfirst.frc.team610.robot.commands.G_StaticBack;
+import org.usfirst.frc.team610.robot.commands.G_StaticRight;
+import org.usfirst.frc.team610.robot.commands.G_Turn;
 import org.usfirst.frc.team610.robot.commands.T_Teleop;
 import org.usfirst.frc.team610.robot.constants.Constants;
 import org.usfirst.frc.team610.robot.constants.LogitechF310Constants;
@@ -16,6 +15,7 @@ import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team610.robot.subsystems.Hanger;
 import org.usfirst.frc.team610.robot.subsystems.Intake;
 import org.usfirst.frc.team610.robot.subsystems.NavX;
+import org.usfirst.frc.team610.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,15 +43,20 @@ public class Robot extends IterativeRobot {
 		Constants.update();
 		PIDConstants.update();
 	}
+	String autoMode = "";
 
 	public void disabledInit() {
 		teleop.cancel();
-		auton = new G_LowBarDump();
+		auton = new G_LowBarHigh();
 		sensor.start();
 	}
 
+	
+	
 	public void disabledPeriodic() {
 		SmartDashboard.putNumber("", intake.getPot());
+		
+		SmartDashboard.putNumber("GyroAngle: ",DriveTrain.getInstance().getYaw());
 		
 		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_A)){
 			mode = 1;
@@ -67,42 +72,44 @@ public class Robot extends IterativeRobot {
 		} 
 		
 		SmartDashboard.putNumber("Mode: ", mode);
+	
 		
 		if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L1)){
-			auton = new G_Cheval(mode);
-			SmartDashboard.putString("Auton Mode: ", "Cheval_" + mode);
+			auton = new G_Turn();
+			autoMode = "Test";
 		} else if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R1)){
-			auton = new G_Static(mode);
-			SmartDashboard.putString("Auton Mode: ", "Static_" + mode);
+			auton = new G_Static();
+			autoMode = "StaticMid";
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_L2)){
-			auton = new G_LowBarDump();
-			SmartDashboard.putString("Auton Mode: ", "LowBarDump");
+			auton = new G_StaticRight();
+			autoMode = "StaticRight";
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)){
 			auton = new G_StaticBack();
-			SmartDashboard.putString("Auton Mode: ", "Static_Backwards");
+			autoMode = "StaticBack";
 		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_START)){
 			auton = new G_LowBarHigh();
-			SmartDashboard.putString("Auton Mode: ", "LowBarHigh");
-		} else if(oi.getDriver().getRawButton(LogitechF310Constants.BTN_BACK)){
-			auton = new G_Static(8);
-			SmartDashboard.putString("Auton Mode: ", "Sitting Duck");
-		}
+			autoMode = "LowBarHigh";
+		} 
 		
+		SmartDashboard.putString("Auton Mode: ", autoMode);
 		Scheduler.getInstance().run();
 	}
 
 	public void autonomousInit() {
+		Vision.getInstance().setExposureBright(false);
 		teleop.cancel();
 		sensor.start();
 		auton.start();
 	}
 
 	public void autonomousPeriodic() {
+		PIDConstants.update();
 		Scheduler.getInstance().run();
 	}
 
 	public void teleopInit() {
 		Hanger.getInstance().resetEncoder();
+		Vision.getInstance().setExposureBright(true);
 		teleop.start();
 		sensor.start();
 	}

@@ -42,7 +42,7 @@ public class Constants {
 	// intake - 0.8
 	// outtake - -0.65
 	public static double INTAKE_INTAKE_POWER = 1;
-	public static double INTAKE_OUTTAKE_POWER = -0.65;
+	public static double INTAKE_OUTTAKE_POWER = -0.8;
 	// public static double INTAKE_TOP_INTAKE_POWER =
 	// prefs.getDouble("INTAKE_TOP_INTAKE_POWER", 0.6);
 	// public static double INTAKE_BOT_INTAKE_POWER =
@@ -76,8 +76,8 @@ public class Constants {
 	public static double AUTON_TURN = prefs.getDouble("AUTON_TURN", 50);
 	public static double AUTON_SECOND_MOVE = prefs.getDouble("AUTON_SECOND_MOVE", 96);
 
-	public static double LOCK_GYRO_SENSITIVITY = 0.05;
-	public static double LOCK_ENC_SENSITIVITY = 0.05;
+	public static double LOCK_GYRO_SENSITIVITY = 0.25;
+	public static double LOCK_ENC_SENSITIVITY = 0.25;
 
 	public static void setOffset() {
 		SmartDashboard.putNumber("Offset:", 0);
@@ -85,6 +85,12 @@ public class Constants {
 	}
 
 	public static void update() {
+		SHOOTER_TOP_HANG = prefs.getDouble("TopHang", -3000);
+		SHOOTER_BOT_HANG = prefs.getDouble("BotHang", -3000);
+		
+		INTAKE_FEEDER_IN = prefs.getDouble("FeederIn", 1);
+		INTAKE_FEEDER_OUT = prefs.getDouble("FeederOut", -0.25);
+		INTAKE_INTAKE_POWER = prefs.getDouble("IntakeIn", 1);
 		// Drivetrain
 		// DRIVETRAIN_PULSES_PER_INCH =
 		// prefs.getDouble("DRIVETRAIN_PULSES_PER_INCH", 97.1830985915493);
@@ -100,13 +106,9 @@ public class Constants {
 		// 0.6);
 		// INTAKE_BOT_INTAKE_POWER = prefs.getDouble("INTAKE_BOT_INTAKE_POWER",
 		// 1);
-		INTAKE_POT_OFFSET = prefs.getDouble("INTAKE_POT_OFFSET", 0);
-		INTAKE_POT_SHOOTING = prefs.getDouble("INTAKE_POT_SHOOTING", 0.18) + INTAKE_POT_OFFSET;
-		INTAKE_POT_HANGING = prefs.getDouble("INTAKE_POT_HANGING", 0.19) + INTAKE_POT_OFFSET;
-		INTAKE_POT_POP = prefs.getDouble("INTAKE_POT_POP", 0.18) + INTAKE_POT_OFFSET;
-		INTAKE_POT_DEAD = prefs.getDouble("INTAKE_POT_DEAD", 0.54) + INTAKE_POT_OFFSET;
-		INTAKE_POT_UP = prefs.getDouble("INTAKE_POT_UP", 0.25) + INTAKE_POT_OFFSET;
 
+		LOCK_GYRO_SENSITIVITY = prefs.getDouble("GyroSensitivity", 0.25);
+		LOCK_ENC_SENSITIVITY = prefs.getDouble("EncSensitivity", 0.25);
 		
 //		public static double INTAKE_POT_OFFSET = 0;
 //		public static double INTAKE_POT_SHOOTING = 0.18;
@@ -115,7 +117,13 @@ public class Constants {
 //		public static double INTAKE_POT_DIE = 0.51 + INTAKE_POT_OFFSET;
 //		public static double INTAKE_POT_DEAD = 0.54 + INTAKE_POT_OFFSET;
 //		public static double INTAKE_POT_UP = 0.47 + INTAKE_POT_OFFSET;
-		
+		INTAKE_POT_OFFSET = prefs.getDouble("PotOffset", 0);
+		INTAKE_POT_SHOOTING = prefs.getDouble("PotShooting", 0.18);
+		INTAKE_POT_HANGING =  prefs.getDouble("PotHanging", 0.19);
+		INTAKE_POT_POP =  prefs.getDouble("PotPop", 0.18);
+		INTAKE_POT_DIE = prefs.getDouble("PotDie", 0.51);
+		INTAKE_POT_DEAD = prefs.getDouble("PotDead", 0.54);
+		INTAKE_POT_UP = prefs.getDouble("PotUp", 0.25);
 		// // Shooter09
 		// INTAKE_INTAKE_POWER = prefs.getDouble("INTAKE_INTAKE_POWER", 0.65);
 		// INTAKE_OUTTAKE_POWER = prefs.getDouble("INTAKE_OUTTAKE_POWER",
@@ -133,9 +141,9 @@ public class Constants {
 		// SHOOTER_SERVO_LEFT_IN = prefs.getDouble("SHOOTER_SERVO_LEFT_IN",
 		// 0.15);
 		HANGER_ENC_TOP_FINAL = prefs.getDouble("HANGER_ENC_TOP_FINAL", -50);
-		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3900); // change
+		SHOOTER_TOP = prefs.getDouble("SHOOTER_TOP", -3927); // change
 		// // please
-		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -3900); // change
+		SHOOTER_BOT = prefs.getDouble("SHOOTER_BOT", -3927); // change
 
 		// // please
 		// AUTON_FIRST_MOVE = prefs.getDouble("AUTON_FIRST_MOVE", 180);

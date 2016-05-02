@@ -48,16 +48,32 @@ public class Vision extends Subsystem {
 	int imaqError;
 
 	// Constants
-	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(101, 64); // Default hue
+//	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(101, 64); // Default hue
+//	// range for
+//	// yellow
+//	// tote
+//NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(88, 255); // Default
+//	// saturation
+//	// range for
+//	// yellow
+//	// tote
+//NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(134, 255); // Default
+//	// value
+//	// range for
+//	// yellow
+//	// tote
+	
+	//88, 76
+	NIVision.Range TOTE_HUE_RANGE = new NIVision.Range(111, 0); // Default hue 
 																	// range for
 																	// yellow
-																	// tote
-	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(88, 255); // Default
+	//109,255														// tote
+	NIVision.Range TOTE_SAT_RANGE = new NIVision.Range(0, 255); // Default
 																	// saturation
 																	// range for
 																	// yellow
-																	// tote
-	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(134, 255); // Default
+	//106, 255																// tote
+	NIVision.Range TOTE_VAL_RANGE = new NIVision.Range(75, 255); // Default
 																	// value
 																	// range for
 																	// yellow
@@ -68,7 +84,7 @@ public class Vision extends Subsystem {
 								// 2.22
 	double SHORT_RATIO = 1.4; // Tote short side = 16.9 / Tote height = 12.1 =
 								// 1.4
-	double SCORE_MIN = 75.0; // Minimum score to be considered a tote
+	double SCORE_MIN = 5; // Minimum score to be considered a tote
 	double VIEW_ANGLE = 49.4; // View angle fo camera, set to Axis m1011 by
 								// default, 64 for m1013, 51.7 for 206, 52 for
 								// HD3000 square, 60 for HD3000 640x480
@@ -105,6 +121,9 @@ public class Vision extends Subsystem {
 		return instance;
 
 	}
+	public void setExposureBright (boolean bright){
+		server.setExpBright(bright);
+	}
 
 	public double getAngle() {
 		frame = server.getFrame();
@@ -118,7 +137,7 @@ public class Vision extends Subsystem {
 		TOTE_VAL_RANGE.minValue = (int) SmartDashboard.getNumber("Tote val min", TOTE_VAL_RANGE.minValue);
 		TOTE_VAL_RANGE.maxValue = (int) SmartDashboard.getNumber("Tote val max", TOTE_VAL_RANGE.maxValue);
 
-		// Threshold the image looking for yellow (tote color)
+		// Threshold the image to look for tape
 		NIVision.imaqColorThreshold(binaryFrame, frame, 255, NIVision.ColorMode.HSV, TOTE_HUE_RANGE, TOTE_SAT_RANGE,
 				TOTE_VAL_RANGE);
 
@@ -128,16 +147,21 @@ public class Vision extends Subsystem {
 
 		// Send masked image to dashboard to assist in tweaking mask.
 		server.setImage(binaryFrame);
+		
 
+		
 		// filter out small particles
 		float areaMin = (float) SmartDashboard.getNumber("Area min %", AREA_MINIMUM);
 		criteria[0].lower = areaMin;
-		imaqError = NIVision.imaqParticleFilter4(binaryFrame, binaryFrame, criteria, filterOptions, null);
+//		imaqError = NIVision.imaqParticleFilter4(binaryFrame, binaryFrame, criteria, filterOptions, null);
 
 		// Send particle count after filtering to dashboard
 		numParticles = NIVision.imaqCountParticles(binaryFrame, 1);
 		SmartDashboard.putNumber("Filtered particles", numParticles);
-
+		double xCor = 0;
+		
+		
+		
 		if (numParticles > 0) {
 			// Measure particles and sort by particle size
 			Vector<ParticleReport> particles = new Vector<ParticleReport>();
@@ -172,17 +196,20 @@ public class Vision extends Subsystem {
 			scores.Area = AreaScore(particles.elementAt(0));
 			SmartDashboard.putNumber("Area", scores.Area);
 			boolean isTote = scores.Aspect > SCORE_MIN && scores.Area > SCORE_MIN;
-
+			xCor = (particles.elementAt(0).BoundingRectLeft + particles.elementAt(0).BoundingRectRight) / 2 - 320;
 			// Send distance and tote status to dashboard. The bounding rect,
 			// particularly the horizontal center (left - right) may be useful
 			// for rotating/driving towards a tote
-			SmartDashboard.putBoolean("IsTote", isTote);
+			SmartDashboard.putString("VisionState", "Goal Detected");
 			SmartDashboard.putNumber("Distance", computeDistance(binaryFrame, particles.elementAt(0)));
 		} else {
-			SmartDashboard.putBoolean("IsTote", false);
+			SmartDashboard.putString("VisionState", "No Goal Detected");
 		}
-		//TODO: calc the angle!
-		return 0;
+		SmartDashboard.putNumber("xCor", xCor);
+		 
+		double angle = Math.toDegrees(Math.atan2(xCor * Math.tan(0.6), 320));
+		SmartDashboard.putNumber("Angle", angle);
+		return angle;
 	}
 
 	/**

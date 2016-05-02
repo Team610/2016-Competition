@@ -4,6 +4,7 @@ import org.usfirst.frc.team610.robot.constants.PIDConstants;
 import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Moves, using PID, to a certain distance in inches.
@@ -28,13 +29,13 @@ public class A_PositionMove extends Command {
 	private double gyroLeftSpeed = 0;
 	private boolean isFinished = false;
 	private double limit;
-	
+
 	// Angles
 	private double error;
 	private double lastError;
 	private double differenceError;
 	private double tAngle;
-	
+
 	double time;
 
 	public A_PositionMove(double distance) {
@@ -61,6 +62,7 @@ public class A_PositionMove extends Command {
 		this.limit = 1;
 		this.time = time;
 	}
+
 	public A_PositionMove(double distance, double angle, double limit, double time) {
 		tDistance = distance;
 		driveTrain = DriveTrain.getInstance();
@@ -86,20 +88,32 @@ public class A_PositionMove extends Command {
 		}
 		isFinished = false;
 		setTimeout(time);
-		
+		curLeftDistance = 0;
+		curRightDistance = 0;
+		encLeftError = 0;
+		encRightError = 0;
+		rightSpeed = 0;
+		leftSpeed = 0;
+		lastEncLeftError = 0;
+		lastEncRightError = 0;
+		leftErrorDistance = 0;
+		rightErrorDistance = 0;
+		gyroRightSpeed = 0;
+		gyroLeftSpeed = 0;
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 
-		curLeftDistance = driveTrain.getLeftInches();
-		curRightDistance = driveTrain.getRightInches();
-		
+		curLeftDistance = (driveTrain.getLeftInches() + driveTrain.getRightInches())/2;
+		curRightDistance = (driveTrain.getLeftInches() + driveTrain.getRightInches())/2;
+
 		error = tAngle - driveTrain.getYaw();
 		differenceError = error - lastError;
 
-		gyroLeftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
-		gyroRightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+		gyroLeftSpeed = error * PIDConstants.GYRO_DRIVE_P;
+		gyroRightSpeed = error * PIDConstants.GYRO_DRIVE_P;
 
 		encLeftError = tDistance - curLeftDistance;
 		encRightError = tDistance - curRightDistance;
@@ -112,38 +126,55 @@ public class A_PositionMove extends Command {
 
 		rightSpeed += gyroRightSpeed;
 		leftSpeed -= gyroLeftSpeed;
-		
-		if(rightSpeed > limit){
+		//
+		// if(rightSpeed > limit){
+		// leftSpeed -= rightSpeed - limit;
+		// } else if(rightSpeed < -limit) {
+		// leftSpeed += limit + rightSpeed;
+		// }
+		//
+		// if(leftSpeed > limit){
+		// rightSpeed -= leftSpeed - limit;
+		// } else if (leftSpeed < -limit) {
+		// rightSpeed += limit + leftSpeed;
+		// }
+		if (rightSpeed > limit) {
 			leftSpeed -= rightSpeed - limit;
-		} else if(rightSpeed < -limit) {
-			leftSpeed += limit + rightSpeed;
+			rightSpeed = limit;
+		} else if (rightSpeed < -limit) {
+			leftSpeed -= rightSpeed + limit;
+			rightSpeed = -limit;
 		}
-		
-		if(leftSpeed > limit){
+
+		if (leftSpeed > limit) {
 			rightSpeed -= leftSpeed - limit;
+			leftSpeed = limit;
 		} else if (leftSpeed < -limit) {
-			rightSpeed += limit + leftSpeed;
+			rightSpeed -= leftSpeed + limit;
+			leftSpeed = -limit;
 		}
-		
-		
-		
-		if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
-			if(leftSpeed < 0){
-				leftSpeed = - limit;
-			} else if (leftSpeed > 0){
-				leftSpeed = limit;
-			}
-			if(rightSpeed < 0){
-				rightSpeed = - limit;
-			} else if (rightSpeed > 0){
-				rightSpeed = limit;
-			}
-		}
-		
+
+		SmartDashboard.putNumber("Left", leftSpeed);
+		SmartDashboard.putNumber("Right", rightSpeed);
+		SmartDashboard.putNumber("Gyro Power", gyroLeftSpeed);
+
+		// if(Math.abs(leftSpeed) > limit || Math.abs(rightSpeed) > limit){
+		// if(leftSpeed < 0){
+		// leftSpeed = - limit;
+		// } else if (leftSpeed > 0){
+		// leftSpeed = limit;
+		// }
+		// if(rightSpeed < 0){
+		// rightSpeed = - limit;
+		// } else if (rightSpeed > 0){
+		// rightSpeed = limit;
+		// }
+		// }
+
 		driveTrain.setLeft(leftSpeed);
 		driveTrain.setRight(rightSpeed);
 
-		if ((Math.abs(encLeftError) + Math.abs(encRightError))/2 < 0.1) {
+		if ((Math.abs(encLeftError) + Math.abs(encRightError)) / 2 < 0.1) {
 			count++;
 
 			if (count > 25) {
@@ -157,9 +188,8 @@ public class A_PositionMove extends Command {
 		}
 		lastError = error;
 
-		
-		//Uncomment if we change d from 0.00
-		
+		// Uncomment if we change d from 0.00
+
 		// lastEncRightError = encRightError;
 		// lastEncLeftError = encLeftError;
 

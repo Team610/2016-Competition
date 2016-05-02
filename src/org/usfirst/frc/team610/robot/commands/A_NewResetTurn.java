@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class A_NewPositionLock extends Command {
-	
+public class A_NewResetTurn extends Command {
+
 	PID pid;
 	DriveTrain driveTrain;
 	private int finishCounter = 0;
@@ -21,18 +21,20 @@ public class A_NewPositionLock extends Command {
 	private double tAngle;
 	private boolean isFinished;
 	
-    public A_NewPositionLock(double tAngle, double time) {
+    public A_NewResetTurn(double time) {
+    	this.time = time;
+    	driveTrain = DriveTrain.getInstance();
     	pid = new PID(PIDConstants.GYRO_Kp, 0, PIDConstants.GYRO_Kd);
     	driveTrain = DriveTrain.getInstance();
     	this.time = time;
-    	this.tAngle = tAngle;
+    	tAngle = 0;
+    	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	driveTrain.resetSensors();
     	setTimeout(time);
     	isFinished = false;
     	finishCounter = 0;
@@ -41,8 +43,8 @@ public class A_NewPositionLock extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	turnSpeed = pid.getValue(driveTrain.getYaw(), tAngle);
-    	leftSpeed = -turnSpeed;
-    	rightSpeed = turnSpeed;
+    	leftSpeed = turnSpeed;
+    	rightSpeed = -turnSpeed;
     	if(Math.abs(pid.getError()) < 0.5){
     		finishCounter ++;
     	} else {
@@ -60,7 +62,7 @@ public class A_NewPositionLock extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut() || isFinished;
+    	return isTimedOut() || isFinished;
     }
 
     // Called once after isFinished returns true

@@ -87,6 +87,12 @@ public class PID {
 		output = 0;
 	}
 	
+	public void updatePID(double p, double i, double d){
+		this.p = p;
+		this.i = i;
+		this.d = d;
+	}
+	
 	public double getError(){
 		return error;
 	}

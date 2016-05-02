@@ -61,8 +61,8 @@ public class A_PositionLock extends Command {
     	
     	
     	
-    	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
-    	rightSpeed = error * PIDConstants.GYRO_Kp + differenceError * PIDConstants.GYRO_Kd;
+    	leftSpeed = error * PIDConstants.GYRO_Kp + differenceError * -PIDConstants.GYRO_Kd;
+    	rightSpeed = error * PIDConstants.GYRO_Kp + differenceError * -PIDConstants.GYRO_Kd;
     	
     	if(Math.abs(error) < 0.5){
     		tick++;
@@ -76,18 +76,17 @@ public class A_PositionLock extends Command {
     	driveTrain.setLeft(leftSpeed);
     	driveTrain.setRight(-rightSpeed);
     	
-    	
+    	if(isFinished){
+        	driveTrain.setLeft(0);
+        	driveTrain.setRight(0);
+
+        }
     	
     	lastError = error;	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(isTimedOut() || isFinished){
-        	driveTrain.setLeft(0);
-        	driveTrain.setRight(0);
-
-        }
         return isTimedOut() || isFinished;
     }
 

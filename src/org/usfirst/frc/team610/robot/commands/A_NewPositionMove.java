@@ -23,6 +23,7 @@ public class A_NewPositionMove extends Command {
 	private double tDistance;
 	private boolean isFinished;
 	private double limit;
+	private double tAngle;
 	
 	//Limit should be positive
     public A_NewPositionMove(double tDistance, double time, double limit) {
@@ -32,21 +33,22 @@ public class A_NewPositionMove extends Command {
     	this.tDistance = tDistance;
     	this.time = time;
     	this.limit = limit;
+    	tAngle = 0;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	driveTrain.resetSensors();
     	setTimeout(time);
     	isFinished = false;
+    	tAngle = driveTrain.getYaw();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	moveSpeed = encPid.getValue((driveTrain.getLeftInches() + driveTrain.getRightInches()) / 2, tDistance);
-    	turnSpeed = gyroPid.getValue(driveTrain.getYaw(), 0);
+    	turnSpeed = gyroPid.getValue(driveTrain.getYaw(), tAngle);
     	
     	if(Math.abs(moveSpeed) > Math.abs(limit)){
     		if(moveSpeed < 0){
@@ -55,9 +57,11 @@ public class A_NewPositionMove extends Command {
     			moveSpeed = limit;
     		}
     	}
+    	
+    	isFinished = false;
 
-    	leftSpeed = moveSpeed + turnSpeed;
-    	rightSpeed = moveSpeed - turnSpeed ;
+    	leftSpeed = moveSpeed - turnSpeed;
+    	rightSpeed = moveSpeed + turnSpeed ;
     	
     	
     	if(rightSpeed > 1){

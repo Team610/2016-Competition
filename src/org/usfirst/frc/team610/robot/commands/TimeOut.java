@@ -1,37 +1,31 @@
 package org.usfirst.frc.team610.robot.commands;
 
-import org.usfirst.frc.team610.robot.subsystems.DriveTrain;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class T_Drive extends Command {
-
-	DriveTrain driveTrain;
-	
-    public T_Drive() {
-    	
-    	driveTrain = DriveTrain.getInstance();
+public class TimeOut extends Command {
+	double time;
+    public TimeOut(double time) {
+    	this.time = time;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	driveTrain.resetEncPID();
-    	driveTrain.resetGyroPID();
+    	setTimeout(time);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	driveTrain.drive();
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true

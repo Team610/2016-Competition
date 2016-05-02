@@ -173,6 +173,15 @@ public class CameraServer610 {
 			DriverStation.reportError("Error when starting the camera: " + cameraName + " " + ex.getMessage(), true);
 		}
 	}
+	
+	public void setExpBright(boolean bright){
+		if(bright){
+			m_camera.setExposureAuto();
+		} else {
+			m_camera.setExposureManual(5);
+		}
+		m_camera.updateSettings();
+	}
 
 	public synchronized void startAutomaticCapture(USBCamera610 camera) {
 		if (m_autoCaptureStarted)

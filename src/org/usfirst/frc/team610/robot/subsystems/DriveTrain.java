@@ -20,7 +20,7 @@ public class DriveTrain extends Subsystem {
 	// here. Call these from Commands.
 
 	static DriveTrain instance;
-
+	private Vision vision;
 	private Victor leftFront;
 	private Victor leftBack;
 	private Victor rightFront;
@@ -47,6 +47,7 @@ public class DriveTrain extends Subsystem {
 
 	private DriveTrain() {
 		navx = NavX.getInstance();
+		vision = Vision.getInstance();
 		leftFront = new Victor(ElectricalConstants.VICTOR_LEFT_FRONT);
 		leftFront.enableDeadbandElimination(true);
 		leftBack = new Victor(ElectricalConstants.VICTOR_LEFT_BACK);
@@ -99,6 +100,14 @@ public class DriveTrain extends Subsystem {
 		rightEnc.reset();
 	}
 
+	public void resetGyroPID(){
+		gyroPid.updatePID(PIDConstants.GYRO_Kp, 0, PIDConstants.GYRO_Kd);
+	}
+	
+	public void resetEncPID(){
+		encPid.updatePID(PIDConstants.ENCODER_Kp, 0, PIDConstants.ENCODER_Kd);
+	}
+	
 	public void drive() {
 		double leftSpeed, rightSpeed;
 		double avgSpeed = 0;
@@ -118,25 +127,26 @@ public class DriveTrain extends Subsystem {
 		}
 
 		if (isLock) {
+			if (oi.getDriver().getRawButton(LogitechF310Constants.BTN_R2)) {
+				tAngle = vision.getAngle();
+			}
 			x = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_RIGHT_X) * Constants.LOCK_GYRO_SENSITIVITY;
 			y = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y) * Constants.LOCK_ENC_SENSITIVITY;
-			
-			if(Math.abs(x) < 0.05){
+
+			if (Math.abs(x) < 0.05 && Math.abs(y) < 0.05) {
 				x = 0;
-			}
-			
-			if(Math.abs(y) < 0.05){
 				y = 0;
+
+				avgSpeed = encPid.getValue((getLeftInches() + getRightInches()) / 2, tDistance);
+				turnSpeed = gyroPid.getValue(getYaw(), tAngle);
+				leftSpeed = avgSpeed - turnSpeed;
+				rightSpeed = avgSpeed + turnSpeed;
+			} else {
+				tAngle = getYaw();
+				tDistance = (getLeftInches() + getRightInches()) / 2;
+				leftSpeed = y - x;
+				rightSpeed = y + x;
 			}
-			
-			tAngle += x;
-			tDistance += y;
-
-			avgSpeed = encPid.getValue((getLeftInches() + getRightInches()) / 2, tDistance);
-			turnSpeed = gyroPid.getValue(getYaw(), tAngle);
-
-			leftSpeed = avgSpeed + turnSpeed;
-			rightSpeed = avgSpeed - turnSpeed;
 		} else {
 			x = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_RIGHT_X);
 			y = oi.getDriver().getRawAxis(LogitechF310Constants.AXIS_LEFT_Y);
@@ -146,7 +156,6 @@ public class DriveTrain extends Subsystem {
 
 		setRight(rightSpeed);
 		setLeft(leftSpeed);
-
 	}
 
 }

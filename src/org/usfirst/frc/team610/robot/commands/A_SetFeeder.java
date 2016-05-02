@@ -13,7 +13,7 @@ public class A_SetFeeder extends Command {
 	Intake intake;
 	private double time;
 	private double speed;
-	
+	int counter;
     public A_SetFeeder(double time, double speed) {
     	intake = Intake.getInstance();
     	this.time = time;
@@ -25,12 +25,20 @@ public class A_SetFeeder extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	setTimeout(time);
+    	counter = 0;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	counter ++;
+    	if(counter > 25){
     	intake.setFeeder(speed);
-    	
+    	} else {
+    		intake.setFeeder(0);
+    	}
+    	if(isTimedOut()){
+    		intake.setFeeder(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
